@@ -100,7 +100,7 @@
           >
         </template>
         <template v-slot:created_at="{ row: data }">
-          <p class="text-muted">{{ formatDate(data.created_at) }}</p>
+          <p class="text-muted">{{ data.created_at }}</p>
         </template>
 
         <template v-slot:actions="{ row: data }">

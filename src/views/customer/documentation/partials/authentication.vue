@@ -33,8 +33,11 @@
           ></router-link
         >. <br />
         To know more about creating and managing users, check out the
+
+        <!--        TODO-->
+        <!--        @click="activeTab = 2"-->
         <router-link to="" @click.prevent=""
-          ><b class="text-info font-weight-bold" @click="activeTab = 2"
+          ><b class="text-info font-weight-bold"
             >Creating & Managing Users</b
           ></router-link
         >
@@ -50,8 +53,11 @@
         <router-link to="/api"><b class="text-info">API Access</b></router-link
         >. <br />
         To know more about how to access and use our API, check out the
+
+        <!--        TODO-->
+        <!--        @click="activeTab = 7"-->
         <router-link to="" @click.prevent=""
-          ><b class="text-info font-weight-bold" @click="activeTab = 7"
+          ><b class="text-info font-weight-bold"
             >API Integrations Section</b
           ></router-link
         >
@@ -62,7 +68,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "AuthenticationDocumentation",
 };

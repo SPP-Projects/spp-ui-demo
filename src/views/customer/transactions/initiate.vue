@@ -763,6 +763,7 @@ import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerTransactionStore } from "@/stores/customer/transaction";
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
+import type { ValidatedTransaction } from "@/models/transaction";
 
 export default defineComponent({
   name: "manage-accounts",
@@ -810,7 +811,7 @@ export default defineComponent({
       external_reference: "",
     });
 
-    const validated = ref({} as unknown);
+    const validated = ref({} as ValidatedTransaction);
 
     const confirmed = ref({} as any);
 
@@ -883,7 +884,7 @@ export default defineComponent({
       // });
       transactionStore
         .validateTransaction(request.value)
-        .then((response) => {
+        .then((response: ValidatedTransaction) => {
           validated.value = response;
           form.value.step = "validated";
 

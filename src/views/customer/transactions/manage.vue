@@ -102,7 +102,7 @@
         @on-sort="sortingChanged"
       >
         <template v-slot:created_at="{ row: data }">
-          {{ formatDateTime(data.created_at) }}
+          {{ data.created_at }}
         </template>
         <template v-slot:status_id="{ row: data }">
           <span v-if="data.status_id === 1" class="badge badge-light-primary"
@@ -134,7 +134,7 @@
           {{ data.type_code }}
         </template>
         <template v-slot:amount="{ row: data }">
-          {{ formatNumber(data.amount) }}
+          {{ data.amount }}
         </template>
         <template v-slot:debit_account_institution_name="{ row: data }">
           {{ data.debit_account_institution.name }}
@@ -231,7 +231,7 @@
                     <tr>
                       <td class="text-muted">Amount</td>
                       <td class="text-gray-800">
-                        {{ formatNumber(transaction.amount) }}
+                        {{ transaction.amount }}
                         {{ transaction.currency_code }}
                       </td>
                     </tr>
@@ -246,13 +246,13 @@
                     <tr>
                       <td class="text-muted">Created At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(transaction.created_at) }}
+                        {{ transaction.created_at }}
                       </td>
                     </tr>
                     <tr>
                       <td class="text-muted">Last Updated At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(transaction.updated_at) }}
+                        {{ transaction.updated_at }}
                       </td>
                     </tr>
                     <tr>
@@ -405,6 +405,7 @@ import sppay from "@/helpers/sppay";
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
 import { useCustomerTransactionStore } from "@/stores/customer/transaction";
+import type { Transaction } from "@/models/transaction";
 export default defineComponent({
   name: "transactions-list",
   components: {
@@ -474,7 +475,7 @@ export default defineComponent({
         columnLabel: "actions",
       },
     ]);
-    const transaction = ref({});
+    const transaction = ref<Transaction | any>({});
 
     const account = ref("");
 

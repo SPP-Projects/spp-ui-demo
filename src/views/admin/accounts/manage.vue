@@ -82,10 +82,10 @@
           {{ data.institution.name }}
         </template>
         <template v-slot:actual_balance="{ row: data }">
-          {{ data.currency.code }} {{ formatNumber(data.actual_balance) }}
+          {{ data.currency.code }} {{ data.actual_balance }}
         </template>
         <template v-slot:created_at="{ row: data }">
-          {{ timeAgo(data.created_at) }}
+          {{ data.created_at }}
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -186,13 +186,13 @@
                     <tr>
                       <td class="text-muted">Created At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(account.created_at) }}
+                        {{ account.created_at }}
                       </td>
                     </tr>
                     <tr>
                       <td class="text-muted">Last Updated At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(account.updated_at) }}
+                        {{ account.updated_at }}
                       </td>
                     </tr>
                     <!--                    TODO-->
@@ -231,7 +231,7 @@
                     <tr>
                       <td class="text-muted">Balance</td>
                       <td class="text-gray-800">
-                        {{ formatNumber(account.actual_balance) }}
+                        {{ account.actual_balance }}
                       </td>
                     </tr>
                   </tbody>

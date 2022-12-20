@@ -52,7 +52,7 @@
                     <!--end::Label-->
                     <!--end::Col-->
                     <div class="fw-bold fs-6 text-gray-800">
-                      {{ formatDate(invoiceData.created_at) }}
+                      {{ invoiceData.created_at }}
                     </div>
                     <!--end::Col-->
                   </div>

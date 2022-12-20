@@ -513,13 +513,16 @@
 
                 <!--begin::Input-->
                 <el-form-item prop="credit_account_type_id">
+                  <!--                  :key="item.id"-->
                   <el-select
                     v-model="transactionCharge.credit_account_type_id"
                     placeholder="Select"
                   >
                     <el-option
-                      v-for="item in transactionChargeSettingOptions.account_types"
-                      :key="item.id"
+                      v-for="(
+                        item, index
+                      ) in transactionChargeSettingOptions.account_types"
+                      :key="index"
                       :label="item.name"
                       :value="item.id"
                       :disabled="refData.loadingAction"

@@ -8,9 +8,10 @@
       "@/*": ["./src/*"]
     },
     //TODO - HACK FOR VUE ERRORS IN PROD
-   // "allowJs": true,
-   // "strict": false,
-   // "strictNullChecks": false,
+
+  "strict": false,
+ "strictNullChecks": false,
+    "noEmit": false,
     //TODO - HACK FOR VUE ERRORS IN PROD
   },
 

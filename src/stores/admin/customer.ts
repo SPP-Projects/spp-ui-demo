@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import CustomerService from "@/services/admin/CustomerService";
 import { getError } from "@/helpers/errors";
+import type { Customer, CustomerPermissionList } from "@/models/customer";
 
 export const useAdminCustomerStore = defineStore("adminCustomerStore", {
   state: () => ({
     //customers
     customers: [],
-    customer: {},
+    customer: {} as Customer,
 
     //customerUsers
     customerUsers: [],
@@ -20,9 +21,10 @@ export const useAdminCustomerStore = defineStore("adminCustomerStore", {
     customerGroup: {},
 
     //permissions
-    customerPermissions: [],
-    adminPermissions: [],
-    enabledPermissions: [],
+    // customerPermissions: [],
+    // adminPermissions: [],
+    // enabledPermissions: [],
+    customerPermissionList: {} as CustomerPermissionList,
     customerPermission: {},
 
     //shared
@@ -413,14 +415,16 @@ export const useAdminCustomerStore = defineStore("adminCustomerStore", {
     /**
      * Customer Permissions
      */
-    getCustomerPermissions(customer_id) {
+    getCustomerPermissionsList(customer_id) {
       return new Promise((resolve, reject) => {
         this.loadingCustomerData = true;
         CustomerService.getCustomerPermissions(customer_id)
           .then(({ data }) => {
-            this.customerPermissions = data.customer_permissions;
-            this.adminPermissions = data.customer_permissions;
-            this.enabledPermissions = data.enabled_permissions;
+            // this.customerPermissions = data.customer_permissions;
+            // this.adminPermissions = data.customer_permissions;
+            // this.enabledPermissions = data.enabled_permissions;
+            this.customerPermissionList = data;
+
             console.log(data);
             this.meta.total = data.total;
             this.meta.from = data.from;

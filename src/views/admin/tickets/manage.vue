@@ -2,7 +2,7 @@
   <div>Manage Tickets</div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "general-page",
 };

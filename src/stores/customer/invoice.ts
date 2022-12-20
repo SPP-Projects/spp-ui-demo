@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import InvoiceService from "@/services/customer/InvoiceService";
 import { getError } from "@/helpers/errors";
+import type { Invoice } from "@/models/invoice";
 
 export const useCustomerInvoiceStore = defineStore("customerInvoiceStore", {
   state: () => ({
     invoices: [],
-    invoiceDetails: { reference: "" },
+    invoiceDetails: {} as Invoice,
     invoiceItems: [],
     invoicePayments: [],
     meta: { total: 0, from: 0, to: 0, last_page: 0 },

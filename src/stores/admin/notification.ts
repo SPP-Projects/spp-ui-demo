@@ -1,6 +1,12 @@
 import { defineStore } from "pinia";
 import NotificationService from "@/services/admin/NotificationService";
 import { getError } from "@/helpers/errors";
+import { ref } from "vue";
+import type {
+  NotificationActivityOption,
+  NotificationSettingOption,
+  NotificationTemplateOption,
+} from "@/models/notification";
 
 export const useAdminNotificationStore = defineStore("adminNotificationStore", {
   state: () => ({
@@ -16,7 +22,7 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     notificationActivities: [],
 
     //activitiesOptions
-    notificationActivityOptions: [],
+    notificationActivityOptions: {} as NotificationActivityOption,
 
     //notification activity groups
     notificationActivityGroups: [],
@@ -25,14 +31,14 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     notificationTemplates: [],
 
     //template options
-    notificationTemplateOptions: [],
+    notificationTemplateOptions: {} as NotificationTemplateOption,
 
     //groups
     notificationGroups: [],
     notificationGroup: {},
 
     //option
-    notificationOptions: [],
+    notificationOptions: {} as NotificationSettingOption,
 
     //shared
     error: null,

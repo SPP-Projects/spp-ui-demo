@@ -3,9 +3,9 @@ import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
 import { useCustomerUserStore } from "@/stores/customer/user";
-import { THEME_MODE_LS_KEY } from "@/stores/theme";
+import type { User } from "@/models/user";
 
-export interface User {
+export interface CoreUser {
   name: string;
   surname: string;
   email: string;
@@ -15,9 +15,9 @@ export interface User {
 
 export const useAuthStore = defineStore("auth", () => {
   const errors = ref({});
-  const user = ref<User>({} as User);
+  const user = ref<CoreUser>({} as CoreUser);
   const isAuthenticated = ref(!!JwtService.getToken());
-  const authenticatedUser = ref({ id: 0 });
+  const authenticatedUser = ref({ id: 0 } as User);
 
   const getJSONFromLocalStorage = (key) => {
     const value = window.localStorage.getItem(key);
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("auth", () => {
     getJSONFromLocalStorage("isAdminMode") || (false as boolean)
   );
   //TODO - set user mode
-  function setAuth(authUser: User) {
+  function setAuth(authUser: CoreUser) {
     isAuthenticated.value = true;
     user.value = authUser;
     errors.value = {};
@@ -90,12 +90,12 @@ export const useAuthStore = defineStore("auth", () => {
 
   function purgeAuth() {
     isAuthenticated.value = false;
-    user.value = {} as User;
+    user.value = {} as CoreUser;
     errors.value = [];
     JwtService.destroyToken();
   }
 
-  function login(credentials: User) {
+  function login(credentials: CoreUser) {
     return ApiService.post("/v1/sanctum/token", credentials)
       .then(({ data }) => {
         console.log(data);
@@ -111,7 +111,7 @@ export const useAuthStore = defineStore("auth", () => {
     purgeAuth();
   }
 
-  function register(credentials: User) {
+  function register(credentials: CoreUser) {
     return ApiService.post("register", credentials)
       .then(({ data }) => {
         setAuth(data);

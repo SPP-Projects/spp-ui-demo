@@ -94,7 +94,7 @@
           >
         </template>
         <template v-slot:created_at="{ row: data }">
-          {{ formatDate(data.created_at) }}
+          {{ data.created_at }}
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -230,7 +230,7 @@
                   <div class="d-flex">
                     <div class="text-end">
                       <div class="fs-5 text-dark">
-                        {{ formatDate(sms.created_at) }}
+                        {{ sms.created_at }}
                       </div>
                     </div>
                   </div>
@@ -303,6 +303,7 @@ import PageLoader from "@/components/PageLoader.vue";
 
 import { storeToRefs } from "pinia";
 import { useCustomerSmsStore } from "@/stores/customer/sms";
+import type { SmsReport } from "@/models/sms";
 
 export default defineComponent({
   name: "sms-reports-list",
@@ -328,7 +329,7 @@ export default defineComponent({
     });
 
     const reports = ref([]);
-    const sms = ref({});
+    const sms = ref<SmsReport | any>({});
     const tableHeader = ref([
       {
         columnLabel: "id",

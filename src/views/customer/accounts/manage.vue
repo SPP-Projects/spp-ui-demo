@@ -75,7 +75,7 @@
           >
         </template>
         <template v-slot:balance="{ row: data }">
-          {{ data.currency.code }} {{ formatNumber(data.actual_balance) }}
+          {{ data.currency.code }} {{ data.actual_balance }}
         </template>
 
         <template v-slot:actions="{ row: data }">

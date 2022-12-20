@@ -86,7 +86,7 @@
           {{ data.currency.code }}
         </template>
         <template v-slot:value="{ row: data }">
-          {{ formatNumber(data.value) }}
+          {{ data.value }}
         </template>
         <template v-slot:account_no="{ row: data }">
           {{ data.account_no }}

@@ -13,7 +13,9 @@
         <hr />
 
         <div
-          v-for="(permission_group, key) in permissions.customer"
+          v-for="(
+            permission_group, key
+          ) in customerPermissionList.customer_permissions"
           :key="key"
           class="col-md-6 mb-10"
         >
@@ -25,10 +27,8 @@
               <input
                 class="form-check-input h-20px w-20px checkbox-success"
                 type="checkbox"
-                name="permission[]"
-                checked="checked"
                 :value="permission.id"
-                v-model="enabled_permissions"
+                v-model="checkedRows"
               />
 
               <span class="form-check-label fw-semobold">
@@ -44,7 +44,9 @@
         </div>
         <hr />
         <div
-          v-for="(permission_group, key) in permissions.admin"
+          v-for="(
+            permission_group, key
+          ) in customerPermissionList.admin_permissions"
           :key="key"
           class="col-md-5 mb-4"
         >
@@ -56,10 +58,8 @@
               <input
                 class="form-check-input h-20px w-20px checkbox-success"
                 type="checkbox"
-                name="permission[]"
-                checked="checked"
                 :value="permission.id"
-                v-model="enabled_permissions"
+                v-model="checkedRows"
               />
 
               <span class="form-check-label fw-semobold">
@@ -103,6 +103,7 @@ import sppData from "@/helpers/data";
 import { useAdminCustomerStore } from "@/stores/admin/customer";
 import { useRoute } from "vue-router";
 import DataLoader from "@/components/DataLoader.vue";
+import type { Customer, CustomerPermissionList } from "@/models/customer";
 export default defineComponent({
   inheritAttrs: false,
   name: "admin-customers-permissions",
@@ -114,7 +115,6 @@ export default defineComponent({
   setup() {
     //admin account store
     const customerStore = useAdminCustomerStore();
-
     const route = useRoute();
 
     //data variables
@@ -128,15 +128,11 @@ export default defineComponent({
       loadingAction: false,
     });
 
-    const customer = ref({});
+    const customer = ref({} as Customer);
 
-    const permissions = ref({
-      admin: {},
-      customer: {},
-    } as any);
+    const customerPermissionList = ref<CustomerPermissionList>();
 
-    const enabled_permissions = ref([]);
-
+    const checkedRows = ref<Array<number>>([]);
     const getCustomer = () => {
       customerStore.getCustomer(route.params.id).then((response: any) => {
         customer.value = response;
@@ -146,11 +142,10 @@ export default defineComponent({
     const getCustomerPermissions = () => {
       refData.value.loadingData = true;
       customerStore
-        .getCustomerPermissions(route.params.id)
-        .then((response: any) => {
-          permissions.value.customer = response.customer_permissions;
-          permissions.value.admin = response.admin_permissions;
-          enabled_permissions.value = response.enabled_permissions;
+        .getCustomerPermissionsList(route.params.id)
+        .then((response: CustomerPermissionList) => {
+          customerPermissionList.value = response;
+          checkedRows.value = response.enabled_permissions;
           refData.value.loadingData = false;
         });
     };
@@ -160,7 +155,7 @@ export default defineComponent({
       const payload = {
         customer_id: route.params.id,
         request: {
-          enabled_permissions: enabled_permissions.value,
+          enabled_permissions: checkedRows.value,
         },
       };
       customerStore
@@ -202,9 +197,11 @@ export default defineComponent({
       updatePermissions,
 
       //api data
-      permissions,
-      enabled_permissions,
+
+      customerPermissionList,
       customer,
+      //
+      checkedRows,
     };
   },
 });

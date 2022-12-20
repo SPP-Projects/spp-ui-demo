@@ -13,7 +13,7 @@
       <!-- Payment -->
       <div class="row">
         <!--begin::Form-->
-        <form class="my-auto pb-5" novalidate="novalidate">
+        <form class="my-auto pb-5">
           <!--begin::Step 2-->
           <div class="current" data-kt-stepper-element="content">
             <div class="w-100">

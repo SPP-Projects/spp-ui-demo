@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import PaymentMapService from "@/services/admin/PaymentMapService";
 import { getError } from "@/helpers/errors";
+import type { PaymentOption } from "@/models/payment";
 
 export const useAdminPaymentMapStore = defineStore("adminPaymentMapStore", {
   state: () => ({
     paymentMaps: [],
-    paymentMapOptions: [],
+    paymentMapOptions: {} as PaymentOption,
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
     paymentMap: {},
 

@@ -62,7 +62,7 @@
 
                     <td class="text-end pe-0">
                       <span
-                        v-if="!transaction.icon"
+                        v-if="!transaction"
                         class="badge badge-light-success fs-base"
                       >
                         <span
@@ -73,7 +73,7 @@
                           />
                         </span>
                         {{ transaction.currency.code }}
-                        {{ formatNumber(transaction.amount) }}
+                        {{ transaction.amount }}
                       </span>
                       <span v-else class="badge badge-light-danger fs-base">
                         <span class="svg-icon svg-icon-5 svg-icon-danger ms-n1">
@@ -82,7 +82,7 @@
                           />
                         </span>
                         {{ transaction.currency.code }}
-                        {{ formatNumber(transaction.amount) }}
+                        {{ transaction.amount }}
                       </span>
                     </td>
 
@@ -102,7 +102,7 @@
                       >
                     </td>
                     <td class="text-end pe-0">
-                      {{ timeAgo(transaction.created_at) }}
+                      {{ transaction.created_at }}
                     </td>
 
                     <td class="text-end">
@@ -178,10 +178,7 @@
           class="col-md-12 layout-spacing"
         >
           <div class="">
-            <div
-              @click="viewAccountTransactions(account.id)"
-              class="card bg-dark hoverable mb-xl-8"
-            >
+            <div class="card bg-dark hoverable mb-xl-8">
               <!--begin::Body-->
               <div class="card-body">
                 <span class="svg-icon svg-icon-gray-100 svg-icon-3x ms-n1">
@@ -190,17 +187,14 @@
                   <!--                    height="24"-->
                   <!--                    alt=""-->
                   <!--                  />-->
-                  <span
-                    class="add"
-                    @click="viewAccountTransactions(account.id)"
-                  >
+                  <span class="add">
                     <span class="p-2"> View Transactions >> </span>
                   </span>
                 </span>
 
                 <div class="text-gray-100 fw-bold fs-2 mb-2 mt-5">
                   <span class="w-currency">{{ account.currency.code }} </span>
-                  {{ formatNumber(account.actual_balance) }}
+                  {{ account.actual_balance }}
                 </div>
                 <div class="fw-semibold text-gray-100">
                   {{ account.type.name }} Account /

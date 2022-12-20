@@ -1,6 +1,11 @@
 import { defineStore } from "pinia";
 import TransactionService from "@/services/admin/TransactionService";
 import { getError } from "@/helpers/errors";
+import type {
+  TransactionCharge,
+  TransactionChargeSettingOption,
+} from "@/models/transaction";
+import { ref } from "vue";
 
 export const useAdminTransactionStore = defineStore("adminTransactionStore", {
   state: () => ({
@@ -21,13 +26,14 @@ export const useAdminTransactionStore = defineStore("adminTransactionStore", {
     transactionTypeAccountMappings: [],
     transactionTypeAccountMapping: {},
 
+    //TODO - CHANGE NAME
     //transaction options
-    transactionOptions: [],
+    transactionOptions: {} as TransactionChargeSettingOption,
 
     //transaction charnges
     transactionChargeSettings: [],
     transactionChargeSetting: {},
-    transactionChargeSettingOptions: [],
+    transactionChargeSettingOptions: {} as TransactionChargeSettingOption,
 
     //transaction commissions
     transactionCommissionSettings: [],

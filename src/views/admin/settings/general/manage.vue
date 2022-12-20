@@ -82,7 +82,7 @@
         </template>
         <template v-slot:type="{ row: data }"> {{ data.type.name }} </template>
         <template v-slot:updated_at="{ row: data }">
-          {{ timeAgo(data.updated_at) }}
+          {{ data.updated_at }}
         </template>
 
         <template v-slot:actions="{ row: data }">

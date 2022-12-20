@@ -349,13 +349,13 @@
               <tr class="">
                 <td class="text-gray-400">Created At:</td>
                 <td class="text-gray-800" v-if="moneyRequestDetails.status">
-                  {{ formatDate(moneyRequestDetails.status.created_at) }}
+                  {{ moneyRequestDetails.status.created_at }}
                 </td>
               </tr>
               <tr class="">
                 <td class="text-gray-400">Updated At:</td>
                 <td class="text-gray-800" v-if="moneyRequestDetails.status">
-                  {{ formatDate(moneyRequestDetails.status.updated_at) }}
+                  {{ moneyRequestDetails.status.updated_at }}
                 </td>
               </tr>
               <!--end::Row-->
@@ -576,18 +576,13 @@ export default defineComponent({
   setup() {
     //store
     const moneyRequestStore = useCustomerMoneyRequestStore();
-    const {
-      moneyRequestDetails,
-      moneyRequestPayments,
-      meta,
-      loadingMoneyRequestData,
-    } = storeToRefs(moneyRequestStore);
+    const { moneyRequestDetails } = storeToRefs(moneyRequestStore);
     const { getMoneyRequest } = useCustomerMoneyRequestStore();
 
     //account store
     const accountStore = useCustomerAccountStore();
     const { getAccounts } = useCustomerAccountStore();
-    const { accounts, loadingAccountData } = storeToRefs(accountStore);
+    const { accounts } = storeToRefs(accountStore);
 
     //auth user
     const authStore = useAuthStore();
@@ -599,7 +594,7 @@ export default defineComponent({
 
       //loading
       loadingPage: true,
-
+      loadingData: false,
       loadingAction: false,
       loadingAccounts: false,
     });

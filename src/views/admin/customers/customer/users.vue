@@ -117,7 +117,7 @@
         </template>
 
         <template v-slot:last_login_at="{ row: data }">
-          {{ timeAgo(data.last_login_at) }}
+          {{ data.last_login_at }}
         </template>
 
         <template v-slot:last_login_ip="{ row: data }">
@@ -292,10 +292,8 @@
                     <input
                       class="form-check-input h-20px w-20px checkbox-success"
                       type="checkbox"
-                      name="permission[]"
-                      checked="checked"
                       :value="permission.permission_id"
-                      v-model="user.enabled_permissions"
+                      v-model="checkedRows"
                     />
 
                     <span class="form-check-label fw-semobold">
@@ -366,6 +364,7 @@ import { storeToRefs } from "pinia";
 
 import { useAdminCustomerStore } from "@/stores/admin/customer";
 import { useRoute } from "vue-router";
+import type { User } from "@/models/user";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -421,15 +420,15 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     } as any);
     const action = ref("");
-    const user = ref({
-      id: 0,
-      action: "Add",
-      name: "",
-      email: "",
-      phone: "",
-      enable_permission: [],
-    } as any);
-
+    // const user = ref<User>({
+    //   id: 0,
+    //   action: "Add",
+    //   name: "",
+    //   email: "",
+    //   phone: "",
+    //   enabled_permissions: [],
+    // });
+    const user = ref<User>();
     const formAddUpdateUserRef = ref<null | HTMLFormElement>(null);
     const AddUpdateUserModalRef = ref<null | HTMLElement>(null);
     const rules = ref({
@@ -471,20 +470,20 @@ export default defineComponent({
       formAddUpdateUserRef.value.validate((valid) => {
         if (valid) {
           refData.value.loadingAction = true;
+          user.value.enabled_permissions = checkedRows.value;
           const payload = {
             customer_id: route.params.id,
             user_id: user.value.id,
             request: user.value,
           };
 
-          console.log(user.value);
           switch (user.value.action) {
             case "Add":
               //TODO - work on add user api
               customerStore
                 .addCustomerUser(user.value)
 
-                .then((response) => {
+                .then((response: User) => {
                   // update user action to edit
                   user.value = response;
                   user.value.action = "Edit";
@@ -581,16 +580,20 @@ export default defineComponent({
       // get customers
       getCustomerUsers(table_options.value);
     };
+
+    const checkedRows = ref<Array<number>>([]);
     const getUser = () => {
       const payload = {
         customer_id: route.params.id,
         user_id: user.value.id,
       };
-      customerStore.getCustomerUser(payload).then((response) => {
+      customerStore.getCustomerUser(payload).then((response: User) => {
         const action = user.value.action;
 
         user.value = response;
         user.value.action = action;
+
+        checkedRows.value = response.enabled_permissions;
       });
     };
 
@@ -609,7 +612,7 @@ export default defineComponent({
         name: "",
         email: "",
         phone: "",
-        enable_permission: [],
+        enabled_permissions: [],
       };
     };
 
@@ -665,6 +668,9 @@ export default defineComponent({
       //state
       customerUsers,
       loadingCustomerData,
+
+      //
+      checkedRows,
     };
   },
 });

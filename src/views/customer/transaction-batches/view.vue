@@ -226,6 +226,7 @@ import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerTransactionBatchStore } from "@/stores/customer/transactionbatch";
 import { storeToRefs } from "pinia";
+import type { Transaction } from "@/models/transaction";
 
 export default defineComponent({
   name: "view-transaction-batch",
@@ -293,7 +294,7 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     });
 
-    const transaction = ref({});
+    const transaction = ref<Transaction | any>({});
     const searchRecords = ref({
       isSearching: false,
       debounceTimeout: ref<number>(0),

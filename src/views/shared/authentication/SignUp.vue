@@ -79,6 +79,7 @@
         v-else-if="step === 'Step 3 of 4 - Lets get to know you better.'"
         class="statbox panel box-box-shadow"
       >
+        <!--        model-value="Identity & Profile"-->
         <div class="card-body pt-0">
           <el-tabs
             v-model="active_tab"
@@ -88,7 +89,6 @@
             nav-wrapper-class="col-sm-4 col-12"
             nav-class="mb-sm-0 mb-3   text-center mx-auto"
             @tab-click="handleClick"
-            model-value="Identity & Profile"
             tab-position="left"
           >
             <el-tab-pane

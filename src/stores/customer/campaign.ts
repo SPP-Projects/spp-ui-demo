@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { getError } from "@/helpers/errors";
 import CampaignService from "@/services/customer/CampaignService";
+import type { Campaign } from "@/models/campaign";
 
 export const useCustomerCampaignStore = defineStore("customerCampaignStore", {
   state: () => ({
@@ -9,13 +10,7 @@ export const useCustomerCampaignStore = defineStore("customerCampaignStore", {
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
     campaign: {},
     campaignPayments: [],
-    campaignDetails: {
-      title: "",
-      description: "",
-      image: "",
-      goal: "",
-      reference: "",
-    },
+    campaignDetails: {} as Campaign,
     loadingData: false,
     error: null,
     unauthorized: false,

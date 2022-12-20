@@ -117,7 +117,7 @@
         </template>
 
         <template v-slot:last_login_at="{ row: data }">
-          {{ timeAgo(data.last_login_at) }}
+          {{ data.last_login_at }}
         </template>
 
         <template v-slot:last_login_ip="{ row: data }">
@@ -292,10 +292,8 @@
                     <input
                       class="form-check-input h-20px w-20px checkbox-success"
                       type="checkbox"
-                      name="permission[]"
-                      checked="checked"
                       :value="permission.permission_id"
-                      v-model="user.enabled_permissions"
+                      v-model="checkedRows"
                     />
 
                     <span class="form-check-label fw-semobold">
@@ -361,10 +359,10 @@ import { hideModal } from "@/core/helpers/dom";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerTransactionStore } from "@/stores/customer/transaction";
-import { useCustomerAccountStore } from "@/stores/customer/account";
+
 import { storeToRefs } from "pinia";
 import { useCustomerUserStore } from "@/stores/customer/user";
+import type { User } from "@/models/user";
 
 export default defineComponent({
   name: "manage-users",
@@ -418,15 +416,16 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     });
     const action = ref("");
-    const user = ref({
+    const user = ref<User>({
       id: 0,
       action: "Add",
       name: "",
       email: "",
       phone: "",
-      enable_permission: [],
-    } as any);
-
+      enabled_permissions: [],
+    });
+    // const user = ref<User>();
+    const checkedRows = ref<Array<number>>([]);
     const formAddUpdateUserRef = ref<null | HTMLFormElement>(null);
     const AddUpdateUserModalRef = ref<null | HTMLElement>(null);
     const rules = ref({
@@ -468,14 +467,14 @@ export default defineComponent({
       formAddUpdateUserRef.value.validate((valid) => {
         if (valid) {
           refData.value.loadingAction = true;
-
+          user.value.enabled_permissions = checkedRows.value;
           switch (user.value.action) {
             case "Add":
               //TODO - work on add user api
               userStore
                 .updateUser(user.value)
 
-                .then((response) => {
+                .then((response: any) => {
                   // update user action to edit
                   user.value = response;
                   user.value.action = "Edit";
@@ -488,7 +487,7 @@ export default defineComponent({
             case "Edit":
               userStore
                 .updateUser(user.value)
-                .then((response) => {
+                .then((response: any) => {
                   // update user action to edit
                   user.value = response.user;
                   user.value.action = "Edit";
@@ -573,19 +572,22 @@ export default defineComponent({
       getUsers(table_options.value);
     };
     const getUser = () => {
-      userStore.getUser(user.value.id).then((response) => {
+      userStore.getUser(user.value.id).then((response: User) => {
         const action = user.value.action;
 
         user.value = response;
         user.value.action = action;
+
+        checkedRows.value = response.enabled_permissions;
       });
     };
 
     //modals
     const showEditUserModal = async (data) => {
       user.value = data;
-      user.value.action = "Edit";
+
       await getUser();
+
       user.value.action = "Edit";
     };
 
@@ -596,7 +598,6 @@ export default defineComponent({
         name: "",
         email: "",
         phone: "",
-        enable_permission: [],
       };
     };
 
@@ -650,6 +651,8 @@ export default defineComponent({
       //state
       users,
       loadingUserData,
+
+      checkedRows,
     };
   },
 });

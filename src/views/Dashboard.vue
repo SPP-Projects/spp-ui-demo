@@ -3,7 +3,7 @@
   <customer-dashboard v-else></customer-dashboard>
 </template>
 
-<script>
+<script lang="ts">
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import AdminDashboard from "@/views/admin/index.vue";

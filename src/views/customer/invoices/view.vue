@@ -280,7 +280,7 @@
             </template>
 
             <template v-slot:created_at="{ row: data }">
-              {{ formatDate(data.created_at) }}
+              {{ data.created_at }}
             </template>
 
             <template v-slot:transaction_reference="{ row: data }">
@@ -289,7 +289,7 @@
 
             <template v-slot:amount="{ row: data }">
               {{ data.currency_code }}
-              {{ formatNumber(data.amount) }}
+              {{ data.amount }}
             </template>
 
             <template v-slot:donor="{ row: data }">
@@ -450,6 +450,7 @@
           <div data-kt-stepper-element="content">
             <!--begin::Wrapper-->
             <div class="w-100" v-if="transaction.id">
+              {{ transaction }}
               <!--begin::Heading-->
               <div class="pb-12">
                 <!--begin::Title-->
@@ -484,7 +485,7 @@
                     <tr>
                       <td class="text-muted">Amount</td>
                       <td class="text-gray-800">
-                        {{ formatNumber(transaction.transaction.amount) }}
+                        {{ transaction.transaction.amount }}
                         {{ transaction.transaction.currency_code }}
                       </td>
                     </tr>
@@ -503,13 +504,13 @@
                     <tr>
                       <td class="text-muted">Created At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(transaction.transaction.created_at) }}
+                        {{ transaction.transaction.created_at }}
                       </td>
                     </tr>
                     <tr>
                       <td class="text-muted">Last Updated At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(transaction.transaction.updated_at) }}
+                        {{ transaction.transaction.updated_at }}
                       </td>
                     </tr>
                   </tbody>
@@ -748,6 +749,8 @@ import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
 import { storeToRefs } from "pinia";
+import type { Transaction } from "@/models/transaction";
+import type { Invoice, InvoicePayment } from "@/models/invoice";
 
 export default defineComponent({
   name: "invoice-details",
@@ -817,7 +820,7 @@ export default defineComponent({
       },
     ]);
 
-    const transaction = ref({});
+    const transaction = ref({} as InvoicePayment);
 
     const invoiceForm = ref({
       id: 0,
@@ -827,28 +830,6 @@ export default defineComponent({
     } as any);
 
     const action = ref("");
-
-    // const getInvoicePayments = async (option): Promise<void> => {
-    //   refData.value.loadingInvoiceData = true;
-    //
-    //   await store
-    //     .dispatch("invoice/getInvoiceByReference", option)
-    //     .then((response) => {
-    //       invoiceDetails.value = response.data.invoice;
-    //       invoiceItems.value = response.data.invoice.items;
-    //       invoicePayments.value = response.data.invoice.payments;
-    //     })
-    //     .catch((error) => {
-    //       if (error.response.status === 403) {
-    //         // unauthorized.
-    //         refData.value.unauthorized = true;
-    //       }
-    //     })
-    //     .finally(() => {
-    //       refData.value.loadingPage = false;
-    //       refData.value.loadingInvoiceData = false;
-    //     });
-    // };
 
     const viewTransaction = (val) => {
       transaction.value = val;

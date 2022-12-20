@@ -2,6 +2,9 @@ import { defineStore } from "pinia";
 import PaymentService from "@/services/guest/PaymentService";
 import { getError } from "@/helpers/errors";
 
+import { ref } from "vue";
+import type { Invoice, InvoiceItem } from "@/models/invoice";
+
 export const useGuestPaymentStore = defineStore("guestPaymentStore", {
   state: () => ({
     loadingData: false,
@@ -12,8 +15,8 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
 
     //invoice
     invoiceInfo: {},
-    invoiceData: {},
-    invoiceItems: [],
+    invoiceData: {} as Invoice,
+    invoiceItems: [] as InvoiceItem[],
     //shared
     loadingPaymentData: false,
   }),

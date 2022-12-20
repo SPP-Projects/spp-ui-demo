@@ -1,13 +1,15 @@
 import { defineStore } from "pinia";
 import MoneyRequestService from "@/services/customer/MoneyRequestService";
 import { getError } from "@/helpers/errors";
+import { ref } from "vue";
+import type { MoneyRequest } from "@/models/moneyrequest";
 
 export const useCustomerMoneyRequestStore = defineStore(
   "customerMoneyRequestStore",
   {
     state: () => ({
       moneyRequests: [],
-      moneyRequestDetails: { reference: "" },
+      moneyRequestDetails: {} as MoneyRequest,
       moneyRequestPayments: [],
       meta: { total: 0, from: 0, to: 0, last_page: 0 },
       moneyRequest: {},

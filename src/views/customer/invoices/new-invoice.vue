@@ -157,7 +157,6 @@
                     <tr
                       v-for="(product, n) in formData.items"
                       :key="n"
-                      :id="n"
                       class="border-bottom border-bottom-dashed product"
                       data-kt-element="item"
                     >
@@ -551,6 +550,12 @@ import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
 import { storeToRefs } from "pinia";
 
+interface invoiceItems {
+  quantity: number;
+  description: string;
+  amount: number;
+  rate: number;
+}
 export default defineComponent({
   name: "new-invoice",
   components: { PermissionDenied, PageLoader },
@@ -589,14 +594,8 @@ export default defineComponent({
       discount: 0,
       shipping: 0,
       sub_total_with_discount: 0,
-      items: [
-        {
-          quantity: 0,
-          description: "",
-          amount: 0,
-          rate: 0,
-        },
-      ],
+
+      items: [] as invoiceItems[],
     });
 
     const loadingPage = ref(true);

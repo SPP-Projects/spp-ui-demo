@@ -88,7 +88,7 @@
               <a
                 href="#"
                 class="btn btn-sm btn-light-primary"
-                @click="showEditCampaignModal(data)"
+                @click="showEditCampaignModal()"
                 data-bs-toggle="modal"
                 id="edit-btn"
                 data-bs-target="#kt_modal_update_campaign"
@@ -151,10 +151,7 @@
               </span>
             </div>
 
-            <button
-              class="btn btn-primary btn-sm btn-flex"
-              @click="getCampaignPayments(table_options)"
-            >
+            <button class="btn btn-primary btn-sm btn-flex">
               Refresh Payments
             </button>
           </div>
@@ -217,7 +214,7 @@
             </template>
 
             <template v-slot:created_at="{ row: data }">
-              {{ formatDate(data.created_at) }}
+              {{ data.created_at }}
             </template>
 
             <template v-slot:transaction_reference="{ row: data }">
@@ -226,7 +223,7 @@
 
             <template v-slot:amount="{ row: data }">
               {{ data.currency_code }}
-              {{ formatNumber(data.amount) }}
+              {{ data.amount }}
             </template>
 
             <template v-slot:donor="{ row: data }">
@@ -318,7 +315,7 @@
                     <tr>
                       <td class="text-muted">Amount</td>
                       <td class="text-gray-800">
-                        {{ formatNumber(donation.transaction.amount) }}
+                        {{ donation.transaction.amount }}
                         {{ donation.transaction.currency_code }}
                       </td>
                     </tr>
@@ -337,13 +334,13 @@
                     <tr>
                       <td class="text-muted">Created At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(donation.transaction.created_at) }}
+                        {{ donation.transaction.created_at }}
                       </td>
                     </tr>
                     <tr>
                       <td class="text-muted">Last Updated At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(donation.transaction.updated_at) }}
+                        {{ donation.transaction.updated_at }}
                       </td>
                     </tr>
                   </tbody>
@@ -639,6 +636,7 @@ import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerCampaignStore } from "@/stores/customer/campaign";
 import { storeToRefs } from "pinia";
+import type { CampaignDonation } from "@/models/campaign";
 
 export default defineComponent({
   name: "campaign-payments",
@@ -711,7 +709,7 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     });
 
-    const donation = ref({});
+    const donation = ref({} as CampaignDonation);
     const donations = ref([]);
 
     const campaign = ref({

@@ -1,14 +1,14 @@
 import { getError } from "@/helpers/errors";
 import TransactionService from "@/services/customer/TransactionService";
 import { defineStore } from "pinia";
-import ApiService from "@/core/services/ApiService";
-import GeneralService from "@/services/guest/GeneralService";
+
+import type { Transaction } from "@/models/transaction";
 
 export const useCustomerTransactionStore = defineStore(
   "customerTransactionStore",
   {
     state: () => ({
-      transactions: [],
+      transactions: [] as Transaction[],
       meta: { total: 0, from: 0, to: 0, last_page: 0 },
       transaction: {},
       accountTransactions: [],

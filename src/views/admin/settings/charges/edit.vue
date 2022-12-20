@@ -2,7 +2,7 @@
   <div>edit charges</div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "general-page",
 };

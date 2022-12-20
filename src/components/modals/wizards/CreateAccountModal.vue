@@ -75,7 +75,6 @@
             <!--begin::Form-->
             <form
               class="mx-auto mw-600px w-100 py-10"
-              novalidate
               id="kt_create_account_form"
               @submit="handleStep"
             >

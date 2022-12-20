@@ -164,7 +164,6 @@
           <!--begin::Form-->
           <form
             class="my-auto pb-5"
-            novalidate
             id="kt_create_account_form"
             @submit="handleStep"
           >

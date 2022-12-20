@@ -1,6 +1,11 @@
 import { defineStore } from "pinia";
 import KycService from "@/services/admin/KycService";
 import { getError } from "@/helpers/errors";
+import type {
+  AccountKycRequirement,
+  AccountKycRequirementOption,
+} from "@/models/account";
+import type { KycRequirementOption } from "@/models/kyc";
 
 export const useAdminKycStore = defineStore("adminKycStore", {
   state: () => ({
@@ -9,7 +14,7 @@ export const useAdminKycStore = defineStore("adminKycStore", {
     kycSetting: {},
 
     //kyc requirement option
-    kycRequirementOptions: [],
+    kycRequirementOptions: {} as KycRequirementOption,
 
     //setting option
     kycSettingOptions: [],
@@ -18,7 +23,7 @@ export const useAdminKycStore = defineStore("adminKycStore", {
     accountTypeKycSettings: [],
 
     //AccountTypeKycRequirementOptions
-    accountTypeKycRequirementOptions: [],
+    accountTypeKycRequirementOptions: {} as AccountKycRequirementOption,
 
     //shared
     error: null,

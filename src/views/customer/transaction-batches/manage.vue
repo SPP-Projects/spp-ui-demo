@@ -59,13 +59,13 @@
         checkbox-label="id"
         :itemsPerPage="table_options.page_size"
         :total="meta.total"
-        :loading="refData.loadingData"
+        :loading="loadingData"
         @page-change="handlePageChange"
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
         <template v-slot:created_at="{ row: data }">
-          {{ formatDate(data.created_at) }}
+          {{ data.created_at }}
         </template>
         <template v-slot:status_id="{ row: data }">
           <span v-if="data.status_id === '1'" class="badge badge-primary"

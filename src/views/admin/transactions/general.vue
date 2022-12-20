@@ -90,7 +90,7 @@
           {{ data.type_code }}
         </template>
         <template v-slot:amount="{ row: data }">
-          {{ formatNumber(data.amount) }}
+          {{ data.amount }}
         </template>
         <template v-slot:debit_account_institution_name="{ row: data }">
           {{ data.debit_account_institution.name }}
@@ -187,7 +187,7 @@
                     <tr>
                       <td class="text-muted">Amount</td>
                       <td class="text-gray-800">
-                        {{ formatNumber(transaction.amount) }}
+                        {{ transaction.amount }}
                         {{ transaction.currency_code }}
                       </td>
                     </tr>
@@ -202,13 +202,13 @@
                     <tr>
                       <td class="text-muted">Created At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(transaction.created_at) }}
+                        {{ transaction.created_at }}
                       </td>
                     </tr>
                     <tr>
                       <td class="text-muted">Last Updated At</td>
                       <td class="text-gray-800">
-                        {{ formatDate(transaction.updated_at) }}
+                        {{ transaction.updated_at }}
                       </td>
                     </tr>
                     <tr>
@@ -361,6 +361,7 @@ import sppay from "@/helpers/sppay";
 import { storeToRefs } from "pinia";
 import { useAdminTransactionStore } from "@/stores/admin/transaction";
 import TransactionsSubMenu from "@/components/_sppay/admin/TransactionsSubMenu.vue";
+import type { Transaction } from "@/models/transaction";
 export default defineComponent({
   name: "transactions-list",
   components: {
@@ -428,7 +429,7 @@ export default defineComponent({
         columnLabel: "actions",
       },
     ]);
-    const transaction = ref({});
+    const transaction = ref({} as Transaction);
 
     const table_options = ref({
       account: "" as any,

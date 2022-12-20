@@ -58,6 +58,26 @@ app.mixin({
     },
   },
 });
+app.config.globalProperties.$filters = {
+  formatNumber: (value) => {
+    if (value) {
+      return parseFloat(value).toLocaleString();
+    }
+  },
+  formatDate: (value) => {
+    return moment(String(value)).format("MM/DD/YYYY - hh:mm a");
+  },
+  timeAgo(date) {
+    if (date) {
+      return moment(date).fromNow();
+    }
+  },
+  fNumber: (value) => {
+    if (value) {
+      return parseFloat(value).toLocaleString();
+    }
+  },
+};
 
 //SPP - imports for app initialization
 

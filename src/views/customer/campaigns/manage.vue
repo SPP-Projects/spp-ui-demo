@@ -93,7 +93,7 @@
         </template>
 
         <template v-slot:created_at="{ row: data }">
-          <p class="text-muted">{{ formatDate(data.created_at) }}</p>
+          <p class="text-muted">{{ data.created_at }}</p>
         </template>
 
         <template v-slot:reference="{ row: data }">
@@ -101,11 +101,11 @@
         </template>
 
         <template v-slot:goal="{ row: data }">
-          {{ formatNumber(data.goal) }}
+          {{ data.goal }}
         </template>
 
         <template v-slot:donated="{ row: data }">
-          {{ formatNumber(data.donated) }}
+          {{ data.donated }}
         </template>
 
         <template v-slot:title="{ row: data }">

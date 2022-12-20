@@ -89,6 +89,7 @@
             <!--end::Name=-->
             <!--begin::Assigned to=-->
             <td>
+              {{ data.user.enabled_permissions }}
               <template
                 v-for="permission in permission_group"
                 :key="permission.id"
@@ -97,10 +98,8 @@
                   <input
                     class="form-check-input h-20px w-20px checkbox-success me-3 mw-10"
                     type="checkbox"
-                    name="permission[]"
-                    checked="checked"
                     :value="permission.permission_id"
-                    v-model="data.user.enabled_permissions"
+                    v-model="authenticatedUserDetails.enabled_permissions"
                     disabled
                   />
                   <span class="form-check-label fw-semobold me-md-1">
@@ -127,6 +126,7 @@
 import { defineComponent, ref } from "vue";
 import { useCustomerUserStore } from "@/stores/customer/user";
 import { storeToRefs } from "pinia";
+import type { User } from "@/models/user";
 
 export default defineComponent({
   name: "user-permissions",
@@ -147,9 +147,7 @@ export default defineComponent({
 
       loadingAction: false,
 
-      user: {
-        enable_permission: [],
-      },
+      user: {} as User,
       permissions: [],
     });
 

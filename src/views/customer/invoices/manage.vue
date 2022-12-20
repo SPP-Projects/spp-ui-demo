@@ -65,7 +65,7 @@
         </template>
 
         <template v-slot:created_at="{ row: data }">
-          <p class="text-muted">{{ formatDate(data.created_at) }}</p>
+          <p class="text-muted">{{ data.created_at }}</p>
         </template>
 
         <template v-slot:reference="{ row: data }">
@@ -73,7 +73,7 @@
         </template>
 
         <template v-slot:total="{ row: data }">
-          {{ formatNumber(data.total) }} {{ data.currency_code }}
+          {{ data.total }} {{ data.currency_code }}
         </template>
 
         <template v-slot:user_reference="{ row: data }">

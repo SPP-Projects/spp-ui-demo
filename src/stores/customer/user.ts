@@ -2,16 +2,17 @@ import { defineStore } from "pinia";
 import UserService from "@/services/customer/UserService";
 import { getError } from "@/helpers/errors";
 import { useAuthStore } from "@/stores/auth";
+import type { User } from "@/models/user";
 
 export const useCustomerUserStore = defineStore("customerUserStore", {
   state: () => ({
     loadingUserData: false,
     error: null,
-    authenticatedUser: {},
-    authenticatedUserDetails: {},
-    users: [],
+    authenticatedUser: {} as User,
+    authenticatedUserDetails: {} as User,
+    users: [] as User[],
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
-    user: {},
+    user: {} as User,
     usersTotal: {},
     unauthorized: false,
   }),
@@ -22,7 +23,7 @@ export const useCustomerUserStore = defineStore("customerUserStore", {
         UserService.getUsers(options)
           .then(({ data }) => {
             this.users = data.data;
-            console.log(data.total);
+
             this.meta.total = data.total;
             this.meta.from = data.from;
             this.meta.to = data.to;
