@@ -45,38 +45,38 @@ const guestRoutes = [
     component: () => import("@/layouts/PayLayout.vue"),
     children: [
       //test 1
-      {
-        path: "/test1",
-        name: "public-test1",
-        component: function () {
-          return import("@/views/_dev/test1/index.vue");
-        },
-        meta: {
-          pageTitle: "SP Pay",
-        },
-      },
-      {
-        path: "/test1/a",
-        name: "public-test1a",
-        component: function () {
-          return import("@/views/_dev/test1/a.vue");
-        },
-        meta: {
-          pageTitle: "SP Pay",
-        },
-      },
+      // {
+      //   path: "/test1",
+      //   name: "public-test1",
+      //   component: function () {
+      //     return import("@/views/_dev/test1/index.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "SP Pay",
+      //   },
+      // },
+      // {
+      //   path: "/test1/a",
+      //   name: "public-test1a",
+      //   component: function () {
+      //     return import("@/views/_dev/test1/a.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "SP Pay",
+      //   },
+      // },
 
       //test 2
-      {
-        path: "/test2",
-        name: "public-test2",
-        component: function () {
-          return import("@/views/_dev/test2/index.vue");
-        },
-        meta: {
-          pageTitle: "SP Pay",
-        },
-      },
+      // {
+      //   path: "/test2",
+      //   name: "public-test2",
+      //   component: function () {
+      //     return import("@/views/_dev/test2/index.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "SP Pay",
+      //   },
+      // },
       //public
       {
         path: "/pay",
@@ -115,35 +115,35 @@ const guestRoutes = [
 
   //test uth
   //guestMode
-  {
-    path: "/tester",
-    component: () => import("@/views/_dev/sign-in/LayoutOne.vue"),
-    children: [
-      {
-        path: "/test/sign-in",
-        name: "test-sign-in",
-        component: () => import("@/views/_dev/sign-in/login-one.vue"),
-        meta: {
-          pageTitle: "Sign In",
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/tester",
+  //   component: () => import("@/views/_dev/sign-in/LayoutOne.vue"),
+  //   children: [
+  //     {
+  //       path: "/test/sign-in",
+  //       name: "test-sign-in",
+  //       component: () => import("@/views/_dev/sign-in/login-one.vue"),
+  //       meta: {
+  //         pageTitle: "Sign In",
+  //       },
+  //     },
+  //   ],
+  // },
 
-  {
-    path: "/tester2",
-    component: () => import("@/views/_dev/sign-in/LayoutTwo.vue"),
-    children: [
-      {
-        path: "/test/sign-in2",
-        name: "test-sign-in2",
-        component: () => import("@/views/_dev/sign-in/login-two.vue"),
-        meta: {
-          pageTitle: "Sign In",
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/tester2",
+  //   component: () => import("@/views/_dev/sign-in/LayoutTwo.vue"),
+  //   children: [
+  //     {
+  //       path: "/test/sign-in2",
+  //       name: "test-sign-in2",
+  //       component: () => import("@/views/_dev/sign-in/login-two.vue"),
+  //       meta: {
+  //         pageTitle: "Sign In",
+  //       },
+  //     },
+  //   ],
+  // },
 ];
 
 export default guestRoutes;

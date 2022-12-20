@@ -1,6 +1,8 @@
 import { getError } from "@/helpers/errors";
 import TransactionService from "@/services/customer/TransactionService";
 import { defineStore } from "pinia";
+import ApiService from "@/core/services/ApiService";
+import GeneralService from "@/services/guest/GeneralService";
 
 export const useCustomerTransactionStore = defineStore(
   "customerTransactionStore",
@@ -20,6 +22,10 @@ export const useCustomerTransactionStore = defineStore(
       transactionsValue: {},
       transactionsCount: {},
       unauthorized: false,
+
+      //general
+      institutions: [],
+      loadingInstitutionData: false,
     }),
     actions: {
       getTransactions(options) {
@@ -201,6 +207,27 @@ export const useCustomerTransactionStore = defineStore(
             })
             .finally(() => {
               this.loadingTransactionData = false;
+            });
+        });
+      },
+
+      //TODO - MOVE TO COMMONG PLACE
+      getInstitutions(options) {
+        return new Promise((resolve, reject) => {
+          this.loadingInstitutionData = true;
+
+          TransactionService.getInstitutions(options)
+            .then(({ data }) => {
+              this.institutions = data;
+              resolve(data);
+            })
+            .catch((error) => {
+              this.loadingInstitutionData = false;
+              this.error = getError(error);
+              reject(error);
+            })
+            .finally(() => {
+              this.loadingInstitutionData = false;
             });
         });
       },

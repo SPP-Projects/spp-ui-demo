@@ -33,6 +33,11 @@ class TransactionService {
   validateTransaction(payload) {
     return ApiService.post(`/v1/transaction/validate`, payload);
   }
+
+  //TODO - MOVE TO COMMON PLACE
+  getInstitutions(data) {
+    return ApiService.post("/v1/institutions", data);
+  }
 }
 
 export default new TransactionService();

@@ -763,7 +763,6 @@ import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerTransactionStore } from "@/stores/customer/transaction";
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
-import { useCustomerCommonStore } from "@/stores/customer/common";
 
 export default defineComponent({
   name: "manage-accounts",
@@ -772,17 +771,18 @@ export default defineComponent({
     //store
     const transactionStore = useCustomerTransactionStore();
 
-    const { transactions, meta, loadingTransactionData } =
-      storeToRefs(transactionStore);
-    const { getTransactions } = useCustomerTransactionStore();
+    const {
+      transactions,
+      meta,
+      loadingTransactionData,
+      institutions,
+      loadingInstitutionData,
+    } = storeToRefs(transactionStore);
+    const { getTransactions, getInstitutions } = useCustomerTransactionStore();
 
     const accountStore = useCustomerAccountStore();
     const { getAccounts } = useCustomerAccountStore();
     const { accounts } = storeToRefs(accountStore);
-
-    const commonStore = useCustomerCommonStore();
-    const { getInstitutions } = useCustomerCommonStore();
-    const { institutions } = storeToRefs(commonStore);
 
     //data variables
     const unauthorized = ref(false);
@@ -861,24 +861,6 @@ export default defineComponent({
       getInstitutions({ type_id: 3 }); // Not async, so will run in background :)
     };
 
-    const getAllInstitutions = () => {
-      //select all mobile companies + sppay
-      // store
-      //   .dispatch("common/getInstitutions", { type_id: 3 })
-      //   .then((response) => {
-      //     form.value.credit_institutions = response;
-      //     console.log("inst");
-      //     console.log(response);
-      //     console.log("inst");
-      //     // sort institutions to debit and credit institutions
-      //     form.value.debit_institutions = form.value.credit_institutions.filter(
-      //       function (institution: any) {
-      //         return institution.type_id === "3"; // Get only mobile money institutions
-      //       }
-      //     );
-      //   });
-    };
-
     const getMyAccounts = async (table_options) => {
       // await store
       //   .dispatch("account/getAccounts", table_options)
@@ -916,10 +898,10 @@ export default defineComponent({
         .catch((error) => {
           // get errors from state
           loading.value = false;
-          let response = error.response.data;
+          const response = error.response.data;
 
           if (response.errors) {
-            let errors = response.errors;
+            const errors = response.errors;
             for (const key in errors) {
               Message({
                 message: errors[key][0],
@@ -961,10 +943,10 @@ export default defineComponent({
         })
         .catch((error) => {
           // get errors from state
-          let response = error.response.data;
+          const response = error.response.data;
 
           if (response.errors) {
-            let errors = response.errors;
+            const errors = response.errors;
             for (const key in errors) {
               Message({
                 message: errors[key][0],
