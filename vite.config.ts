@@ -20,7 +20,7 @@ export default defineConfig({
     port: 8080,
   },
   server: {
-    port: 8080,
+    port: 80,
     proxy: {
       "/v1": {
         target: "https://engine.sppay.dev",
