@@ -90,20 +90,15 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
+import { useAdminCustomerStore } from "@/stores/admin/customer";
+import { useRoute } from "vue-router";
+import type { iCustomer, iCustomerPermissionList } from "@/models/customer";
 
-import { hideModal } from "@/core/helpers/dom";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-
-import sppData from "@/helpers/data";
-
-import { useAdminCustomerStore } from "@/stores/admin/customer";
-import { useRoute } from "vue-router";
 import DataLoader from "@/components/DataLoader.vue";
-import type { Customer, CustomerPermissionList } from "@/models/customer";
+
 export default defineComponent({
   inheritAttrs: false,
   name: "admin-customers-permissions",
@@ -128,9 +123,9 @@ export default defineComponent({
       loadingAction: false,
     });
 
-    const customer = ref({} as Customer);
+    const customer = ref({} as iCustomer);
 
-    const customerPermissionList = ref<CustomerPermissionList>();
+    const customerPermissionList = ref<iCustomerPermissionList>();
 
     const checkedRows = ref<Array<number>>([]);
     const getCustomer = () => {
@@ -143,7 +138,7 @@ export default defineComponent({
       refData.value.loadingData = true;
       customerStore
         .getCustomerPermissionsList(route.params.id)
-        .then((response: CustomerPermissionList) => {
+        .then((response: iCustomerPermissionList) => {
           customerPermissionList.value = response;
           checkedRows.value = response.enabled_permissions;
           refData.value.loadingData = false;

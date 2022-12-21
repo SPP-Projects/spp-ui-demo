@@ -1,17 +1,18 @@
 import { defineStore } from "pinia";
 import CustomerService from "@/services/admin/CustomerService";
 import { getError } from "@/helpers/errors";
-import type { Customer, CustomerPermissionList } from "@/models/customer";
+import type { iCustomer, iCustomerPermissionList } from "@/models/customer";
 
 export const useAdminCustomerStore = defineStore("adminCustomerStore", {
   state: () => ({
     //customers
     customers: [],
-    customer: {} as Customer,
+    customer: {} as iCustomer,
 
     //customerUsers
     customerUsers: [],
     customerUser: {},
+
     //types
     customerTypes: [],
     customerType: {},
@@ -21,10 +22,7 @@ export const useAdminCustomerStore = defineStore("adminCustomerStore", {
     customerGroup: {},
 
     //permissions
-    // customerPermissions: [],
-    // adminPermissions: [],
-    // enabledPermissions: [],
-    customerPermissionList: {} as CustomerPermissionList,
+    customerPermissionList: {} as iCustomerPermissionList,
     customerPermission: {},
 
     //shared

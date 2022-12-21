@@ -4,11 +4,13 @@ import OnboardingService from "@/services/guest/OnboardingService";
 
 export const useGuestOnboardingStore = defineStore("guestOnboardingStore", {
   state: () => ({
-    loadingOnboardingData: false,
-    error: null,
     customer_types: [],
     account_types: [],
     newCustomer: {},
+
+    //shared
+    loadingOnboardingData: false,
+    error: null,
   }),
   actions: {
     getCustomerType() {

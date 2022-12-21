@@ -1,4 +1,4 @@
-export interface Customer {
+export interface iCustomer {
   id: number;
   parent_id: null;
   type_id: number;
@@ -106,7 +106,7 @@ export interface CustomerKycRequirementOption {
   ];
 }
 
-export interface CustomerPermissionList {
+export interface iCustomerPermissionList {
   customer_permissions: CustomerPermissions;
   admin_permissions: AdminPermissions;
   enabled_permissions?: Array<number>;

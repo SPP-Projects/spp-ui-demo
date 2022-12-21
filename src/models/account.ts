@@ -1,4 +1,4 @@
-import type { KycRequirement } from "@/models/kyc";
+import type { iKycRequirement } from "@/models/kyc";
 
 export interface Account {
   id: number;
@@ -75,7 +75,7 @@ export interface Account {
   };
 }
 
-export interface AccountType {
+export interface iAccountType {
   id: number;
   name: string;
   description: string;
@@ -112,8 +112,8 @@ export interface AccountStatus {
   updated_at: string;
 }
 
-export interface AccountOption {
-  types: Array<AccountType>;
+export interface iAccountOption {
+  types: Array<iAccountType>;
   groups: Array<AccountGroup>;
   currencies: Array<AccountCurrency>;
   statuses: Array<AccountStatus>;
@@ -184,8 +184,8 @@ export interface AccountLimit {
   };
 }
 
-export interface AccountLimitOption {
-  account_types: Array<AccountType>;
+export interface iAccountLimitOption {
+  account_types: Array<iAccountType>;
   types: Array<AccountOptionType>;
   currencies: Array<AccountCurrency>;
 }
@@ -197,7 +197,7 @@ export interface AccountOptionType {
   updated_at: string;
 }
 
-export interface AccountKycRequirementOption {
-  kyc_requirements: Array<KycRequirement>;
-  account_types: Array<AccountType>;
+export interface iAccountKycRequirementOption {
+  kyc_requirements: Array<iKycRequirement>;
+  account_types: Array<iAccountType>;
 }

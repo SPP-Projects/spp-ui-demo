@@ -1,7 +1,7 @@
-import type { AccountType } from "@/models/account";
-import type { Institution } from "@/models/institution";
+import type { iAccountType } from "@/models/account";
+import type { iInstitution } from "@/models/institution";
 
-export interface Transaction {
+export interface iTransaction {
   id: number;
   primary: number;
   reference: string;
@@ -106,7 +106,7 @@ export interface Transaction {
   };
 }
 
-export interface ValidatedTransaction {
+export interface iValidatedTransaction {
   external_reference: string;
   type_code: string;
   type_name: string;
@@ -322,9 +322,9 @@ export interface TransactionTypeAccountMapping {
   };
 }
 
-export interface TransactionChargeSettingOption {
-  account_types: Array<AccountType>;
-  institutions: Array<Institution>;
+export interface iTransactionChargeSettingOption {
+  account_types: Array<iAccountType>;
+  institutions: Array<iInstitution>;
   customer_groups: [
     {
       id: number;

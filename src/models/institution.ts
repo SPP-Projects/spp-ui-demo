@@ -1,4 +1,4 @@
-export interface Institution {
+export interface iInstitution {
   id: number;
   name: string;
   code: string;
@@ -24,7 +24,7 @@ export interface Institution {
   };
 }
 
-export interface InstitutionType {
+export interface iInstitutionType {
   id: number;
   name: string;
   created_at: string;

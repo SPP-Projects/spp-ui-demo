@@ -36,7 +36,7 @@
           </div>
 
           <router-link to="/invoices/new" class="btn btn-primary btn-sm">
-            New Invoice
+            New iInvoice
           </router-link>
         </div>
         <!--end::Group actions-->
@@ -99,14 +99,11 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
-import PermissionDenied from "@/components/PermissionDenied.vue";
-import PageLoader from "@/components/PageLoader.vue";
-
 import { storeToRefs } from "pinia";
 import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
-import { themeMode } from "@/core/helpers/config";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import PermissionDenied from "@/components/PermissionDenied.vue";
+import PageLoader from "@/components/PageLoader.vue";
 
 export default defineComponent({
   name: "manage-invoices",

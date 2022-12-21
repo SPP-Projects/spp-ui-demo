@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import InstitutionService from "@/services/admin/InstitutionService";
 import { getError } from "@/helpers/errors";
-import type { Institution, InstitutionType } from "@/models/institution";
-import { ref } from "vue";
+import type { iInstitutionType } from "@/models/institution";
 
 export const useAdminInstitutionStore = defineStore("adminInstitutionStore", {
   state: () => ({
@@ -11,8 +10,9 @@ export const useAdminInstitutionStore = defineStore("adminInstitutionStore", {
     institution: {},
 
     //types
-    institutionTypes: [] as InstitutionType[],
+    institutionTypes: [] as iInstitutionType[],
     institutionType: {},
+
     //shared
     error: null,
     loadingInstitutionData: false,

@@ -18,7 +18,7 @@
       <div class="card-header pe-5" id="kt_drawer_chat_messenger_header">
         <!--begin::Title-->
         <div class="card-title">
-          <!--begin::User-->
+          <!--begin::Customer-->
           <div class="d-flex justify-content-center flex-column me-3">
             <a
               href="#"
@@ -35,7 +35,7 @@
             </div>
             <!--end::Info-->
           </div>
-          <!--end::User-->
+          <!--end::Customer-->
         </div>
         <!--end::Title-->
 

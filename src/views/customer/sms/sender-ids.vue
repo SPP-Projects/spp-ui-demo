@@ -219,14 +219,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
+import { useCustomerSmsStore } from "@/stores/customer/sms";
+import { storeToRefs } from "pinia";
+import { hideModal } from "@/core/helpers/dom";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
-import { hideModal } from "@/core/helpers/dom";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerSmsStore } from "@/stores/customer/sms";
-import { storeToRefs } from "pinia";
 
 export default defineComponent({
   name: "sender-ids-list",

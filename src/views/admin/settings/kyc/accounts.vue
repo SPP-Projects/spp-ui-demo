@@ -261,15 +261,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
+import { storeToRefs } from "pinia";
+import { useAdminKycStore } from "@/stores/admin/kyc";
 import { hideModal } from "@/core/helpers/dom";
+
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-import { useAdminKycStore } from "@/stores/admin/kyc";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
 export default defineComponent({
   name: "admin-manage-general-kyc",

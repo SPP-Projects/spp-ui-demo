@@ -126,7 +126,7 @@
 import { defineComponent, ref } from "vue";
 import { useCustomerUserStore } from "@/stores/customer/user";
 import { storeToRefs } from "pinia";
-import type { User } from "@/models/user";
+import type { iUser } from "@/models/user";
 
 export default defineComponent({
   name: "user-permissions",
@@ -147,7 +147,7 @@ export default defineComponent({
 
       loadingAction: false,
 
-      user: {} as User,
+      user: {} as iUser,
       permissions: [],
     });
 

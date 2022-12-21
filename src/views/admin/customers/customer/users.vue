@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add User
+            Add Customer
           </button>
         </div>
         <!--end::Group actions-->
@@ -85,7 +85,7 @@
               </div>
             </div>
             <!--end::Avatar-->
-            <!--begin::User details-->
+            <!--begin::Customer details-->
             <div class="d-flex flex-column">
               <a
                 href="#"
@@ -94,7 +94,7 @@
               >
               <span>{{ data.email }}</span>
             </div>
-            <!--begin::User details-->
+            <!--begin::Customer details-->
           </div>
         </template>
 
@@ -181,7 +181,7 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">{{ user.action }} User Details</h1>
+              <h1 class="mb-3">{{ user.action }} Customer Details</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -353,18 +353,16 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
+import { storeToRefs } from "pinia";
 import { hideModal } from "@/core/helpers/dom";
+import { useAdminCustomerStore } from "@/stores/admin/customer";
+import { useRoute } from "vue-router";
+import type { iUser } from "@/models/user";
+
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-
-import { useAdminCustomerStore } from "@/stores/admin/customer";
-import { useRoute } from "vue-router";
-import type { User } from "@/models/user";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -420,7 +418,7 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     } as any);
     const action = ref("");
-    // const user = ref<User>({
+    // const user = ref<iUser>({
     //   id: 0,
     //   action: "Add",
     //   name: "",
@@ -428,7 +426,7 @@ export default defineComponent({
     //   phone: "",
     //   enabled_permissions: [],
     // });
-    const user = ref<User>();
+    const user = ref({} as iUser);
     const formAddUpdateUserRef = ref<null | HTMLFormElement>(null);
     const AddUpdateUserModalRef = ref<null | HTMLElement>(null);
     const rules = ref({
@@ -483,7 +481,7 @@ export default defineComponent({
               customerStore
                 .addCustomerUser(user.value)
 
-                .then((response: User) => {
+                .then((response: iUser) => {
                   // update user action to edit
                   user.value = response;
                   user.value.action = "Edit";
@@ -587,7 +585,7 @@ export default defineComponent({
         customer_id: route.params.id,
         user_id: user.value.id,
       };
-      customerStore.getCustomerUser(payload).then((response: User) => {
+      customerStore.getCustomerUser(payload).then((response: iUser) => {
         const action = user.value.action;
 
         user.value = response;

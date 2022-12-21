@@ -26,7 +26,7 @@
         manage users here -
         <router-link to="/users"
           ><b class="text-info link-info"
-            >User Accounts and Permissions</b
+            >Customer Accounts and Permissions</b
           ></router-link
         >
       </p>

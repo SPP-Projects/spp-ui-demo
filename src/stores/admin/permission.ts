@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getError } from "@/helpers/errors";
+
 import PermissionService from "@/services/admin/PermissionService";
 
 export const useAdminPermissionStore = defineStore("adminPermissionStore", {
@@ -10,112 +10,111 @@ export const useAdminPermissionStore = defineStore("adminPermissionStore", {
     permissionType: {},
     permissionGroups: [],
     permissionGroup: {},
-    loading: false,
+
     permission_options: [],
+
+    //shared
     error: null,
+    loading: false,
   }),
   actions: {
-    /*********MANAGE PERMISSIONS ********/
-    getAllPermissions({ commit }, options) {
+    getAllPermissions(options) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        // commit("SET_LOADING", true);
         PermissionService.getAllPermissions(options)
           .then(({ data }) => {
-            commit("SET_PERMSSIONS", data.data);
+            //   commit("SET_PERMISSIONS", data.data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //   commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    getSinglePermission({ commit }, id) {
+    getSinglePermission(id) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         PermissionService.getPermissionGroup(id)
           .then(({ data }) => {
-            commit("SET_PERMISSION", data.data);
+            //     commit("SET_PERMISSION", data.data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //      commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    addPermission({ commit }, payload) {
+    addPermission(payload) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //   commit("SET_LOADING", true);
         PermissionService.addPermission(payload)
           .then((response) => {
-            commit("SET_NEW_PERMISSION", response);
+            //   commit("SET_NEW_PERMISSION", response);
             resolve(response);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //     commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    /********* PERMISSION GROUPS **********/
-
-    getAllPermissionGroups({ commit }, options) {
+    getAllPermissionGroups(options) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //   commit("SET_LOADING", true);
         PermissionService.getAllPermissionGroups(options)
           .then(({ data }) => {
-            commit("SET_PERMISSION_GROUPS", data.data);
+            //    commit("SET_PERMISSION_GROUPS", data.data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //     commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    getSinglePermissionGroup({ commit }, id) {
+    getSinglePermissionGroup(id) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //    commit("SET_LOADING", true);
         PermissionService.getPermissionGroup(id)
           .then(({ data }) => {
-            commit("SET_PERMISSION_GROUP", data.data);
+            //     commit("SET_PERMISSION_GROUP", data.data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //      commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    addPermissionGroup({ commit }, payload) {
+    addPermissionGroup(payload) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         PermissionService.addPermissionGroup(payload)
           .then((response) => {
-            commit("SET_NEW_PERMISSION_GROUP", response);
+            //    commit("SET_NEW_PERMISSION_GROUP", response);
             resolve(response);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //    commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    // eslint-disable-next-line no-unused-vars
-    updatePermissionGroup({ commit }, payload) {
+    updatePermissionGroup(payload) {
       return new Promise((resolve, reject) => {
         PermissionService.updatePermissionGroup(payload)
           .then(({ data }) => {
@@ -128,57 +127,55 @@ export const useAdminPermissionStore = defineStore("adminPermissionStore", {
       });
     },
 
-    /********* PERMISSION TYPE **********/
-    getAllPermissionTypes({ commit }, options) {
+    getAllPermissionTypes(options) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         PermissionService.getAllPermissionTypes(options)
           .then(({ data }) => {
-            commit("SET_PERMISSION_TYPES", data.data);
+            //  commit("SET_PERMISSION_TYPES", data.data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //   commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    getSinglePermissionTYPE({ commit }, id) {
+    getSinglePermissionTYPE(id) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         PermissionService.getPermissionType(id)
           .then(({ data }) => {
-            commit("SET_PERMISSION_TYPE", data.data);
+            //      commit("SET_PERMISSION_TYPE", data.data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //    commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    addPermissionType({ commit }, payload) {
+    addPermissionType(payload) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //    commit("SET_LOADING", true);
         PermissionService.addPermissionType(payload)
           .then((response) => {
-            commit("SET_NEW_PERMISSION_TYPE", response);
+            //     commit("SET_NEW_PERMISSION_TYPE", response);
             resolve(response);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //      commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    // eslint-disable-next-line no-unused-vars
-    updatePermissionType({ commit }, payload) {
+    updatePermissionType(payload) {
       return new Promise((resolve, reject) => {
         PermissionService.updatePermissionType(payload)
           .then(({ data }) => {
@@ -191,8 +188,7 @@ export const useAdminPermissionStore = defineStore("adminPermissionStore", {
       });
     },
 
-    // eslint-disable-next-line no-unused-vars
-    updatePermission({ commit }, payload) {
+    updatePermission(payload) {
       return new Promise((resolve, reject) => {
         PermissionService.updatePermission(payload)
           .then(({ data }) => {
@@ -205,31 +201,31 @@ export const useAdminPermissionStore = defineStore("adminPermissionStore", {
       });
     },
 
-    getPermissionOptions({ commit }) {
+    getPermissionOptions() {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //    commit("SET_LOADING", true);
         PermissionService.getPermissionOptions()
           .then(({ data }) => {
-            commit("SET_PERMISSION_OPTIONS", data);
+            //     commit("SET_PERMISSION_OPTIONS", data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //     commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
   },
   getters: {
-    loading: (state) => state.loading,
-    error: (state) => state.error,
-    permissions: (state) => state.permissions,
-    permission: (state) => state.permission,
-    permission_groups: (state) => state.permissionGroups,
-    permission_group: (state) => state.permissionGroup,
-    permission_types: (state) => state.permissionTypes,
-    permission_type: (state) => state.permissionType,
-    permission_options: (state) => state.permission_options,
+    // loading: (state) => state.loading,
+    // error: (state) => state.error,
+    // permissions: (state) => state.permissions,
+    // permission: (state) => state.permission,
+    // permission_groups: (state) => state.permissionGroups,
+    // permission_group: (state) => state.permissionGroup,
+    // permission_types: (state) => state.permissionTypes,
+    // permission_type: (state) => state.permissionType,
+    // permission_options: (state) => state.permission_options,
   },
 });

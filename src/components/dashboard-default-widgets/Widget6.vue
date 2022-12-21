@@ -163,7 +163,7 @@
                 <!--end::Bullet-->
 
                 <!--begin::Label-->
-                <span class="fw-bold text-gray-600 fs-6">TV Campaign</span>
+                <span class="fw-bold text-gray-600 fs-6">TV iCampaign</span>
                 <!--end::Label-->
               </div>
               <!--ed::Item-->
@@ -308,7 +308,7 @@
                 <!--end::Bullet-->
 
                 <!--begin::Label-->
-                <span class="fw-bold text-gray-600 fs-6">TV Campaign</span>
+                <span class="fw-bold text-gray-600 fs-6">TV iCampaign</span>
                 <!--end::Label-->
               </div>
               <!--ed::Item-->

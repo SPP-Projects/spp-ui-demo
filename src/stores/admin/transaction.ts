@@ -1,11 +1,7 @@
 import { defineStore } from "pinia";
 import TransactionService from "@/services/admin/TransactionService";
 import { getError } from "@/helpers/errors";
-import type {
-  TransactionCharge,
-  TransactionChargeSettingOption,
-} from "@/models/transaction";
-import { ref } from "vue";
+import type { iTransactionChargeSettingOption } from "@/models/transaction";
 
 export const useAdminTransactionStore = defineStore("adminTransactionStore", {
   state: () => ({
@@ -28,12 +24,12 @@ export const useAdminTransactionStore = defineStore("adminTransactionStore", {
 
     //TODO - CHANGE NAME
     //transaction options
-    transactionOptions: {} as TransactionChargeSettingOption,
+    transactionOptions: {} as iTransactionChargeSettingOption,
 
-    //transaction charnges
+    //transaction charges
     transactionChargeSettings: [],
     transactionChargeSetting: {},
-    transactionChargeSettingOptions: {} as TransactionChargeSettingOption,
+    transactionChargeSettingOptions: {} as iTransactionChargeSettingOption,
 
     //transaction commissions
     transactionCommissionSettings: [],
@@ -125,8 +121,7 @@ export const useAdminTransactionStore = defineStore("adminTransactionStore", {
       });
     },
 
-    // eslint-disable-next-line no-unused-vars
-    updateTransactionType({ commit }, options) {
+    updateTransactionType(options) {
       return new Promise((resolve, reject) => {
         TransactionService.updateTransactionType(options)
           .then(({ data }) => {
@@ -139,8 +134,7 @@ export const useAdminTransactionStore = defineStore("adminTransactionStore", {
       });
     },
 
-    // eslint-disable-next-line no-unused-vars
-    addTransactionType({ commit }, options) {
+    addTransactionType(options) {
       return new Promise((resolve, reject) => {
         TransactionService.addTransactionType(options)
           .then(({ data }) => {
@@ -153,59 +147,57 @@ export const useAdminTransactionStore = defineStore("adminTransactionStore", {
       });
     },
 
-    /************ TRANSACTIONAL CHARGES *******/
-    getTransactionCharges({ commit }, options) {
+    getTransactionCharges(options) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        // commit("SET_LOADING", true);
         TransactionService.getAllTransactionalCharges(options)
           .then(({ data }) => {
-            commit("SET_TRANSACTIONS_CHARGES", data.data);
+            //  commit("SET_TRANSACTIONS_CHARGES", data.data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //   commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    getSingleTransactionCharge({ commit }, id) {
+    getSingleTransactionCharge(id) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         TransactionService.getSingleTransactionCharge(id)
           .then((response) => {
-            commit("SET_TRANSACTION_CHARGE", response.data.data);
+            //   commit("SET_TRANSACTION_CHARGE", response.data.data);
 
-            commit("SET_LOADING", false);
+            //   commit("SET_LOADING", false);
             resolve(response);
           })
           .catch((err) => {
-            commit("SET_LOADING", false);
-            commit("SET_ERROR", getError(err));
+            //    commit("SET_LOADING", false);
+            //    commit("SET_ERROR", getError(err));
             reject(err);
           });
       });
     },
 
-    addTransactionCharge({ commit }, payload) {
+    addTransactionCharge(payload) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //    commit("SET_LOADING", true);
         TransactionService.addTransactionCharge(payload)
           .then((response) => {
-            commit("ADD_TRANSACTION_CHARGES", response);
+            //    commit("ADD_TRANSACTION_CHARGES", response);
             resolve(response);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //     commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
 
-    // eslint-disable-next-line no-unused-vars
-    updateTransactionCharge({ commit }, payload) {
+    updateTransactionCharge(payload) {
       return new Promise((resolve, reject) => {
         TransactionService.updateTransactionCharge(payload)
           .then(({ data }) => {
@@ -218,8 +210,7 @@ export const useAdminTransactionStore = defineStore("adminTransactionStore", {
       });
     },
 
-    // eslint-disable-next-line no-unused-vars
-    updateTransactionChargeCommissionSplits({ commit }, payload) {
+    updateTransactionChargeCommissionSplits(payload) {
       return new Promise((resolve, reject) => {
         TransactionService.updateTransactionChargeCommissionSplits(payload)
           .then(({ data }) => {

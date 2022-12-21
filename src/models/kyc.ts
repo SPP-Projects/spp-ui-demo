@@ -1,4 +1,4 @@
-export interface KycRequirement {
+export interface iKycRequirement {
   id: number;
   name: string;
   form_name: string;
@@ -15,7 +15,7 @@ export interface KycRequirement {
   };
 }
 
-export interface KycRequirementOption {
+export interface iKycRequirementOption {
   groups: Array<KycRequirementGroup>;
 }
 

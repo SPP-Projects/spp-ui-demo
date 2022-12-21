@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add Institution
+            Add iInstitution
           </button>
         </div>
         <!--end::Group actions-->
@@ -234,7 +234,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Institution Type</label
+                  >iInstitution Type</label
                 >
 
                 <!--end::Label-->
@@ -332,16 +332,16 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
+import { storeToRefs } from "pinia";
+import { useAdminInstitutionStore } from "@/stores/admin/institution";
 import { hideModal } from "@/core/helpers/dom";
+
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-import { useAdminInstitutionStore } from "@/stores/admin/institution";
 import sppData from "@/helpers/data";
+
 export default defineComponent({
   name: "admin-payment-maps",
   components: {

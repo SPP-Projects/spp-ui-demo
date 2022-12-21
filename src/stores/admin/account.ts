@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { getError } from "@/helpers/errors";
 import AccountService from "@/services/admin/AccountService";
 import { ref } from "vue";
-import type { AccountLimitOption, AccountOption } from "@/models/account";
+import type { iAccountLimitOption, iAccountOption } from "@/models/account";
 
 export const useAdminAccountStore = defineStore("adminAccountStore", {
   state: () => ({
@@ -11,8 +11,8 @@ export const useAdminAccountStore = defineStore("adminAccountStore", {
     account: {},
 
     //options
-    accountOptions: ref<AccountOption>(),
-    accountoption: {},
+    accountOptions: {} as iAccountOption,
+    accountOption: {},
 
     //types
     accountTypes: [],
@@ -25,7 +25,7 @@ export const useAdminAccountStore = defineStore("adminAccountStore", {
     //limits
     accountLimits: [],
     accountLimit: {},
-    accountLimitOptions: {} as AccountLimitOption,
+    accountLimitOptions: {} as iAccountLimitOption,
 
     //shared
     loadingAccountData: false,

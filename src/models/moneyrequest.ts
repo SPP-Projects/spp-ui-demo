@@ -1,4 +1,4 @@
-export interface MoneyRequest {
+export interface iMoneyRequest {
   id: number;
   reference: string;
   amount: number;

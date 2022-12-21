@@ -286,15 +286,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { storeToRefs } from "pinia";
+import { useAdminPaymentMethodStore } from "@/stores/admin/payment-method";
 
 import { hideModal } from "@/core/helpers/dom";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-import { useAdminPaymentMethodStore } from "@/stores/admin/payment-method";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
 export default defineComponent({
   name: "admin-payment-methods",

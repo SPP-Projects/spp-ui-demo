@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add Transaction Type Accounts Mapping
+            Add iTransaction Type Accounts Mapping
           </button>
         </div>
         <!--end::Group actions-->
@@ -165,7 +165,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Transaction Type</label
+                  >iTransaction Type</label
                 >
                 <!--end::Label-->
 
@@ -192,7 +192,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Debit Institution Type</label
+                  >Debit iInstitution Type</label
                 >
                 <!--end::Label-->
 
@@ -248,7 +248,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Credit Institution Type</label
+                  >Credit iInstitution Type</label
                 >
                 <!--end::Label-->
 
@@ -356,16 +356,15 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
-import { hideModal } from "@/core/helpers/dom";
-import Message from "vue-m-message";
-import PermissionDenied from "@/components/PermissionDenied.vue";
-import PageLoader from "@/components/PageLoader.vue";
-
 import { storeToRefs } from "pinia";
 import { useAdminTransactionStore } from "@/stores/admin/transaction";
 import { useAdminInstitutionStore } from "@/stores/admin/institution";
+import { hideModal } from "@/core/helpers/dom";
+
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import Message from "vue-m-message";
+import PermissionDenied from "@/components/PermissionDenied.vue";
+import PageLoader from "@/components/PageLoader.vue";
 
 export default defineComponent({
   name: "admin-transaction-type-accounts-mapping",

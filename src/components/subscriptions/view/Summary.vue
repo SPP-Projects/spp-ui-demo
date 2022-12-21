@@ -165,7 +165,7 @@
 
           <!--begin::Row-->
           <tr class="">
-            <td class="text-gray-400">Next Invoice:</td>
+            <td class="text-gray-400">Next iInvoice:</td>
             <td class="text-gray-800">15 Apr 2022</td>
           </tr>
           <!--end::Row-->

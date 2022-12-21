@@ -1,5 +1,4 @@
 import { getError } from "@/helpers/errors";
-
 import { defineStore } from "pinia";
 import TransactionBatchService from "@/services/customer/TransactionBatchService";
 
@@ -7,10 +6,6 @@ export const useCustomerTransactionBatchStore = defineStore(
   "customerTransactionBatchStore",
   {
     state: () => ({
-      loadingData: false,
-      error: null,
-      unauthorized: false,
-
       validatedTransactionBatch: null,
       submittedTransactionBatch: [],
 
@@ -18,6 +13,11 @@ export const useCustomerTransactionBatchStore = defineStore(
       transactions: [],
       meta: { total: 0, from: 0, to: 0, last_page: 0 },
       transactionsBatch: {},
+
+      //shared
+      loadingData: false,
+      error: null,
+      unauthorized: false,
     }),
     actions: {
       getAllTransactionBatches(options) {
@@ -54,8 +54,7 @@ export const useCustomerTransactionBatchStore = defineStore(
           this.loadingData = true;
           TransactionBatchService.getTransactionBatch(options)
             .then(({ data }) => {
-              console.log(data);
-              this.transactions = data.data;
+              this.transactionBatches = data.data;
               this.meta.total = data.total;
               this.meta.from = data.from;
               this.meta.to = data.to;

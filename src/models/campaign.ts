@@ -1,6 +1,6 @@
-import type { Transaction } from "@/models/transaction";
+import type { iTransaction } from "@/models/transaction";
 
-export interface Campaign {
+export interface iCampaign {
   id: number;
   reference: string;
   title: string;
@@ -16,10 +16,10 @@ export interface Campaign {
   updated_at: string;
   donated: number;
   amount_to_goal: number;
-  donations: Array<CampaignDonation>;
+  donations: Array<iCampaignDonation>;
 }
 
-export interface CampaignDonation {
+export interface iCampaignDonation {
   id: number;
   campaign_reference: string;
   donor_name: null;
@@ -32,5 +32,5 @@ export interface CampaignDonation {
   transaction_reference: string;
   created_at: string;
   updated_at: string;
-  transaction: Transaction;
+  transaction: iTransaction;
 }

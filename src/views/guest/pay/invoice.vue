@@ -9,7 +9,7 @@
         <div class="card-body pt-0 pb-5">
           <div v-if="!invoiceData">No Data</div>
           <div class="flex-lg-row-fluid mb-10 mb-xl-0" v-else>
-            <!--begin::Invoice 2 content-->
+            <!--begin::iInvoice 2 content-->
             <div class="mt-n1">
               <!--begin::Top-->
               <div class="d-flex flex-stack pb-10">
@@ -25,7 +25,7 @@
                   :to="`/pay/payment/${invoiceData.reference}/invoice`"
                 >
                   <button class="btn btn-sm btn-success">
-                    Pay for Invoice
+                    Pay for iInvoice
                   </button>
                 </router-link>
 
@@ -36,8 +36,8 @@
               <div class="m-0">
                 <!--begin::Label-->
                 <div class="fw-bold fs-3 text-gray-800 mb-8">
-                  Invoice #{{ invoiceData.reference }} <br />
-                  User Reference:
+                  iInvoice #{{ invoiceData.reference }} <br />
+                  Customer Reference:
                   {{ invoiceData.user_reference }}
                 </div>
                 <!--end::Label-->
@@ -234,7 +234,7 @@
               </div>
               <!--end::Wrapper-->
             </div>
-            <!--end::Invoice 2 content-->
+            <!--end::iInvoice 2 content-->
           </div>
         </div>
         <!--end::Card body-->
@@ -248,12 +248,10 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-
-import { useRoute } from "vue-router";
-import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
 import { useGuestPaymentStore } from "@/stores/guest/payment";
+import { useRoute } from "vue-router";
+import PageLoader from "@/components/PageLoader.vue";
 
 export default defineComponent({
   name: "pay-invoice-details",

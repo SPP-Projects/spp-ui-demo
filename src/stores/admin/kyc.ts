@@ -1,11 +1,8 @@
 import { defineStore } from "pinia";
 import KycService from "@/services/admin/KycService";
 import { getError } from "@/helpers/errors";
-import type {
-  AccountKycRequirement,
-  AccountKycRequirementOption,
-} from "@/models/account";
-import type { KycRequirementOption } from "@/models/kyc";
+import type { iAccountKycRequirementOption } from "@/models/account";
+import type { iKycRequirementOption } from "@/models/kyc";
 
 export const useAdminKycStore = defineStore("adminKycStore", {
   state: () => ({
@@ -14,7 +11,7 @@ export const useAdminKycStore = defineStore("adminKycStore", {
     kycSetting: {},
 
     //kyc requirement option
-    kycRequirementOptions: {} as KycRequirementOption,
+    kycRequirementOptions: {} as iKycRequirementOption,
 
     //setting option
     kycSettingOptions: [],
@@ -23,7 +20,7 @@ export const useAdminKycStore = defineStore("adminKycStore", {
     accountTypeKycSettings: [],
 
     //AccountTypeKycRequirementOptions
-    accountTypeKycRequirementOptions: {} as AccountKycRequirementOption,
+    accountTypeKycRequirementOptions: {} as iAccountKycRequirementOption,
 
     //shared
     error: null,
@@ -223,7 +220,6 @@ export const useAdminKycStore = defineStore("adminKycStore", {
       });
     },
     updateAccountTypeKycSetting(payload) {
-      console.log(payload);
       return new Promise((resolve, reject) => {
         //     commit("SET_LOADING", true);
         KycService.updateAccountTypeKYCSetting(payload)
@@ -269,79 +265,79 @@ export const useAdminKycStore = defineStore("adminKycStore", {
     },
 
     // Customer Type KYC Requirements
-    getCustomerTypeKYCSettings({ commit }, options) {
+    getCustomerTypeKYCSettings(options) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         KycService.getCustomerTypeKYCSettings(options)
           .then(({ data }) => {
-            commit("SET_KYC_SETTINGS", data.data);
+            //  commit("SET_KYC_SETTINGS", data.data);
             resolve(data);
           })
           .catch((err) => {
-            commit("SET_ERROR", getError(err));
+            //   commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally(() => commit("SET_LOADING", false));
+          .finally();
       });
     },
-    getCustomerTypeKYCRequirementOptions({ commit }, id) {
+    getCustomerTypeKYCRequirementOptions() {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         KycService.getCustomerTypeKYCRequirementOptions()
           .then((response) => {
-            commit("SET_KYC_SETTING_OPTION", response.data.groups);
-            commit("SET_LOADING", false);
+            //   commit("SET_KYC_SETTING_OPTION", response.data.groups);
+            //  commit("SET_LOADING", false);
             resolve(response.data);
           })
           .catch((err) => {
-            commit("SET_LOADING", false);
-            commit("SET_ERROR", getError(err));
+            //  commit("SET_LOADING", false);
+            //   commit("SET_ERROR", getError(err));
             reject(err);
           });
       });
     },
-    addCustomerTypeKYCSetting({ commit }, payload) {
+    addCustomerTypeKYCSetting(payload) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         KycService.addCustomerTypeKYCSetting(payload)
           .then((response) => {
-            commit("ADD_KYC_SETTING", response);
-            commit("SET_LOADING", false);
+            //   commit("ADD_KYC_SETTING", response);
+            //   commit("SET_LOADING", false);
             resolve(response);
           })
           .catch((err) => {
-            commit("SET_LOADING", false);
-            commit("SET_ERROR", getError(err));
+            //  commit("SET_LOADING", false);
+            //  commit("SET_ERROR", getError(err));
             reject(err);
           });
       });
     },
-    updateCustomerTypeKYCSetting({ commit }, payload) {
+    updateCustomerTypeKYCSetting(payload) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        //  commit("SET_LOADING", true);
         KycService.updateCustomerTypeKYCSetting(payload)
           .then((response) => {
-            commit("SET_LOADING", false);
+            //   commit("SET_LOADING", false);
             resolve(response);
           })
           .catch((err) => {
-            commit("SET_LOADING", false);
-            commit("SET_ERROR", getError(err));
+            //   commit("SET_LOADING", false);
+            //   commit("SET_ERROR", getError(err));
             reject(err);
           });
       });
     },
-    deleteCustomerTypeKYCSetting({ commit }, setting_id) {
+    deleteCustomerTypeKYCSetting(setting_id) {
       return new Promise((resolve, reject) => {
-        commit("SET_LOADING", true);
+        // commit("SET_LOADING", true);
         KycService.deleteCustomerTypeKYCSetting(setting_id)
           .then((response) => {
-            commit("SET_LOADING", false);
+            //   commit("SET_LOADING", false);
             resolve(response);
           })
           .catch((err) => {
-            commit("SET_LOADING", false);
-            commit("SET_ERROR", getError(err));
+            //    commit("SET_LOADING", false);
+            //    commit("SET_ERROR", getError(err));
             reject(err);
           });
       });

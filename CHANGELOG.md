@@ -1,4 +1,4 @@
-# Change Log - SPPAY User UI - Beta - 0.0.3
+# Change Log - SPPAY iUser UI - Beta - 0.0.3
 
 ## 2022-11-26
 ### Added
@@ -19,9 +19,9 @@
   * Accounts Listing
   * Accounts Pagination
 * `Transactions`
-  * Transaction Listing
-  * Transaction Pagination
-  * View Single Transaction
+  * iTransaction Listing
+  * iTransaction Pagination
+  * View Single iTransaction
 * `SMS`
    * SMS report listing
    * Sender IDs listing
@@ -31,10 +31,10 @@
   * accounts, api, authentication, permissions,profile, sms, support, transactions
 * `Users`
   * Users Listing
-  * Update User Details & Permissions
+  * Update iUser Details & Permissions
 * `Campaigns`
   * Campaigns Listing
-  * Add/Update Campaign
+  * Add/Update iCampaign
   
 ### Fixed
 * API Service patch errors
@@ -42,7 +42,7 @@
 
 ## 2022-11-29
 ### Added
-* `Transaction Batch`
+* `iTransaction Batch`
   * Batch Upload Listing
   * Add/Confirm Batch upload
   * View Batch
@@ -53,10 +53,10 @@
 
 ## 2022-11-30
 ### Added
-* `Invoice`
-  * Invoice Listing
-  * View/Add Invoice
-  * Cancel/Fulfil Invoice
+* `iInvoice`
+  * iInvoice Listing
+  * View/Add iInvoice
+  * Cancel/Fulfil iInvoice
 
 ## 2022-12-01
 ### Added
@@ -73,12 +73,12 @@
 ### Added
 * `Guest Payments`
   * Generic collection page 
-  * Invoice/Campaign Payment
-  * Invoice Details
+  * iInvoice/iCampaign Payment
+  * iInvoice Details
 * `Sign Up`
-  * New User Registration
+  * New iUser Registration
 * `Sign Up`
-  * New User Registration
+  * New iUser Registration
 
 ### Fixed
 * TokenService bug fixes
@@ -112,11 +112,11 @@
   * Get permissions
   
 * `Profile`
-  * Get User Details & Permissions
+  * Get iUser Details & Permissions
 
 ### Fixed
-* `Campaign` vuex state bugs
-* `MoneyRequest` fulfill payment ui changes
+* `iCampaign` vuex state bugs
+* `iMoneyRequest` fulfill payment ui changes
 * `router` bug fixes
 * `Auto Logout` - interceptors to logout when api has errors [401 & 409]
 
@@ -128,13 +128,13 @@
   * Get Recent Transactions
 
 ### Fixed
-* `User` bug fixes
+* `iUser` bug fixes
 
 
 ## 2022-12-08
 ### Added
 * `Menu`
-  * User Menu/Icons
+  * iUser Menu/Icons
 
 ### Fixed
 * `Accounts`
@@ -188,7 +188,7 @@
 
 ## 2022-12-14
 ### Added
-* `Switch User mode`
+* `Switch iUser mode`
   * Change user from admin mode to normal user mode
 
 ### Changed
@@ -202,14 +202,14 @@
   * View/Add/Edit Settings groups
   * View/Add/Edit Settings types
 * `Admin/Accounts`
-  * View Customer Listing
+  * View iCustomer Listing
   * View/Add/Edit Account types
   * View/Add/Edit Account groups
   * View/Add/Edit Account limits
 * `Admin/Customers`
   * View customer listing
-  * View/Edit/Add Customer types
-  * View/Add/Edit Customer groups
+  * View/Edit/Add iCustomer types
+  * View/Add/Edit iCustomer groups
 * `Admin/Transactions`
   * View transaction listing
   * View/Edit/Add transaction types
@@ -230,7 +230,7 @@
 
 ## 2022-12-16
 ### Added
-* `Admin/Language`
+* `Admin/iLanguage`
   * language state management
   * language service
   * view/edit languages
@@ -238,7 +238,7 @@
   * payment methods state management
   * payment methods service
   * view/edit payment methods
-* `Admin/Institution Types`
+* `Admin/iInstitution Types`
   * institutions types state management
   * institutions types service
   * view/edit institution type
@@ -257,17 +257,17 @@
 * `Admin/Account`
   * view account options
   * add/edit account
-* `Admin/Customer Group`
+* `Admin/iCustomer Group`
   * edit customer group
-* `Admin/Customer Type`
+* `Admin/iCustomer Type`
   * edit customer type
 * `Admin/Notification Activity`
   * view/edit notification activity group
-* `Admin/Transaction Type Accounts Mappings`
+* `Admin/iTransaction Type Accounts Mappings`
   * view/edit transaction type accounts mapping
-* `Admin/Transaction Charges`
+* `Admin/iTransaction Charges`
   * view/edit transaction charges
-* `Admin/Transaction Commissions`
+* `Admin/iTransaction Commissions`
   * view/edit transaction commissions
 
 ## 2022-12-18
@@ -283,20 +283,56 @@
 
 ## 2022-12-19
 ### Added
-* `Customer/Invoice`
+* `iCustomer/iInvoice`
   * Added shipping, billing address and po_number fields
   * Included shipping calculation
 
 ### Fixed
-* `Customer/Money Request`
+* `iCustomer/Money Request`
   * Show pagination meta only when we have records
 
-* `Customer/Invoice`
+* `iCustomer/iInvoice`
   * New invoice bug fixes
  
 ### Changed
-* `Customer/Money Request`
+* `iCustomer/Money Request`
   * Changed submit request UI account number from text to dropdown
 * `Authentication`
   * Changed UI to SPPAY colors
 
+## 2022-12-20
+### Added
+* `_redirects`
+  * Added /* /index.html 200 to fix issue page not found
+* `Interfaces`
+  * added account interface
+  * added campaign interface
+  * added country interface
+  * added customer interface
+  * added institution interface
+  * added invoice interface
+  * added kyc interface
+  * added language interface
+  * added money request interface
+  * added notification interface
+  * added payment interface
+  * added permission interface
+  * added setting interface
+  * added sms interface
+  * added transaction interface
+  * added transactionbatch interface
+  * added user interface
+
+## 2022-12-20
+### Added
+* `Switch User mode`
+  * Added swal confirmation before switching
+
+### Fixed
+* `Typescript errors`
+  * fixed typescript bugs by adding interfaces to api data
+  * state/model bug fixes
+  
+### Changed
+* `Sign Up`
+  * Updated Sign Up UI

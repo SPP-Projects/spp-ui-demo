@@ -1,16 +1,19 @@
 import { defineStore } from "pinia";
 import { getError } from "@/helpers/errors";
 import CampaignService from "@/services/customer/CampaignService";
-import type { Campaign } from "@/models/campaign";
+import type { iCampaign } from "@/models/campaign";
 
 export const useCustomerCampaignStore = defineStore("customerCampaignStore", {
   state: () => ({
     campaigns: [],
-    donations: [],
-    meta: { total: 0, from: 0, to: 0, last_page: 0 },
     campaign: {},
     campaignPayments: [],
-    campaignDetails: {} as Campaign,
+    campaignDetails: {} as iCampaign,
+
+    donations: [],
+
+    //shared
+    meta: { total: 0, from: 0, to: 0, last_page: 0 },
     loadingData: false,
     error: null,
     unauthorized: false,
@@ -22,7 +25,7 @@ export const useCustomerCampaignStore = defineStore("customerCampaignStore", {
         CampaignService.getCampaigns(options)
           .then(({ data }) => {
             this.campaigns = data.data;
-            console.log(this.campaigns);
+
             this.meta.total = data.total;
             this.meta.from = data.from;
             this.meta.to = data.to;

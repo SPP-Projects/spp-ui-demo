@@ -31,7 +31,7 @@
           <div class="text-muted me-2 fs-7">Added at 4:23 PM by</div>
           <!--end::Info-->
 
-          <!--begin::User-->
+          <!--begin::Customer-->
           <div
             class="symbol symbol-circle symbol-25px"
             data-bs-toggle="tooltip"
@@ -41,7 +41,7 @@
           >
             <img src="/media/avatars/300-14.jpg" alt="img" />
           </div>
-          <!--end::User-->
+          <!--end::Customer-->
         </div>
         <!--end::Description-->
       </div>
@@ -71,19 +71,19 @@
           <div
             class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px pe-2"
           >
-            <!--begin::User-->
+            <!--begin::Customer-->
             <div class="symbol symbol-circle symbol-25px">
               <img src="/media/avatars/300-2.jpg" alt="img" />
             </div>
-            <!--end::User-->
+            <!--end::Customer-->
 
-            <!--begin::User-->
+            <!--begin::Customer-->
             <div class="symbol symbol-circle symbol-25px">
               <img src="/media/avatars/300-14.jpg" alt="img" />
             </div>
-            <!--end::User-->
+            <!--end::Customer-->
 
-            <!--begin::User-->
+            <!--begin::Customer-->
             <div class="symbol symbol-circle symbol-25px">
               <div
                 class="symbol-label fs-8 fw-semobold bg-primary text-inverse-primary"
@@ -91,7 +91,7 @@
                 A
               </div>
             </div>
-            <!--end::User-->
+            <!--end::Customer-->
           </div>
           <!--end::Users-->
 
@@ -133,13 +133,13 @@
           <div
             class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px"
           >
-            <!--begin::User-->
+            <!--begin::Customer-->
             <div class="symbol symbol-circle symbol-25px">
               <img src="/media/avatars/300-20.jpg" alt="img" />
             </div>
-            <!--end::User-->
+            <!--end::Customer-->
 
-            <!--begin::User-->
+            <!--begin::Customer-->
             <div class="symbol symbol-circle symbol-25px">
               <div
                 class="symbol-label fs-8 fw-semobold bg-success text-inverse-primary"
@@ -147,7 +147,7 @@
                 B
               </div>
             </div>
-            <!--end::User-->
+            <!--end::Customer-->
           </div>
           <!--end::Users-->
 

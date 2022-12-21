@@ -2,13 +2,13 @@ import { getError } from "@/helpers/errors";
 import TransactionService from "@/services/customer/TransactionService";
 import { defineStore } from "pinia";
 
-import type { Transaction } from "@/models/transaction";
+import type { iTransaction } from "@/models/transaction";
 
 export const useCustomerTransactionStore = defineStore(
   "customerTransactionStore",
   {
     state: () => ({
-      transactions: [] as Transaction[],
+      transactions: [] as iTransaction[],
       meta: { total: 0, from: 0, to: 0, last_page: 0 },
       transaction: {},
       accountTransactions: [],
@@ -34,7 +34,7 @@ export const useCustomerTransactionStore = defineStore(
           TransactionService.getAllTransactions(options)
             .then(({ data }) => {
               this.transactions = data.data;
-              console.log(data.data);
+
               this.meta.total = data.total;
               this.meta.from = data.from;
               this.meta.to = data.to;
@@ -211,7 +211,7 @@ export const useCustomerTransactionStore = defineStore(
         });
       },
 
-      //TODO - MOVE TO COMMONG PLACE
+      //TODO - MOVE TO COMMON PLACE
       getInstitutions(options) {
         return new Promise((resolve, reject) => {
           this.loadingInstitutionData = true;

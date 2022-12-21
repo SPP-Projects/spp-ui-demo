@@ -1,4 +1,4 @@
-import type { Institution } from "@/models/institution";
+import type { iInstitution } from "@/models/institution";
 
 export interface PaymentMethod {
   id: number;
@@ -21,7 +21,7 @@ export interface PaymentMethod {
   updated_at: string;
 }
 
-export interface PaymentOption {
-  institutions: Array<Institution>;
+export interface iPaymentOption {
+  institutions: Array<iInstitution>;
   payment_methods: Array<PaymentMethod>;
 }

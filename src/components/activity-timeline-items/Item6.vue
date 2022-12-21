@@ -34,9 +34,9 @@
             <div class="text-muted me-2 fs-7">Added at 4:23 PM by</div>
             <!--end::Info-->
 
-            <!--begin::User-->
+            <!--begin::Customer-->
             <a href="#" class="text-primary fw-bold me-1">Alice Tan</a>
-            <!--end::User-->
+            <!--end::Customer-->
           </div>
           <!--end::Wrapper-->
         </div>

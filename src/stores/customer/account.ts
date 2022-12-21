@@ -4,16 +4,18 @@ import { getError } from "@/helpers/errors";
 
 export const useCustomerAccountStore = defineStore("customerAccountStore", {
   state: () => ({
-    loadingAccountData: false,
-    error: null,
     accounts: [],
-    meta: { total: 0, from: 0, to: 0, last_page: 0 },
     account: [],
     accountsTotal: null,
     accountValidationForm: [],
     validatedAccount: [],
     lastSelectedAccount: null,
+
+    //shared
     unauthorized: false,
+    meta: { total: 0, from: 0, to: 0, last_page: 0 },
+    loadingAccountData: false,
+    error: null,
   }),
   actions: {
     getAccounts(options) {

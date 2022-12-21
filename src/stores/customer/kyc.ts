@@ -4,10 +4,12 @@ import { defineStore } from "pinia";
 
 export const useCustomerKycStore = defineStore("customerKycStore", {
   state: () => ({
-    loadingData: false,
-    error: null,
     kycRequirements: [],
     kycDetails: [],
+
+    //shared
+    loadingData: false,
+    error: null,
     unauthorized: false,
   }),
   actions: {

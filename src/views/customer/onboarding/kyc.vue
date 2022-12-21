@@ -139,15 +139,11 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-
+import { useCustomerKycStore } from "@/stores/customer/kyc";
 import type { TabsPaneContext } from "element-plus";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerTransactionStore } from "@/stores/customer/transaction";
-import { useCustomerAccountStore } from "@/stores/customer/account";
-import { storeToRefs } from "pinia";
-import { useCustomerKycStore } from "@/stores/customer/kyc";
 
 export default defineComponent({
   name: "manage-kyc",
@@ -155,8 +151,6 @@ export default defineComponent({
   setup() {
     //store
     const kycStore = useCustomerKycStore();
-    const { kycRequirements, loadingData } = storeToRefs(kycStore);
-    const { getKycRequirements } = useCustomerKycStore();
 
     //data variables
     const refData = ref({
@@ -301,13 +295,9 @@ export default defineComponent({
 });
 </script>
 <style>
-.kyc-tabs > .el-tabs__content {
+.kyc-tabs > {
   padding: 32px;
   color: #6b778c;
   font-weight: 600;
-}
-.el-tabs--right .el-tabs__content,
-.el-tabs--left .el-tabs__content {
-  height: 100%;
 }
 </style>

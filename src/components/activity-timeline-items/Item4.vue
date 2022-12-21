@@ -33,7 +33,7 @@
           <div class="text-muted me-2 fs-7">Initiated at 4:23 PM by</div>
           <!--end::Info-->
 
-          <!--begin::User-->
+          <!--begin::Customer-->
           <div
             class="symbol symbol-circle symbol-25px"
             data-bs-toggle="tooltip"
@@ -43,7 +43,7 @@
           >
             <img src="/media/avatars/300-14.jpg" alt="img" />
           </div>
-          <!--end::User-->
+          <!--end::Customer-->
         </div>
         <!--end::Description-->
       </div>

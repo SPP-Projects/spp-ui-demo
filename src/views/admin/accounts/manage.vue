@@ -267,7 +267,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td class="text-muted">Institution</td>
+                      <td class="text-muted">iInstitution</td>
                       <td class="text-gray-800">
                         {{ account.institution.name }}
                       </td>
@@ -460,7 +460,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Institution</label
+                  >iInstitution</label
                 >
                 <!--end::Label-->
 
@@ -557,19 +557,17 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
-import PageLoader from "@/components/PageLoader.vue";
-import PermissionDenied from "@/components/PermissionDenied.vue";
-
-import sppay from "@/helpers/sppay";
-
-import { storeToRefs } from "pinia";
-
 import { useAdminAccountStore } from "@/stores/admin/account";
 import { useAdminCustomerStore } from "@/stores/admin/customer";
 import { useAdminInstitutionStore } from "@/stores/admin/institution";
 import { hideModal } from "@/core/helpers/dom";
+import sppay from "@/helpers/sppay";
+import { storeToRefs } from "pinia";
+
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import PageLoader from "@/components/PageLoader.vue";
+import PermissionDenied from "@/components/PermissionDenied.vue";
+
 import Message from "vue-m-message";
 export default defineComponent({
   name: "accounts-list",

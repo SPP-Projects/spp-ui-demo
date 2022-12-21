@@ -403,14 +403,13 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-
-import Message from "vue-m-message";
 import { useRoute } from "vue-router";
-import { Field, ErrorMessage } from "vee-validate";
 import { useGuestPaymentStore } from "@/stores/guest/payment";
 import { storeToRefs } from "pinia";
-
 import { useGuestGeneralStore } from "@/stores/guest/general";
+
+import { Field, ErrorMessage } from "vee-validate";
+import Message from "vue-m-message";
 
 export default defineComponent({
   name: "guest-payment",

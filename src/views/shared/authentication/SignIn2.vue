@@ -148,7 +148,7 @@ import { defineComponent, ref } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import { useAuthStore, type CoreUser } from "@/stores/auth";
 import { useRouter } from "vue-router";
-import Swal from "sweetalert2";
+
 import * as Yup from "yup";
 import Message from "vue-m-message";
 

@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
 import { useCustomerUserStore } from "@/stores/customer/user";
-import type { User } from "@/models/user";
+import type { iUser } from "@/models/user";
 
 export interface CoreUser {
   name: string;
@@ -17,7 +17,7 @@ export const useAuthStore = defineStore("auth", () => {
   const errors = ref({});
   const user = ref<CoreUser>({} as CoreUser);
   const isAuthenticated = ref(!!JwtService.getToken());
-  const authenticatedUser = ref({ id: 0 } as User);
+  const authenticatedUser = ref({ id: 0 } as iUser);
 
   const getJSONFromLocalStorage = (key) => {
     const value = window.localStorage.getItem(key);

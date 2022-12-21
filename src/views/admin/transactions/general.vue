@@ -125,7 +125,7 @@
   </div>
   <!--end::Card-->
 
-  <!--View Transaction Modal-->
+  <!--View iTransaction Modal-->
   <div
     class="modal fade"
     id="kt_modal_view_transaction"
@@ -160,7 +160,7 @@
               <div class="pb-12">
                 <!--begin::Title-->
                 <h1 class="fw-bold text-dark">
-                  Transaction Details: {{ transaction.id }} -
+                  iTransaction Details: {{ transaction.id }} -
                   {{ transaction.reference }}
                 </h1>
                 <!--end::Title-->
@@ -238,7 +238,7 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">Institution</td>
+                      <td class="text-muted">iInstitution</td>
                       <td class="text-gray-800">
                         {{ transaction.debit_account_institution.name }}
                       </td>
@@ -282,7 +282,7 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">Debit Institution</td>
+                      <td class="text-muted">Debit iInstitution</td>
                       <td class="text-gray-800">
                         {{ transaction.credit_account_institution.name }}
                       </td>
@@ -347,25 +347,23 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!--View Transaction Modal-->
+  <!--View iTransaction Modal-->
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
-import PageLoader from "@/components/PageLoader.vue";
-import PermissionDenied from "@/components/PermissionDenied.vue";
-
 import sppay from "@/helpers/sppay";
 import { storeToRefs } from "pinia";
 import { useAdminTransactionStore } from "@/stores/admin/transaction";
-import TransactionsSubMenu from "@/components/_sppay/admin/TransactionsSubMenu.vue";
-import type { Transaction } from "@/models/transaction";
+import type { iTransaction } from "@/models/transaction";
+
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import PageLoader from "@/components/PageLoader.vue";
+import PermissionDenied from "@/components/PermissionDenied.vue";
+
 export default defineComponent({
-  name: "transactions-list",
+  name: "admin-transactions-list",
   components: {
-    TransactionsSubMenu,
     KTDatatable,
     PermissionDenied,
     PageLoader,
@@ -429,7 +427,7 @@ export default defineComponent({
         columnLabel: "actions",
       },
     ]);
-    const transaction = ref({} as Transaction);
+    const transaction = ref({} as iTransaction);
 
     const table_options = ref({
       account: "" as any,

@@ -4,12 +4,13 @@ import { getError } from "@/helpers/errors";
 
 export const useAdminSmsStore = defineStore("adminSmsStore", {
   state: () => ({
+    smsReports: [],
+    senderIDs: [],
+
+    //shared
     loadingSmsData: false,
     error: null,
     unauthorized: false,
-
-    smsReports: [],
-    senderIDs: [],
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
   }),
   actions: {

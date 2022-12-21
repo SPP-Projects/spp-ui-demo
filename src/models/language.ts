@@ -1,4 +1,4 @@
-export interface Language {
+export interface iLanguage {
   id: number;
   name: string;
   alias: string;

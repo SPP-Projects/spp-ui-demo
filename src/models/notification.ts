@@ -1,4 +1,4 @@
-import type { Language } from "@/models/language";
+import type { iLanguage } from "@/models/language";
 
 export interface NotificationActivity {
   id: number;
@@ -74,7 +74,7 @@ export interface NotificationTemplate {
   };
 }
 
-export interface NotificationSettingOption {
+export interface iNotificationSettingOption {
   activities: Array<NotificationActivity>;
   types: Array<NotificationType>;
   templates: Array<NotificationTemplate>;
@@ -87,10 +87,10 @@ export interface NotificationType {
   updated_at: string;
 }
 
-export interface NotificationActivityOption {
+export interface iNotificationActivityOption {
   groups: Array<NotificationActivityGroup>;
 }
 
-export interface NotificationTemplateOption {
-  languages: Array<Language>;
+export interface iNotificationTemplateOption {
+  languages: Array<iLanguage>;
 }

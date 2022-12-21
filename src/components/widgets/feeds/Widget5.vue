@@ -5,7 +5,7 @@
     <div class="card-body pb-0">
       <!--begin::Header-->
       <div class="d-flex align-items-center mb-5">
-        <!--begin::User-->
+        <!--begin::Customer-->
         <div class="d-flex align-items-center flex-grow-1">
           <!--begin::Avatar-->
           <div class="symbol symbol-45px me-5">
@@ -23,7 +23,7 @@
           </div>
           <!--end::Info-->
         </div>
-        <!--end::User-->
+        <!--end::Customer-->
 
         <!--begin::Menu-->
         <div class="my-0">

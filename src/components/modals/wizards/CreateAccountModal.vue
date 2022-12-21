@@ -569,7 +569,7 @@
 
                         <div class='d-flex flex-stack fw-semobold text-gray-600'>
                             <div>Amount</div>
-                            <div>Transaction</div>
+                            <div>iTransaction</div>
                         </div>
 
                         <div class='separator separator-dashed my-2'></div>

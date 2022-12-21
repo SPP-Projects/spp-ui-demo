@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add Transaction Commission Setting
+            Add iTransaction Commission Setting
           </button>
         </div>
         <!--end::Group actions-->
@@ -307,17 +307,16 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
+import { storeToRefs } from "pinia";
+import { useAdminTransactionStore } from "@/stores/admin/transaction";
 import { hideModal } from "@/core/helpers/dom";
+
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-
-import { useAdminTransactionStore } from "@/stores/admin/transaction";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import sppData from "@/helpers/data";
+
 export default defineComponent({
   name: "admin-payment-maps",
   components: {

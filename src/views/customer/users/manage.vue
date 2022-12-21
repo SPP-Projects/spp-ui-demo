@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add User
+            Add Customer
           </button>
         </div>
         <!--end::Group actions-->
@@ -85,7 +85,7 @@
               </div>
             </div>
             <!--end::Avatar-->
-            <!--begin::User details-->
+            <!--begin::Customer details-->
             <div class="d-flex flex-column">
               <a
                 href="#"
@@ -94,7 +94,7 @@
               >
               <span>{{ data.email }}</span>
             </div>
-            <!--begin::User details-->
+            <!--begin::Customer details-->
           </div>
         </template>
 
@@ -181,7 +181,7 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">{{ user.action }} User Details</h1>
+              <h1 class="mb-3">{{ user.action }} Customer Details</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -353,16 +353,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
+import { storeToRefs } from "pinia";
+import { useCustomerUserStore } from "@/stores/customer/user";
+import type { iUser } from "@/models/user";
 import { hideModal } from "@/core/helpers/dom";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-import { useCustomerUserStore } from "@/stores/customer/user";
-import type { User } from "@/models/user";
 
 export default defineComponent({
   name: "manage-users",
@@ -416,7 +414,7 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     });
     const action = ref("");
-    const user = ref<User>({
+    const user = ref<iUser>({
       id: 0,
       action: "Add",
       name: "",
@@ -424,7 +422,7 @@ export default defineComponent({
       phone: "",
       enabled_permissions: [],
     });
-    // const user = ref<User>();
+    // const user = ref<iUser>();
     const checkedRows = ref<Array<number>>([]);
     const formAddUpdateUserRef = ref<null | HTMLFormElement>(null);
     const AddUpdateUserModalRef = ref<null | HTMLElement>(null);
@@ -572,7 +570,7 @@ export default defineComponent({
       getUsers(table_options.value);
     };
     const getUser = () => {
-      userStore.getUser(user.value.id).then((response: User) => {
+      userStore.getUser(user.value.id).then((response: iUser) => {
         const action = user.value.action;
 
         user.value = response;

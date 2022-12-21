@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add Institution Type
+            Add iInstitution Type
           </button>
         </div>
         <!--end::Group actions-->
@@ -216,15 +216,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
 import { hideModal } from "@/core/helpers/dom";
+import { storeToRefs } from "pinia";
+import { useAdminInstitutionStore } from "@/stores/admin/institution";
+
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-import { useAdminInstitutionStore } from "@/stores/admin/institution";
 
 export default defineComponent({
   name: "admin-manage-institution-types",

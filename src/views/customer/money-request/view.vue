@@ -134,7 +134,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">User ID:</td>
+                    <td class="text-gray-400">Customer ID:</td>
                     <td class="text-gray-800">
                       {{ moneyRequestDetails.requester_user_id }}
                     </td>
@@ -174,7 +174,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">Transaction Reference:</td>
+                    <td class="text-gray-400">iTransaction Reference:</td>
                     <td class="text-gray-800">
                       {{ moneyRequestDetails.transaction_reference }}
                     </td>
@@ -557,18 +557,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
-
-import { useRoute } from "vue-router";
-import Message from "vue-m-message";
-import { hideModal } from "@/core/helpers/dom";
-
-import PermissionDenied from "@/components/PermissionDenied.vue";
-import PageLoader from "@/components/PageLoader.vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { useCustomerMoneyRequestStore } from "@/stores/customer/moneyrequest";
 import { storeToRefs } from "pinia";
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { useAuthStore } from "@/stores/auth";
+import { useRoute } from "vue-router";
+import { hideModal } from "@/core/helpers/dom";
+
+import Message from "vue-m-message";
+import PermissionDenied from "@/components/PermissionDenied.vue";
+import PageLoader from "@/components/PageLoader.vue";
 
 export default defineComponent({
   name: "money-request-details",
@@ -615,27 +614,6 @@ export default defineComponent({
     const action = ref("");
 
     const my_accounts = ref([]);
-
-    // const getMoneyRequest = async (option): Promise<void> => {
-    //   refData.value.loadingData = true;
-    //
-    //   await store
-    //     .dispatch("moneyrequest/getMoneyRequestByReference", option)
-    //     .then((response) => {
-    //       moneyRequestData.value = response.data.money_request;
-    //     })
-    //     .catch((error) => {
-    //       // if (error.response.status === 403) {
-    //       //   // unauthorized.
-    //       //   refData.value.unauthorized = true;
-    //       // }
-    //       console.log(error);
-    //     })
-    //     .finally(() => {
-    //       refData.value.loadingPage = false;
-    //       refData.value.loadingData = false;
-    //     });
-    // };
 
     const route = useRoute();
     onMounted(async () => {

@@ -93,7 +93,7 @@
                 id="edit-btn"
                 data-bs-target="#kt_modal_update_campaign"
               >
-                Edit Campaign
+                Edit iCampaign
               </a>
             </span>
           </div>
@@ -285,7 +285,7 @@
               <div class="pb-12">
                 <!--begin::Title-->
                 <h1 class="fw-bold text-dark">
-                  Transaction Details: {{ donation.transaction.id }} -
+                  iTransaction Details: {{ donation.transaction.id }} -
                   {{ donation.transaction.reference }}
                 </h1>
                 <!--end::Title-->
@@ -364,7 +364,7 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">Institution</td>
+                      <td class="text-muted">iInstitution</td>
                       <td class="text-gray-800">
                         {{ donation.transaction.debit_account_institution_id }}
                       </td>
@@ -446,7 +446,7 @@
   </div>
   <!-- View Payment Modal-->
 
-  <!-- Update Campaign Modal-->
+  <!-- Update iCampaign Modal-->
   <div
     class="modal fade"
     id="kt_modal_update_campaign"
@@ -488,7 +488,7 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">{{ campaign.action }} Campaign Details</h1>
+              <h1 class="mb-3">{{ campaign.action }} iCampaign Details</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -497,7 +497,7 @@
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Campaign Title</span>
+                <span class="required">iCampaign Title</span>
                 <i
                   class="fas fa-exclamation-circle ms-2 fs-7"
                   data-bs-toggle="tooltip"
@@ -619,7 +619,7 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!-- Update Campaign Modal-->
+  <!-- Update iCampaign Modal-->
 
   <!--end::Layout-->
 </template>
@@ -636,7 +636,7 @@ import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerCampaignStore } from "@/stores/customer/campaign";
 import { storeToRefs } from "pinia";
-import type { CampaignDonation } from "@/models/campaign";
+import type { iCampaignDonation } from "@/models/campaign";
 
 export default defineComponent({
   name: "campaign-payments",
@@ -709,7 +709,7 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     });
 
-    const donation = ref({} as CampaignDonation);
+    const donation = ref({} as iCampaignDonation);
     const donations = ref([]);
 
     const campaign = ref({

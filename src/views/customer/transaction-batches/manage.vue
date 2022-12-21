@@ -40,7 +40,7 @@
             data-bs-toggle="modal"
             data-bs-target="#kt_modal_add_batch_transaction"
           >
-            New Transaction Batch Upload
+            New iTransaction Batch Upload
           </button>
         </div>
         <!--end::Group actions-->
@@ -143,7 +143,7 @@
         <!--begin::Modal header-->
         <div class="modal-header" id="kt_modal_add_customer_header">
           <!--begin::Modal title-->
-          <h2 class="fw-bold">Process Transaction Batch</h2>
+          <h2 class="fw-bold">Process iTransaction Batch</h2>
           <!--end::Modal title-->
 
           <!--begin::Close-->
@@ -212,7 +212,7 @@
               :disabled="loading_batch.submit"
             >
               <span v-if="loading_batch.process"
-                >Uploading Transaction Batch ...
+                >Uploading iTransaction Batch ...
               </span>
               <span v-else>Upload Batch </span>
             </button>
@@ -237,7 +237,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Process Transaction Batch</h5>
+          <h5 class="modal-title">Process iTransaction Batch</h5>
 
           <!--begin::Close-->
           <div
@@ -285,16 +285,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { storeToRefs } from "pinia";
+import { useCustomerTransactionBatchStore } from "@/stores/customer/transactionbatch";
 
 import { hideModal } from "@/core/helpers/dom";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerTransactionStore } from "@/stores/customer/transaction";
-import { useCustomerAccountStore } from "@/stores/customer/account";
-import { storeToRefs } from "pinia";
-import { useCustomerTransactionBatchStore } from "@/stores/customer/transactionbatch";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
 export default defineComponent({
   name: "manage-transaction-batches",

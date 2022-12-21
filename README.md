@@ -1,6 +1,6 @@
 # SP PAY Frontend - Web (Beta 0.0.3)
 
-> User UI built in Vue.js - with axios, vue-router, pinia and sanctum authentication via laravel.
+> iUser UI built in Vue.js - with axios, vue-router, pinia and sanctum authentication via laravel.
 > Application developed with Vue 3 in Vite and Typescript.
 
 

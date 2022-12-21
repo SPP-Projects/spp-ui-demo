@@ -29,7 +29,7 @@
           <div class="text-muted me-2 fs-7">Placed at 5:05 AM by</div>
           <!--end::Info-->
 
-          <!--begin::User-->
+          <!--begin::Customer-->
           <div
             class="symbol symbol-circle symbol-25px"
             data-bs-toggle="tooltip"
@@ -39,7 +39,7 @@
           >
             <img src="/media/avatars/300-4.jpg" alt="img" />
           </div>
-          <!--end::User-->
+          <!--end::Customer-->
         </div>
         <!--end::Description-->
       </div>

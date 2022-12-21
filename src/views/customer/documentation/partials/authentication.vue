@@ -29,7 +29,7 @@
         You can manage your users and their permissions here -
         <router-link to="/users"
           ><b class="text-info link-info"
-            >User Accounts and Permissions</b
+            >Customer Accounts and Permissions</b
           ></router-link
         >. <br />
         To know more about creating and managing users, check out the

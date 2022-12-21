@@ -1,6 +1,6 @@
-import type { Transaction } from "@/models/transaction";
+import type { iTransaction } from "@/models/transaction";
 
-export interface Invoice {
+export interface iInvoice {
   id: number;
   reference: string;
   user_reference: string;
@@ -22,11 +22,11 @@ export interface Invoice {
   updated_at: string;
   paid: number;
   balance_due: number;
-  payments: Array<InvoicePayment>;
+  payments: Array<iInvoicePayment>;
   items: Array<{ InvoiceItem }>;
 }
 
-export interface InvoiceItem {
+export interface iInvoiceItem {
   id: number;
   invoice_reference: string;
   description: string;
@@ -37,7 +37,7 @@ export interface InvoiceItem {
   updated_at: string;
 }
 
-export interface InvoicePayment {
+export interface iInvoicePayment {
   id: number;
   invoice_reference: string;
   payee_name: null;
@@ -49,5 +49,5 @@ export interface InvoicePayment {
   transaction_reference: string;
   created_at: string;
   updated_at: string;
-  transaction: Transaction;
+  transaction: iTransaction;
 }

@@ -80,7 +80,7 @@
             <!--begin::List-->
             <div class="mh-300px scroll-y me-n7 pe-7">
               <template v-for="(user, index) in users" :key="index">
-                <!--begin::User-->
+                <!--begin::Customer-->
                 <div
                   class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed"
                 >
@@ -130,7 +130,7 @@
                   </div>
                   <!--end::Access menu-->
                 </div>
-                <!--end::User-->
+                <!--end::Customer-->
               </template>
             </div>
             <!--end::List-->

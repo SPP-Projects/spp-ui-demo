@@ -20,7 +20,7 @@
                 data-bs-trigger="hover"
                 title="Specify invoice #"
               >
-                <span class="fs-2 fw-bold text-gray-800">Invoice #</span>
+                <span class="fs-2 fw-bold text-gray-800">iInvoice #</span>
                 <input
                   type="text"
                   class="form-control form-control text-muted fs-4 w-175px"
@@ -525,7 +525,7 @@
                   />
                 </svg>
               </span>
-              <!--end::Svg Icon-->Add Invoice
+              <!--end::Svg Icon-->Add iInvoice
             </button>
           </div>
           <!--end::Actions-->
@@ -541,14 +541,14 @@
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
+import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
+import { storeToRefs } from "pinia";
 
 import Message from "vue-m-message";
 import router from "@/router";
 import moment from "moment";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
-import { storeToRefs } from "pinia";
 
 interface invoiceItems {
   quantity: number;
@@ -562,8 +562,7 @@ export default defineComponent({
   setup() {
     //store
     const invoiceStore = useCustomerInvoiceStore();
-    const { invoices, meta, loadingInvoiceData } = storeToRefs(invoiceStore);
-    const { getAllInvoices } = useCustomerInvoiceStore();
+    const { loadingInvoiceData } = storeToRefs(invoiceStore);
 
     const refData = ref({
       unauthorized: false,

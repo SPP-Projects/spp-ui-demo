@@ -13,7 +13,7 @@
       title="200+ in-house components and 3rd-party plugins"
       v-if="!isAdminMode"
     >
-      <span class="btn-label">User Settings</span>
+      <span class="btn-label">Customer Settings</span>
       <span class="svg-icon btn-icon svg-icon-2 m-0">
         <inline-svg src="/media/icons/duotune/general/gen005.svg" />
       </span>

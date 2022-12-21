@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add Transaction Charge Setting
+            Add iTransaction Charge Setting
           </button>
         </div>
         <!--end::Group actions-->
@@ -80,7 +80,7 @@
           }}
           {{
             data.debit_account_institution
-              ? ", Institution: " + data.debit_account_institution.name
+              ? ", iInstitution: " + data.debit_account_institution.name
               : ""
           }}
           {{
@@ -108,7 +108,7 @@
           }}
           {{
             data.credit_account_institution
-              ? ", Institution: " + data.credit_account_institution.name
+              ? ", iInstitution: " + data.credit_account_institution.name
               : ""
           }}
           {{
@@ -352,7 +352,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Debit Account Institution</label
+                  >Debit Account iInstitution</label
                 >
                 <!--end::Label-->
 
@@ -480,7 +480,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Credit Account Institution</label
+                  >Credit Account iInstitution</label
                 >
                 <!--end::Label-->
 

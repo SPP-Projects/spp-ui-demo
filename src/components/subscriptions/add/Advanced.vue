@@ -100,11 +100,11 @@
       </div>
       <!--end::Custom fields-->
 
-      <!--begin::Invoice footer-->
+      <!--begin::iInvoice footer-->
       <div class="d-flex flex-column mb-10 fv-row">
         <!--begin::Label-->
         <div class="fs-5 fw-bold form-label mb-3">
-          Invoice footer
+          iInvoice footer
 
           <i
             tabindex="0"
@@ -123,7 +123,7 @@
           rows="4"
         ></textarea>
       </div>
-      <!--end::Invoice footer-->
+      <!--end::iInvoice footer-->
 
       <!--begin::Option-->
       <div

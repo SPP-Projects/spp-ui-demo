@@ -96,13 +96,13 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { useCustomerAccountStore } from "@/stores/customer/account";
+import { storeToRefs } from "pinia";
 
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import router from "@/router";
 import PageLoader from "@/components/PageLoader.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
-import { useCustomerAccountStore } from "@/stores/customer/account";
-import { storeToRefs } from "pinia";
 
 export default defineComponent({
   name: "manage-accounts",

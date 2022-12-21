@@ -20,7 +20,7 @@
       "
       class="m-1 btn btn-sm"
     >
-      Transaction Types
+      iTransaction Types
     </router-link>
   </div>
 </template>

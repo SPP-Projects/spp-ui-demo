@@ -23,7 +23,7 @@
           <div
             class="d-flex justify-content-between align-items-start flex-wrap mb-2"
           >
-            <!--begin::User-->
+            <!--begin::Customer-->
             <div class="d-flex flex-column">
               <!--begin::Name-->
               <div class="d-flex align-items-center mb-2">
@@ -76,7 +76,7 @@
               </div>
               <!--end::Info-->
             </div>
-            <!--end::User-->
+            <!--end::Customer-->
 
             <!--begin::Actions-->
             <div class="d-flex my-4">

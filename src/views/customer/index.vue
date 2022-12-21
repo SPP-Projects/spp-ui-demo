@@ -177,7 +177,7 @@
           :key="account.id"
           class="col-md-12 layout-spacing"
         >
-          <div class="">
+          <div class="mb-5">
             <div class="card bg-dark hoverable mb-xl-8">
               <!--begin::Body-->
               <div class="card-body">
@@ -219,7 +219,6 @@ import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerTransactionStore } from "@/stores/customer/transaction";
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
-import { useCustomerUserStore } from "@/stores/customer/user";
 
 export default defineComponent({
   name: "customer-dashboard",
@@ -240,11 +239,6 @@ export default defineComponent({
     const { getAccounts } = useCustomerAccountStore();
     const { accounts, loadingAccountData } = storeToRefs(accountStore);
 
-    //user
-    const userStore = useCustomerUserStore();
-    const { users, loadingUserData } = storeToRefs(userStore);
-    const { getUser } = useCustomerUserStore();
-    //
     const loading = ref({
       page: true,
       transactions: true,

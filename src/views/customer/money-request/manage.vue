@@ -314,18 +314,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
-import { hideModal } from "@/core/helpers/dom";
-import Message from "vue-m-message";
-
-import PermissionDenied from "@/components/PermissionDenied.vue";
-import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
+import { defineComponent, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useCustomerMoneyRequestStore } from "@/stores/customer/moneyrequest";
 import { useCustomerAccountStore } from "@/stores/customer/account";
+
+import { hideModal } from "@/core/helpers/dom";
+import Message from "vue-m-message";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import PermissionDenied from "@/components/PermissionDenied.vue";
+import PageLoader from "@/components/PageLoader.vue";
 
 export default defineComponent({
   name: "manage-money-requests",

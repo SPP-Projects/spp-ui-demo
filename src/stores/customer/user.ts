@@ -2,18 +2,21 @@ import { defineStore } from "pinia";
 import UserService from "@/services/customer/UserService";
 import { getError } from "@/helpers/errors";
 import { useAuthStore } from "@/stores/auth";
-import type { User } from "@/models/user";
+import type { iUser } from "@/models/user";
 
 export const useCustomerUserStore = defineStore("customerUserStore", {
   state: () => ({
+    authenticatedUser: {} as iUser,
+    authenticatedUserDetails: {} as iUser,
+    users: [] as iUser[],
+
+    user: {} as iUser,
+    usersTotal: {},
+
+    //shared
     loadingUserData: false,
     error: null,
-    authenticatedUser: {} as User,
-    authenticatedUserDetails: {} as User,
-    users: [] as User[],
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
-    user: {} as User,
-    usersTotal: {},
     unauthorized: false,
   }),
   actions: {

@@ -261,7 +261,7 @@
                   </div>
                 </div>
                 <div v-if="sms.transaction">
-                  <h6 class="mb-42 mt-3">Transaction</h6>
+                  <h6 class="mb-42 mt-3">iTransaction</h6>
                   <div>
                     Reference: <b>{{ sms.transaction.reference }}</b>
                   </div>
@@ -295,14 +295,13 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
-import PermissionDenied from "@/components/PermissionDenied.vue";
-import PageLoader from "@/components/PageLoader.vue";
-
 import { storeToRefs } from "pinia";
 import { useAdminSmsStore } from "@/stores/admin/sms";
-import type { SmsReport } from "@/models/sms";
+import type { iSmsReport } from "@/models/sms";
+
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import PermissionDenied from "@/components/PermissionDenied.vue";
+import PageLoader from "@/components/PageLoader.vue";
 
 export default defineComponent({
   name: "admin-manage-sms",
@@ -328,7 +327,7 @@ export default defineComponent({
     });
 
     //variables
-    const sms = ref({} as SmsReport);
+    const sms = ref({} as iSmsReport);
     const tableHeader = ref([
       {
         columnLabel: "id",

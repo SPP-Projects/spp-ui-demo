@@ -11,7 +11,7 @@
         <div class="card-header">
           <!--begin::Card title-->
           <div class="card-title">
-            <h2 class="fw-bold">Invoice # {{ invoiceDetails.reference }}</h2>
+            <h2 class="fw-bold">iInvoice # {{ invoiceDetails.reference }}</h2>
           </div>
           <!--begin::Card title-->
           <!--begin::Card toolbar-->
@@ -87,7 +87,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">User Ref:</td>
+                    <td class="text-gray-400">Customer Ref:</td>
                     <td class="text-gray-800">
                       {{ invoiceDetails.user_reference }}
                     </td>
@@ -222,7 +222,7 @@
         <div class="card-header">
           <!--begin::Card title-->
           <div class="card-title">
-            <h2>Invoice Payments</h2>
+            <h2>iInvoice Payments</h2>
           </div>
           <!--end::Card title-->
           <!--begin::Toolbar-->
@@ -369,13 +369,13 @@
           <!--begin::Section-->
           <div class="mb-10">
             <!--begin::Title-->
-            <h5 class="mb-4">Invoice Summary</h5>
+            <h5 class="mb-4">iInvoice Summary</h5>
             <!--end::Title-->
             <!--begin::Details-->
             <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2">
               <!--begin::Row-->
               <tr class="">
-                <td class="text-gray-400">Invoice ID:</td>
+                <td class="text-gray-400">iInvoice ID:</td>
                 <td class="text-gray-800">{{ invoiceDetails.reference }}</td>
               </tr>
               <!--end::Row-->
@@ -419,7 +419,7 @@
     </div>
     <!--end::Sidebar-->
   </div>
-  <!--View Transaction Modal-->
+  <!--View iTransaction Modal-->
   <div
     class="modal fade"
     id="kt_modal_view_transaction"
@@ -455,7 +455,7 @@
               <div class="pb-12">
                 <!--begin::Title-->
                 <h1 class="fw-bold text-dark">
-                  Transaction Details: {{ transaction.transaction.id }} -
+                  iTransaction Details: {{ transaction.transaction.id }} -
                   {{ transaction.transaction.reference }}
                 </h1>
                 <!--end::Title-->
@@ -534,7 +534,7 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">Institution</td>
+                      <td class="text-muted">iInstitution</td>
                       <td class="text-gray-800">
                         {{
                           transaction.transaction.debit_account_institution_id
@@ -618,9 +618,9 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!--View Transaction Modal-->
+  <!--View iTransaction Modal-->
 
-  <!--update Invoice Modal-->
+  <!--update iInvoice Modal-->
   <div
     class="modal fade"
     id="kt_modal_update_invoice"
@@ -662,7 +662,7 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">{{ invoiceForm.action }} Invoice Status</h1>
+              <h1 class="mb-3">{{ invoiceForm.action }} iInvoice Status</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -732,25 +732,25 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!--update Invoice Modal-->
+  <!--update iInvoice Modal-->
 
   <!--end::Layout-->
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
+import type { iInvoicePayment } from "@/models/invoice";
+import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
+import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
+import { hideModal } from "@/core/helpers/dom";
 
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
-import { useRoute } from "vue-router";
 import Message from "vue-m-message";
-import { hideModal } from "@/core/helpers/dom";
+
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
-import { storeToRefs } from "pinia";
-import type { Transaction } from "@/models/transaction";
-import type { Invoice, InvoicePayment } from "@/models/invoice";
 
 export default defineComponent({
   name: "invoice-details",
@@ -766,7 +766,7 @@ export default defineComponent({
       invoiceDetails,
       invoiceItems,
       invoicePayments,
-      meta,
+
       loadingInvoiceData,
     } = storeToRefs(invoiceStore);
     const { getInvoiceByReference } = useCustomerInvoiceStore();
@@ -820,7 +820,7 @@ export default defineComponent({
       },
     ]);
 
-    const transaction = ref({} as InvoicePayment);
+    const transaction = ref({} as iInvoicePayment);
 
     const invoiceForm = ref({
       id: 0,

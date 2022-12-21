@@ -100,7 +100,7 @@
             class="info"
             @click.prevent="viewTransactionModal(data.transaction)"
           >
-            View Transaction</button
+            View iTransaction</button
           ><span v-else>{{ data.transaction }}</span>
         </template>
       </KTDatatable>
@@ -136,7 +136,7 @@
         <!--begin::Modal body-->
         <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
           <div v-if="transaction.id" class="modal-text">
-            Transaction Details: {{ transaction.id }} -
+            iTransaction Details: {{ transaction.id }} -
             {{ transaction.reference }}
 
             <h6 class="mb-42 mt-2">General</h6>
@@ -167,11 +167,11 @@
             <h6 class="mb-42 mt-3">Debit Account</h6>
             <div>
               <div>
-                Institution ID:
+                iInstitution ID:
                 <b>{{ transaction.debit_account_institution.id }}</b>
               </div>
               <div>
-                Institution Name:
+                iInstitution Name:
                 <b>{{ transaction.debit_account_institution.name }}</b>
               </div>
               <div>
@@ -188,11 +188,11 @@
             <h6 class="mb-42 mt-3">Credit Account</h6>
             <div>
               <div>
-                Institution ID:
+                iInstitution ID:
                 <b>{{ transaction.credit_account_institution.id }}</b>
               </div>
               <div>
-                Institution Name:
+                iInstitution Name:
                 <b>{{ transaction.credit_account_institution.name }}</b>
               </div>
               <div>
@@ -219,14 +219,14 @@
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { useCustomerTransactionBatchStore } from "@/stores/customer/transactionbatch";
+import { storeToRefs } from "pinia";
+import type { iTransaction } from "@/models/transaction";
 
 import { useRoute } from "vue-router";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerTransactionBatchStore } from "@/stores/customer/transactionbatch";
-import { storeToRefs } from "pinia";
-import type { Transaction } from "@/models/transaction";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
 export default defineComponent({
   name: "view-transaction-batch",
@@ -294,7 +294,7 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     });
 
-    const transaction = ref<Transaction | any>({});
+    const transaction = ref<iTransaction | any>({});
     const searchRecords = ref({
       isSearching: false,
       debounceTimeout: ref<number>(0),

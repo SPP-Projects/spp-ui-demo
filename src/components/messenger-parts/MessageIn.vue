@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-start mb-10">
     <!--begin::Wrapper-->
     <div class="d-flex flex-column align-items-start">
-      <!--begin::User-->
+      <!--begin::Customer-->
       <div class="d-flex align-items-center mb-2">
         <div class="symbol symbol-35px symbol-circle">
           <img alt="Pic" :src="image" />
@@ -19,7 +19,7 @@
         </div>
         <!--end::Details-->
       </div>
-      <!--end::User-->
+      <!--end::Customer-->
 
       <!--begin::Text-->
       <div

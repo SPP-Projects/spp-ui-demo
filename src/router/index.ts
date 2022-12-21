@@ -831,6 +831,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/layouts/SystemLayout.vue"),
     children: [
       {
+        path: "/sign-up",
+        name: "sign-up",
+        component: () => import("@/views/shared/authentication/SignUp.vue"),
+        meta: {
+          pageTitle: "Sign Up",
+        },
+      },
+      {
         // the 404 route, when none of the above matches
         path: "/404",
         name: "404",

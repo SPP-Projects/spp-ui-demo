@@ -265,16 +265,16 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
 import { hideModal } from "@/core/helpers/dom";
+import { storeToRefs } from "pinia";
+import { useAdminSmsStore } from "@/stores/admin/sms";
+
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-import { useAdminSmsStore } from "@/stores/admin/sms";
 import sppData from "@/helpers/data";
+
 export default defineComponent({
   name: "admin-manage-sender-ids",
   components: {

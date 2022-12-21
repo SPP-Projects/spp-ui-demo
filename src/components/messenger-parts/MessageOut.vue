@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-end mb-10">
     <!--begin::Wrapper-->
     <div class="d-flex flex-column align-items-end">
-      <!--begin::User-->
+      <!--begin::Customer-->
       <div class="d-flex align-items-center mb-2">
         <!--begin::Details-->
         <div class="me-3">
@@ -17,7 +17,7 @@
           <img alt="Pic" :src="image" />
         </div>
       </div>
-      <!--end::User-->
+      <!--end::Customer-->
 
       <!--begin::Text-->
       <div

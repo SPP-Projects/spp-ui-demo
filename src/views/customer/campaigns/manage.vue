@@ -41,7 +41,7 @@
             data-bs-target="#kt_modal_add_campaign"
             @click="showAddCampaignModal"
           >
-            Add Campaign
+            Add iCampaign
           </button>
         </div>
         <!--end::Group actions-->
@@ -126,7 +126,7 @@
   </div>
   <!--end::Card-->
 
-  <!--View Campaign Modal-->
+  <!--View iCampaign Modal-->
   <div
     class="modal fade"
     id="kt_modal_add_campaign"
@@ -168,7 +168,7 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">{{ campaign.action }} Campaign Details</h1>
+              <h1 class="mb-3">{{ campaign.action }} iCampaign Details</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -177,7 +177,7 @@
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Campaign Title</span>
+                <span class="required">iCampaign Title</span>
                 <i
                   class="fas fa-exclamation-circle ms-2 fs-7"
                   data-bs-toggle="tooltip"
@@ -297,20 +297,19 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!--View Campaign Modal-->
+  <!--View iCampaign Modal-->
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useCustomerCampaignStore } from "@/stores/customer/campaign";
+import { hideModal } from "@/core/helpers/dom";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
-import { hideModal } from "@/core/helpers/dom";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-import { useCustomerCampaignStore } from "@/stores/customer/campaign";
 
 export default defineComponent({
   name: "manage-campaigns",

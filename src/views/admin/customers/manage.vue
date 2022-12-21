@@ -92,18 +92,15 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
+import sppay from "@/helpers/sppay";
+import { storeToRefs } from "pinia";
+import { useAdminCustomerStore } from "@/stores/admin/customer";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
 import PageLoader from "@/components/PageLoader.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 
-import sppay from "@/helpers/sppay";
-
-import { storeToRefs } from "pinia";
-
-import { useAdminCustomerStore } from "@/stores/admin/customer";
 export default defineComponent({
-  name: "customers-list",
+  name: "admin-customers-manage",
   components: {
     KTDatatable,
     PermissionDenied,

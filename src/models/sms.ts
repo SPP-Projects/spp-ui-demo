@@ -1,5 +1,5 @@
-import type { Transaction } from "@/models/transaction";
-import type { User } from "@/models/user";
+import type { iTransaction } from "@/models/transaction";
+import type { iUser } from "@/models/user";
 
 export interface SenderID {
   id: number;
@@ -23,7 +23,7 @@ export interface SenderID {
   };
 }
 
-export interface SmsReport {
+export interface iSmsReport {
   id: number;
   customer_id: number;
   user_id: null;
@@ -36,6 +36,6 @@ export interface SmsReport {
   status_message: string;
   created_at: string;
   updated_at: string;
-  transaction: Transaction | any;
-  user: User | any;
+  transaction: iTransaction | any;
+  user: iUser | any;
 }

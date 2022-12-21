@@ -139,16 +139,13 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-
+import { useAdminCustomerStore } from "@/stores/admin/customer";
+import { useRoute } from "vue-router";
 import type { TabsPaneContext } from "element-plus";
+
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-
-import { useAdminCustomerStore } from "@/stores/admin/customer";
-import { useRoute } from "vue-router";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -157,8 +154,6 @@ export default defineComponent({
   setup() {
     //store
     const customerStore = useAdminCustomerStore();
-    const { loadingCustomerData } = storeToRefs(customerStore);
-    const { getCustomerKYC } = useAdminCustomerStore();
 
     //data variables
     const refData = ref({

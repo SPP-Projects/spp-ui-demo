@@ -32,7 +32,7 @@
     </div>
     <!--end::Quick links-->
 
-    <!--begin::Switch User TYpe-->
+    <!--begin::Switch Customer TYpe-->
     <div class="app-navbar-item ms-1 ms-lg-3">
       <!--begin::Menu wrapper-->
       <label
@@ -47,12 +47,12 @@
           type="checkbox"
           value="1"
           v-model="currentUserMode"
-          @click="setUserMode()"
+          @change="switchUserMode()"
         />
       </label>
       <!--end::Menu wrapper-->
     </div>
-    <!--begin::Switch User TYpe-->
+    <!--begin::Switch Customer TYpe-->
 
     <!--begin::Theme mode-->
     <div class="app-navbar-item ms-1 ms-lg-3">
@@ -78,7 +78,7 @@
       <KTThemeModeSwitcher />
     </div>
     <!--end::Theme mode-->
-    <!--begin::User menu-->
+    <!--begin::Customer menu-->
     <div class="app-navbar-item ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
       <!--begin::Menu wrapper-->
       <div
@@ -92,7 +92,7 @@
       <KTUserMenu />
       <!--end::Menu wrapper-->
     </div>
-    <!--end::User menu-->
+    <!--end::Customer menu-->
     <!--begin::Header menu toggle-->
     <div class="app-navbar-item d-lg-none ms-2 me-n3" title="Show header menu">
       <div
@@ -115,10 +115,11 @@ import { defineComponent, computed, ref, onMounted } from "vue";
 import KTUserMenu from "@/layouts/main-layout/menus/UserAccountMenu.vue";
 import KTThemeModeSwitcher from "@/layouts/main-layout/theme-mode/ThemeModeSwitcher.vue";
 import { useThemeStore } from "@/stores/theme";
-import { ThemeModeComponent } from "@/assets/ts/layout";
+
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 export default defineComponent({
   name: "header-navbar",
@@ -136,26 +137,56 @@ export default defineComponent({
     const authStore = useAuthStore();
     const { isAdminMode } = storeToRefs(authStore);
 
-    const setUserMode = () => {
+    const switchUserMode = () => {
       const newUserMode = ref(false);
 
-      newUserMode.value = !currentUserMode.value;
-      authStore.setAdminMode(newUserMode.value);
+      Swal.fire({
+        title: "Switch User Mode",
+        icon: "warning",
+        buttonsStyling: false,
+        heightAuto: false,
+        //   showCancelButton: true,
 
-      // Go to dashboard
-      router.push({ name: "dashboard" });
+        showDenyButton: true,
+
+        confirmButtonText: "Yes",
+        denyButtonText: "No",
+
+        cancelButtonText: "Cancel",
+
+        customClass: {
+          cancelButton: "btn btn-danger",
+          confirmButton: "btn fw-semobold btn-light-primary",
+          denyButton: "btn btn-danger",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("User Switched", "Continue", "success");
+
+          newUserMode.value = !currentUserMode.value;
+          authStore.setAdminMode(currentUserMode.value);
+
+          // Go to dashboard
+          router.push({ name: "dashboard" });
+        } else if (result.isDenied) {
+          Swal.fire("Switching cancelled", "", "error");
+
+          currentUserMode.value = !currentUserMode.value;
+        } else {
+          currentUserMode.value = !currentUserMode.value;
+        }
+      });
     };
 
     onMounted(() => {
       currentUserMode.value = authStore.getAdminMode();
-      console.log(typeof currentUserMode.value);
-      console.log(typeof authStore.getAdminMode());
     });
     return {
       themeMode,
-      setUserMode,
+
       currentUserMode,
       isAdminMode,
+      switchUserMode,
     };
   },
 });

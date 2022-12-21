@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import SettingsService from "@/services/admin/SettingsService";
 import { getError } from "@/helpers/errors";
-import type { SettingOption } from "@/models/setting";
+import type { iSettingOption } from "@/models/setting";
 
 export const useAdminSettingStore = defineStore("adminSettingStore", {
   state: () => ({
@@ -14,8 +14,8 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
     //types
     settingsTypes: [],
 
-    //optinos
-    generalSettingsOptions: {} as SettingOption,
+    //option
+    generalSettingsOptions: {} as iSettingOption,
 
     settings: [],
     setting: {},

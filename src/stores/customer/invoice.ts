@@ -1,19 +1,22 @@
 import { defineStore } from "pinia";
 import InvoiceService from "@/services/customer/InvoiceService";
 import { getError } from "@/helpers/errors";
-import type { Invoice } from "@/models/invoice";
+import type { iInvoice } from "@/models/invoice";
 
 export const useCustomerInvoiceStore = defineStore("customerInvoiceStore", {
   state: () => ({
     invoices: [],
-    invoiceDetails: {} as Invoice,
+    invoiceDetails: {} as iInvoice,
     invoiceItems: [],
     invoicePayments: [],
-    meta: { total: 0, from: 0, to: 0, last_page: 0 },
+
     invoice: {},
+
+    //shared
     loadingInvoiceData: false,
     error: null,
     unauthorized: false,
+    meta: { total: 0, from: 0, to: 0, last_page: 0 },
   }),
   actions: {
     getAllInvoices(options) {

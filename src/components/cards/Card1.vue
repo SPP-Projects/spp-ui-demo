@@ -83,7 +83,7 @@
         <!--begin::Users-->
         <div class="symbol-group symbol-hover">
           <template v-for="(user, index) in users" :key="index">
-            <!--begin::User-->
+            <!--begin::Customer-->
             <div
               class="symbol symbol-35px symbol-circle"
               data-bs-toggle="tooltip"
@@ -97,7 +97,7 @@
                 >{{ user.initials }}</span
               >
             </div>
-            <!--begin::User-->
+            <!--begin::Customer-->
           </template>
         </div>
         <!--end::Users-->

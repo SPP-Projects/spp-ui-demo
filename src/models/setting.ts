@@ -27,7 +27,7 @@ export interface SettingType {
   updated_at: string;
 }
 
-export interface SettingOption {
+export interface iSettingOption {
   groups: Array<SettingGroup>;
   types: Array<SettingType>;
 }

@@ -215,17 +215,16 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
+import { storeToRefs } from "pinia";
+import { useAdminAccountStore } from "@/stores/admin/account";
 import { hideModal } from "@/core/helpers/dom";
+
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
-import { storeToRefs } from "pinia";
-
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import sppData from "@/helpers/data";
-import { useAdminAccountStore } from "@/stores/admin/account";
+
 export default defineComponent({
   name: "admin-manage-account-groups",
   components: {

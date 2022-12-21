@@ -4,14 +4,16 @@ import { getError } from "@/helpers/errors";
 
 export const useCustomerSmsStore = defineStore("customerSmsStore", {
   state: () => ({
+    smsReports: [],
+
+    senderIDs: [],
+
+    //shared
+
     loadingData: false,
     error: null,
     unauthorized: false,
-
-    smsReports: [],
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
-
-    senderIDs: [],
   }),
   actions: {
     getSmsReports(options) {
