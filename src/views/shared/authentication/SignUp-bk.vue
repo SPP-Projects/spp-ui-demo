@@ -37,10 +37,9 @@
                 class="statbox panel box-box-shadow"
               >
                 <div class="panel-body">
-<!--                  v-model="form.customer_type_id"-->
-                  <template
+                  <el-radio-group
                     class="mt-3 m-0"
-
+                    v-model="form.customer_type_id"
                   >
                     <div class="mb-10 fv-row">
                       <el-radio
@@ -56,7 +55,7 @@
                         }}</small>
                       </el-radio>
                     </div>
-                  </template>
+                  </el-radio-group>
                 </div>
                 <div class="panel-footer p-3 text-center">
                   <button
