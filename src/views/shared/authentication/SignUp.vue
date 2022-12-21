@@ -36,6 +36,8 @@
                 "
                 class="statbox panel box-box-shadow"
               >
+
+                {{customer_types}}
                 <div class="panel-body">
                   <!--                  v-model="form.customer_type_id"-->
                   <template
