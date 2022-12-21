@@ -37,24 +37,25 @@
                 class="statbox panel box-box-shadow"
               >
                 <div class="panel-body">
-<!--                  v-model="form.customer_type_id"-->
+                  <!--                  v-model="form.customer_type_id"-->
                   <template
-
-                    v-for="customer_type in customer_types"            :key="customer_type.id"
+                    v-for="customer_type in customer_types"
+                    :key="customer_type.id"
                   >
                     <div class="mb-10 fv-row">
-                      <el-radio
-
+                      <input
+                        type="radio"
                         class="radio-classic radio-warning mb-3 col-12 mb-8"
                         :value="customer_type.id"
                         :key="customer_type.id"
                         :label="customer_type.id"
-                      >
-                        <h6 class="mb-0">{{ customer_type.name }}</h6>
-                        <small id="sh-text1" class="form-text text-muted">{{
-                          customer_type.description
-                        }}</small>
-                      </el-radio>
+                        v-model="form.customer_type_id"
+                      />
+
+                      <h6 class="mb-0">{{ customer_type.name }}</h6>
+                      <small id="sh-text1" class="form-text text-muted">{{
+                        customer_type.description
+                      }}</small>
                     </div>
                   </template>
                 </div>
