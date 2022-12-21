@@ -39,12 +39,12 @@
                 <div class="panel-body">
 <!--                  v-model="form.customer_type_id"-->
                   <template
-                    class="mt-3 m-0"
 
+                    v-for="customer_type in customer_types"            :key="customer_type.id"
                   >
                     <div class="mb-10 fv-row">
                       <el-radio
-                        v-for="customer_type in customer_types"
+
                         class="radio-classic radio-warning mb-3 col-12 mb-8"
                         :value="customer_type.id"
                         :key="customer_type.id"
