@@ -7,11 +7,11 @@ export const CaretakerApiService = axios.create({
   //   process.env.VUE_APP_ENGINE_LOCATION === "online"
   //     ? "/"
   //     : process.env.VUE_APP_ENGINE_URL_LOCAL + "/",
-  baseURL: "/",
+  baseURL: "",
   withCredentials: true, // required to handle the CSRF token
 });
 
-//interceptors to logout when api has errors [401 & 409]
+//interceptors to logout when api has errors [401 & 409].
 CaretakerApiService.interceptors.response.use(
   (response) => {
     return response;
