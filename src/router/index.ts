@@ -790,16 +790,7 @@ const routes: Array<RouteRecordRaw> = [
       //   },
       // },
       //public
-      {
-        path: "/pay",
-        name: "public-home-page",
-        component: function () {
-          return import("@/views/guest/pay/index.vue");
-        },
-        meta: {
-          pageTitle: "SP Pay",
-        },
-      },
+
       {
         path: "/pay/invoice-details/:reference",
         name: "pay-invoice-details",
@@ -811,6 +802,14 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["invoices", "manage"],
         },
       },
+    ],
+  },
+
+  //sharedRoutes
+  {
+    path: "/",
+    component: () => import("@/layouts/SystemLayout.vue"),
+    children: [
       {
         path: "/pay/payment/:reference/:collectiontype",
         name: "initiate-generic-payment",
@@ -822,14 +821,17 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["campaign", "manage"],
         },
       },
-    ],
-  },
 
-  //sharedRoutes
-  {
-    path: "/",
-    component: () => import("@/layouts/SystemLayout.vue"),
-    children: [
+      {
+        path: "/pay",
+        name: "public-home-page",
+        component: function () {
+          return import("@/views/guest/pay/index.vue");
+        },
+        meta: {
+          pageTitle: "SP Pay",
+        },
+      },
       {
         path: "/sign-up",
         name: "sign-up",

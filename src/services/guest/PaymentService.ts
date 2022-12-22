@@ -12,6 +12,11 @@ class PaymentService {
   getInvoiceByReference(ref) {
     return CaretakerApiService.get(`/v1/invoices/${ref}/pay`);
   }
+
+  getCampaign(ref) {
+    console.log(ref)
+    return CaretakerApiService.get(`/v1/campaigns/${ref}/donate`);
+  }
 }
 
 export default new PaymentService();

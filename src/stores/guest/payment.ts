@@ -16,6 +16,9 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
     invoiceInfo: {},
     invoiceData: {} as iInvoice,
     invoiceItems: [] as iInvoiceItem[],
+
+    //campaigin
+    campaignData: {},
     //shared
     loadingPaymentData: false,
   }),
@@ -63,11 +66,35 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
       return new Promise((resolve, reject) => {
         this.loadingPaymentData = true;
         PaymentService.getInvoiceByReference(id)
-          .then((response) => {
-            this.invoiceData = response.data.invoice;
-            this.invoiceItems = response.data.invoice.items;
+          .then(({ data }) => {
+            if (data.status !== "Error") {
+              this.invoiceData = data.invoice;
+              this.invoiceItems = data.invoice.items;
+            }
 
-            resolve(response);
+            resolve(data);
+          })
+          .catch((error) => {
+            this.loadingPaymentData = false;
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingPaymentData = false;
+          });
+      });
+    },
+
+    getCampaign(id) {
+      return new Promise((resolve, reject) => {
+        this.loadingPaymentData = true;
+        PaymentService.getCampaign(id)
+          .then(({ data }) => {
+            if (data.status !== "Error") {
+              this.campaignData = data.campaign;
+            }
+
+            resolve(data);
           })
           .catch((error) => {
             this.loadingPaymentData = false;

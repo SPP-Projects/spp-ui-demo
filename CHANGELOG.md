@@ -323,7 +323,7 @@
   * added transactionbatch interface
   * added user interface
 
-## 2022-12-20
+## 2022-12-21
 ### Added
 * `Switch User mode`
   * Added swal confirmation before switching
@@ -336,3 +336,9 @@
 ### Changed
 * `Sign Up`
   * Updated Sign Up UI
+
+
+## 2022-12-22
+### Changed
+* `Make Payment`
+  * Updated Payment UI

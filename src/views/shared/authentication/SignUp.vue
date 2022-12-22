@@ -11,10 +11,10 @@
             <div class="mb-10 text-center">
               <router-link to="/" class="">
                 <img
-                    alt="Logo"
-                    src="/media/logos/custom-2.svg"
-                    class="h-40px"
-                    ref="picture"
+                  alt="Logo"
+                  src="/media/logos/custom-2.svg"
+                  class="h-40px"
+                  ref="picture"
                 />
               </router-link>
             </div>
@@ -31,71 +31,71 @@
               <h5>{{ step }}</h5>
 
               <div
-                  v-if="
+                v-if="
                   step === 'Step 1 of 4 - How will you categorise yourself?'
                 "
-                  class="statbox panel box-box-shadow"
+                class="statbox panel box-box-shadow"
               >
                 <div class="panel-body">
                   <el-radio-group
-                      class="mt-3 m-0"
-                      v-model="form.customer_type_id"
+                    class="mt-3 m-0"
+                    v-model="form.customer_type_id"
                   >
                     <div class="mb-10 fv-row">
                       <el-radio
-                          v-for="customer_type in customer_types"
-                          class="radio-classic radio-warning mb-3 col-12 mb-8"
-                          :value="customer_type.id"
-                          :key="customer_type.id"
-                          :label="customer_type.id"
+                        v-for="customer_type in customer_types"
+                        class="radio-classic radio-warning mb-3 col-12 mb-8"
+                        :value="customer_type.id"
+                        :key="customer_type.id"
+                        :label="customer_type.id"
                       >
                         <h6 class="mb-0">{{ customer_type.name }}</h6>
                         <small id="sh-text1" class="form-text text-muted">{{
-                            customer_type.description
-                          }}</small>
+                          customer_type.description
+                        }}</small>
                       </el-radio>
                     </div>
                   </el-radio-group>
                 </div>
                 <div class="panel-footer p-3 text-center">
                   <button
-                      @click="processStepAction('Next', 2)"
-                      class="btn btn-sm btn-success"
-                      :disabled="!form.customer_type_id"
+                    @click="processStepAction('Next', 2)"
+                    class="btn btn-sm btn-success"
+                    :disabled="!form.customer_type_id"
                   >
                     Step 2 - Choose Account Type
                   </button>
                 </div>
               </div>
               <div
-                  v-else-if="
+                v-else-if="
                   step ===
                   'Step 2 of 4 - Which account type will better suit you?'
                 "
-                  class="statbox panel box-box-shadow"
+                class="statbox panel box-box-shadow"
               >
                 <template
-                    v-for="account_type in account_types"
-                    :key="account_type.id"
+                  v-for="account_type in account_types"
+                  :key="account_type.id"
                 >
                   <div class="d-flex fv-row">
                     <!--begin::Radio-->
                     <div class="form-check form-check-custom form-check-solid">
                       <!--begin::Input-->
                       <input
-                          class="form-check-input me-3"
-                          name="user_role"
-                          type="radio"
-                          v-model="form.account_type_id"
-                          :value="account_type.id"
-                          :key="account_type.id"
-                          :label="account_type.id"
+                        class="form-check-input me-3"
+                        name="user_role"
+                        type="radio"
+                        v-model="form.account_type_id"
+                        :value="account_type.id"
+                        :key="account_type.id"
+                        :label="account_type.id"
                       />
                       <!--end::Input-->
                       <!--begin::Label-->
                       <label
-                          class="form-check-label"
-                          for="kt_modal_update_role_option_0"
+                        class="form-check-label"
+                        for="kt_modal_update_role_option_0"
                       >
                         <div class="fw-bold text-gray-800">
                           {{ account_type.name }}
@@ -114,100 +114,100 @@
 
                 <div class="panel-footer p-3 text-center">
                   <button
-                      @click="processStepAction('Previous', 1)"
-                      class="btn btn-sm btn-warning mr-2 me-10 mt-5"
+                    @click="processStepAction('Previous', 1)"
+                    class="btn btn-sm btn-warning mr-2 me-10 mt-5"
                   >
                     Back to Step 1 - Choose Customer Type
                   </button>
                   <button
-                      @click="processStepAction('Next', 3)"
-                      class="btn btn-sm btn-success mt-5"
-                      :disabled="!form.account_type_id"
+                    @click="processStepAction('Next', 3)"
+                    class="btn btn-sm btn-success mt-5"
+                    :disabled="!form.account_type_id"
                   >
                     Step 3 - Your Details
                   </button>
                 </div>
               </div>
               <div
-                  v-else-if="
+                v-else-if="
                   step === 'Step 3 of 4 - Lets get to know you better.'
                 "
-                  class="statbox panel box-box-shadow"
+                class="statbox panel box-box-shadow"
               >
                 <div class="mt-10">
                   <el-tabs
-                      pills
-                      vertical
-                      class="mb-4 mt-3 demo-tabs"
-                      nav-wrapper-class="col-sm-4 col-12"
-                      nav-class="mb-sm-0 mb-3   text-center mx-auto"
-                      @tab-click="handleClick"
-                      tab-position="left"
-                      model-value="Identity & Profile"
-                      ref="formUpdateMoneyRequestRef"
+                    pills
+                    vertical
+                    class="mb-4 mt-3 demo-tabs"
+                    nav-wrapper-class="col-sm-4 col-12"
+                    nav-class="mb-sm-0 mb-3   text-center mx-auto"
+                    @tab-click="handleClick"
+                    tab-position="left"
+                    model-value="Identity & Profile"
+                    ref="formUpdateMoneyRequestRef"
                   >
                     <el-tab-pane
-                        v-for="(group, key) in kyc"
-                        :title="key"
-                        :key="key"
-                        title-link-class="mb-3 text-right"
-                        :label="key"
-                        :name="key"
+                      v-for="(group, key) in kyc"
+                      :title="key"
+                      :key="key"
+                      title-link-class="mb-3 text-right"
+                      :label="key"
+                      :name="key"
                     >
                       <h5 class="mb-4">{{ key }}</h5>
                       <form>
                         <div
-                            v-for="requirement in group"
-                            :key="requirement.id"
-                            :id="'requirement-group-' + requirement.id"
-                            :label="requirement.name"
-                            :label-for="'requirement-' + requirement.id"
-                            class="mt-2"
+                          v-for="requirement in group"
+                          :key="requirement.id"
+                          :id="'requirement-group-' + requirement.id"
+                          :label="requirement.name"
+                          :label-for="'requirement-' + requirement.id"
+                          class="mt-2"
                         >
                           <h6>{{ requirement.name }}</h6>
                           <el-select
-                              v-if="requirement.form_type === 'select'"
-                              v-model="form.kyc_details[requirement.form_name]"
+                            v-if="requirement.form_type === 'select'"
+                            v-model="form.kyc_details[requirement.form_name]"
                           >
                             <el-option
-                                v-for="item in requirement.options"
-                                :key="item.value"
-                                :label="item.text"
-                                :value="item.value"
+                              v-for="item in requirement.options"
+                              :key="item.value"
+                              :label="item.text"
+                              :value="item.value"
                             />
                           </el-select>
                           <input
-                              v-else-if="requirement.form_type === 'file'"
-                              placeholder="Choose a file or drop it here..."
-                              class="mb-4"
-                              :ref="requirement.form_name"
-                              :id="requirement.form_name"
-                              type="file"
-                              @change="handleFileUpload($event)"
+                            v-else-if="requirement.form_type === 'file'"
+                            placeholder="Choose a file or drop it here..."
+                            class="mb-4"
+                            :ref="requirement.form_name"
+                            :id="requirement.form_name"
+                            type="file"
+                            @change="handleFileUpload($event)"
                           />
                           <el-input
-                              v-else
-                              :id="'requirement-' + requirement.id"
-                              v-model="form.kyc_details[requirement.form_name]"
+                            v-else
+                            :id="'requirement-' + requirement.id"
+                            v-model="form.kyc_details[requirement.form_name]"
                           ></el-input>
                           <div v-if="requirement?.detail?.file?.file_name">
                             <a
-                                v-if="
+                              v-if="
                                 requirement.form_type === 'file' &&
                                 requirement.detail !== null &&
                                 requirement.detail.file !== null
                               "
-                                target="_blank"
-                                :href="
+                              target="_blank"
+                              :href="
                                 'https://sppay.dev/uploads/files/kyc_detail_files/' +
                                 requirement.detail.file.file_name
                               "
                             >
                               <small
-                                  style="color: black"
-                                  :id="requirement.form_name + '_help'"
-                                  class="form-text text-muted mt-0"
-                              >Current File:
+                                style="color: black"
+                                :id="requirement.form_name + '_help'"
+                                class="form-text text-muted mt-0"
+                                >Current File:
                                 {{
                                   requirement.detail.file.original_name
                                 }}</small
@@ -221,38 +221,38 @@
                 </div>
                 <div class="panel-footer p-3 text-center">
                   <button
-                      @click="processStepAction('Previous', 2)"
-                      class="btn btn-sm btn-warning mr-2 me-10 mt-5"
+                    @click="processStepAction('Previous', 2)"
+                    class="btn btn-sm btn-warning mr-2 me-10 mt-5"
                   >
                     Back to Step 2 - Choose Account Type
                   </button>
                   <button
-                      @click="processStepAction('Next', 4)"
-                      class="btn btn-sm btn-success mt-5"
-                      :disabled="!form.customer_type_id"
+                    @click="processStepAction('Next', 4)"
+                    class="btn btn-sm btn-success mt-5"
+                    :disabled="!form.customer_type_id"
                   >
                     Step 4 - Enter Your iUser Details
                   </button>
                 </div>
               </div>
               <div
-                  v-else-if="step === 'Step 4 of 4 - Almost there!'"
-                  class="statbox panel box-box-shadow"
+                v-else-if="step === 'Step 4 of 4 - Almost there!'"
+                class="statbox panel box-box-shadow"
               >
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-md-6">
                       <el-input
-                          id="'first_name"
-                          v-model="form.user.first_name"
-                          placeholder="Your First Name"
+                        id="'first_name"
+                        v-model="form.user.first_name"
+                        placeholder="Your First Name"
                       ></el-input>
                     </div>
                     <div class="col-md-6">
                       <el-input
-                          id="last_name"
-                          v-model="form.user.last_name"
-                          placeholder="Your Last Name"
+                        id="last_name"
+                        v-model="form.user.last_name"
+                        placeholder="Your Last Name"
                       ></el-input>
                     </div>
                   </div>
@@ -271,33 +271,33 @@
                       <!--              ></el-input>-->
 
                       <el-input
-                          id="email"
-                          v-model="form.user.email"
-                          placeholder="Your e-mail"
-                          type="email"
+                        id="email"
+                        v-model="form.user.email"
+                        placeholder="Your e-mail"
+                        type="email"
                       ></el-input>
                     </div>
                     <div class="col-md-6">
                       <el-input
-                          id="password"
-                          v-model="form.user.password"
-                          placeholder="Your Password"
-                          type="password"
+                        id="password"
+                        v-model="form.user.password"
+                        placeholder="Your Password"
+                        type="password"
                       ></el-input>
                     </div>
                   </div>
                 </div>
                 <div class="panel-footer p-3 text-center mt-10">
                   <button
-                      @click="processStepAction('Previous', 3)"
-                      class="btn btn-sm btn-warning mr-2 me-10 mt-5"
+                    @click="processStepAction('Previous', 3)"
+                    class="btn btn-sm btn-warning mr-2 me-10 mt-5"
                   >
                     Back to Step 3 - Your Details
                   </button>
                   <button
-                      @click="registerCustomer()"
-                      class="btn btn-sm btn-success mt-5"
-                      :disabled="!form.customer_type_id"
+                    @click="registerCustomer()"
+                    class="btn btn-sm btn-success mt-5"
+                    :disabled="!form.customer_type_id"
                   >
                     Sign Up!
                   </button>
@@ -339,9 +339,9 @@ export default defineComponent({
       email: Yup.string().min(4).required().email().label("Email"),
       password: Yup.string().required().label("Password"),
       password_confirmation: Yup.string()
-          .required()
-          .oneOf([Yup.ref("password"), null], "Passwords must match")
-          .label("Password Confirmation"),
+        .required()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .label("Password Confirmation"),
     });
 
     const active_tab = ref(1);
@@ -376,7 +376,7 @@ export default defineComponent({
           case 2:
             await getAccountTypes();
             step.value =
-                "Step 2 of 4 - Which account type will better suit you?";
+              "Step 2 of 4 - Which account type will better suit you?";
             break;
           case 3:
             await getKycRequirements();
@@ -399,7 +399,7 @@ export default defineComponent({
             break;
           case 2:
             step.value =
-                "Step 2 of 4 - Which account type will better suit you?";
+              "Step 2 of 4 - Which account type will better suit you?";
             processing.value = false;
             break;
           case 3:
@@ -415,59 +415,59 @@ export default defineComponent({
 
     const getCustomerTypes = () => {
       onboardingStore
-          .getCustomerType()
+        .getCustomerType()
 
-          .then((response) => {
-            customer_types.value = response;
-          })
-          .catch((error) => {
-            if (error.response.status === 403) {
-              // unauthorized.
-              //  data.value.unauthorized = true;
-            }
-          })
-          .finally(() => {
-            processing.value = false;
-          });
+        .then((response) => {
+          customer_types.value = response;
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            // unauthorized.
+            //  data.value.unauthorized = true;
+          }
+        })
+        .finally(() => {
+          processing.value = false;
+        });
     };
 
     const getAccountTypes = () => {
       onboardingStore
-          .getAccountType({
-            customer_type_id: form.value.customer_type_id,
-          })
+        .getAccountType({
+          customer_type_id: form.value.customer_type_id,
+        })
 
-          .then((response) => {
-            account_types.value = response;
-          })
-          .finally(() => {
-            processing.value = false;
-          });
+        .then((response) => {
+          account_types.value = response;
+        })
+        .finally(() => {
+          processing.value = false;
+        });
     };
 
     const getKycRequirements = () => {
       onboardingStore
-          .getKYCRequirements({
-            customer_type_id: form.value.customer_type_id,
-            account_type_id: form.value.account_type_id,
-          })
+        .getKYCRequirements({
+          customer_type_id: form.value.customer_type_id,
+          account_type_id: form.value.account_type_id,
+        })
 
-          .then((response) => {
-            kyc.value = response;
-            for (const key in kyc.value) {
-              kyc.value[key].forEach((requirement) => {
-                if (requirement.form_type === "file") {
-                  form.value.kyc_details[requirement.form_name] = null;
-                } else {
-                  form.value.kyc_details[requirement.form_name] =
-                      requirement.detail ? requirement.detail.value : null;
-                }
-              });
-            }
-          })
-          .finally(() => {
-            processing.value = false;
-          });
+        .then((response) => {
+          kyc.value = response;
+          for (const key in kyc.value) {
+            kyc.value[key].forEach((requirement) => {
+              if (requirement.form_type === "file") {
+                form.value.kyc_details[requirement.form_name] = null;
+              } else {
+                form.value.kyc_details[requirement.form_name] =
+                  requirement.detail ? requirement.detail.value : null;
+              }
+            });
+          }
+        })
+        .finally(() => {
+          processing.value = false;
+        });
     };
 
     const registerCustomer = () => {
@@ -495,47 +495,47 @@ export default defineComponent({
       }
 
       onboardingStore
-          .registerCustomer(formData)
+        .registerCustomer(formData)
 
-          .then(() => {
-            Message({
-              message: "Registration successful! Welcome to SP Pay.",
-              position: "bottom-right",
-              type: "success",
-              duration: 5000,
-              zIndex: 99999,
-            });
+        .then(() => {
+          Message({
+            message: "Registration successful! Welcome to SP Pay.",
+            position: "bottom-right",
+            type: "success",
+            duration: 5000,
+            zIndex: 99999,
+          });
 
-            router.push({ name: "dashboard" });
-          })
-          .catch((error) => {
-            // get errors from state
-            let response = error.response.data;
+          router.push({ name: "dashboard" });
+        })
+        .catch((error) => {
+          // get errors from state
+          let response = error.response.data;
 
-            if (response.errors) {
-              let errors = response.errors;
-              for (const key in errors) {
-                Message({
-                  message: errors[key][0],
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
-            } else if (response.error) {
+          if (response.errors) {
+            let errors = response.errors;
+            for (const key in errors) {
               Message({
-                message: response.error,
+                message: errors[key][0],
                 position: "bottom-right",
                 type: "error",
                 duration: 5000,
                 zIndex: 99999,
               });
             }
-          })
-          .finally(() => {
-            processing.value = false;
-          });
+          } else if (response.error) {
+            Message({
+              message: response.error,
+              position: "bottom-right",
+              type: "error",
+              duration: 5000,
+              zIndex: 99999,
+            });
+          }
+        })
+        .finally(() => {
+          processing.value = false;
+        });
     };
     const handleClick = (tab: TabsPaneContext) => {
       console.log(tab);
