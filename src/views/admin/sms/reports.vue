@@ -261,7 +261,7 @@
                   </div>
                 </div>
                 <div v-if="sms.transaction">
-                  <h6 class="mb-42 mt-3">iTransaction</h6>
+                  <h6 class="mb-42 mt-3">Transaction</h6>
                   <div>
                     Reference: <b>{{ sms.transaction.reference }}</b>
                   </div>

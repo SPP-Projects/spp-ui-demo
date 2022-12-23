@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add iInstitution
+            Add Institution
           </button>
         </div>
         <!--end::Group actions-->
@@ -234,7 +234,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >iInstitution Type</label
+                  >Institution Type</label
                 >
 
                 <!--end::Label-->

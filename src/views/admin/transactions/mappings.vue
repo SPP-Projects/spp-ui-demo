@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add iTransaction Type Accounts Mapping
+            Add Transaction Type Accounts Mapping
           </button>
         </div>
         <!--end::Group actions-->
@@ -165,7 +165,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >iTransaction Type</label
+                  >Transaction Type</label
                 >
                 <!--end::Label-->
 
@@ -192,7 +192,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Debit iInstitution Type</label
+                  >Debit Institution Type</label
                 >
                 <!--end::Label-->
 
@@ -248,7 +248,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >Credit iInstitution Type</label
+                  >Credit Institution Type</label
                 >
                 <!--end::Label-->
 

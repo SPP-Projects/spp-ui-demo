@@ -71,6 +71,24 @@ const sppData = {
       name: "Percentage",
     },
   ],
+  invoiceStatuses: [
+    {
+      id: 1,
+      name: "Pending",
+    },
+    {
+      id: 2,
+      name: "Completed",
+    },
+    {
+      id: 3,
+      name: "Rejected",
+    },
+    {
+      id: 4,
+      name: "Cancelled",
+    },
+  ],
 };
 
 export default sppData;

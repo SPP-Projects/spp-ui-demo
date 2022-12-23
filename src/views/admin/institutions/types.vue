@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add iInstitution Type
+            Add Institution Type
           </button>
         </div>
         <!--end::Group actions-->

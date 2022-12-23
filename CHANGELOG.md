@@ -339,6 +339,26 @@
 
 
 ## 2022-12-22
+### Added
+* `Customer/Campaign`
+  * Added campaign validation
+* `Customer/Money request`
+  * Added money request validation
+
 ### Changed
 * `Make Payment`
   * Updated Payment UI
+
+### Fixed
+* `Customer UI`
+  * fixed typescript bugs
+* `Customer Campaigns`
+  * fixed typescript bugs
+
+## 2022-12-23
+### Fixed
+* `Customer Money Request`
+  * fixed typescript bugs
+* `Customer Invoice`
+  * fixed typescript bugs
+

@@ -29,7 +29,7 @@
             <tr>
               <!--begin::Event=-->
               <td class="min-w-400px">
-                iInvoice
+                Invoice
                 <a
                   href="#"
                   class="fw-bold text-gray-800 text-hover-primary me-1"
@@ -50,7 +50,7 @@
             <tr>
               <!--begin::Event=-->
               <td class="min-w-400px">
-                iInvoice
+                Invoice
                 <a
                   href="#"
                   class="fw-bold text-gray-800 text-hover-primary me-1"
@@ -113,7 +113,7 @@
             <tr>
               <!--begin::Event=-->
               <td class="min-w-400px">
-                iInvoice
+                Invoice
                 <a
                   href="#"
                   class="fw-bold text-gray-800 text-hover-primary me-1"

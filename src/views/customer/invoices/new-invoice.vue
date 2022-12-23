@@ -10,7 +10,13 @@
         <!--begin::Card body-->
         <div class="card-body p-12">
           <!--begin::Form-->
-          <form action="" id="kt_invoice_form" @submit.prevent="processInvoice">
+          <el-form
+            @submit.prevent="processInvoice()"
+            id="kt_invoice_form"
+            :rules="formRules"
+            :model="formData"
+            ref="formAddMoneyRequestRef"
+          >
             <!--begin::Wrapper-->
             <div class="d-flex flex-column align-items-start flex-xxl-row">
               <!--begin::Input group-->
@@ -20,7 +26,7 @@
                 data-bs-trigger="hover"
                 title="Specify invoice #"
               >
-                <span class="fs-2 fw-bold text-gray-800">iInvoice #</span>
+                <span class="fs-2 fw-bold text-gray-800">Invoice #</span>
                 <input
                   type="text"
                   class="form-control form-control text-muted fs-4 w-175px"
@@ -66,12 +72,14 @@
                   >
                   <!--begin::Input group-->
                   <div class="mb-5">
-                    <input
-                      type="text"
-                      class="form-control form-control-solid"
-                      placeholder="Name"
-                      v-model="formData.bill_to_name"
-                    />
+                    <el-form-item prop="bill_to_name">
+                      <input
+                        type="text"
+                        class="form-control form-control-solid"
+                        placeholder="Name"
+                        v-model="formData.bill_to_name"
+                      />
+                    </el-form-item>
                   </div>
                 </div>
                 <!--end::Col-->
@@ -82,12 +90,14 @@
                   >
                   <!--begin::Input group-->
                   <div class="mb-5">
-                    <input
-                      type="email"
-                      class="form-control form-control-solid"
-                      placeholder="Email"
-                      v-model="formData.bill_to_email"
-                    />
+                    <el-form-item prop="bill_to_email">
+                      <input
+                        type="email"
+                        class="form-control form-control-solid"
+                        placeholder="Email"
+                        v-model="formData.bill_to_email"
+                        name="bill_to_email"
+                    /></el-form-item>
                   </div>
                   <!--end::Input group-->
                 </div>
@@ -407,7 +417,7 @@
               <!--end::Notes-->
             </div>
             <!--end::Wrapper-->
-          </form>
+          </el-form>
           <!--end::Form-->
         </div>
         <!--end::Card body-->
@@ -500,32 +510,23 @@
           <!--begin::Actions-->
           <div class="mb-0">
             <button
+              :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              class="btn btn-lg btn-primary"
               type="submit"
-              href="#"
-              class="btn btn-primary w-100"
-              id="kt_invoice_submit_button"
-              @click.prevent="processInvoice"
+              @click="processInvoice()"
             >
-              <span class="svg-icon svg-icon-3">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.43 8.56949L10.744 15.1395C10.6422 15.282 10.5804 15.4492 10.5651 15.6236C10.5498 15.7981 10.5815 15.9734 10.657 16.1315L13.194 21.4425C13.2737 21.6097 13.3991 21.751 13.5557 21.8499C13.7123 21.9488 13.8938 22.0014 14.079 22.0015H14.117C14.3087 21.9941 14.4941 21.9307 14.6502 21.8191C14.8062 21.7075 14.9261 21.5526 14.995 21.3735L21.933 3.33649C22.0011 3.15918 22.0164 2.96594 21.977 2.78013C21.9376 2.59432 21.8452 2.4239 21.711 2.28949L15.43 8.56949Z"
-                    fill="currentColor"
-                  />
-                  <path
-                    opacity="0.3"
-                    d="M20.664 2.06648L2.62602 9.00148C2.44768 9.07085 2.29348 9.19082 2.1824 9.34663C2.07131 9.50244 2.00818 9.68731 2.00074 9.87853C1.99331 10.0697 2.04189 10.259 2.14054 10.4229C2.23919 10.5869 2.38359 10.7185 2.55601 10.8015L7.86601 13.3365C8.02383 13.4126 8.19925 13.4448 8.37382 13.4297C8.54839 13.4145 8.71565 13.3526 8.85801 13.2505L15.43 8.56548L21.711 2.28448C21.5762 2.15096 21.4055 2.05932 21.2198 2.02064C21.034 1.98196 20.8409 1.99788 20.664 2.06648Z"
-                    fill="currentColor"
-                  />
-                </svg>
+              <span v-if="!refData.loadingAction" class="indicator-label">
+                Add Invoice
+                <span class="svg-icon svg-icon-3 ms-2 me-0">
+                  <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+                </span>
               </span>
-              <!--end::Svg Icon-->Add iInvoice
+              <span v-if="refData.loadingAction" class="indicator-progress">
+                Please wait...
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
             </button>
           </div>
           <!--end::Actions-->
@@ -545,11 +546,11 @@ import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
 import { storeToRefs } from "pinia";
 
 import Message from "vue-m-message";
-import router from "@/router";
+
 import moment from "moment";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-
+import { useRouter } from "vue-router";
 interface invoiceItems {
   quantity: number;
   description: string;
@@ -563,7 +564,7 @@ export default defineComponent({
     //store
     const invoiceStore = useCustomerInvoiceStore();
     const { loadingInvoiceData } = storeToRefs(invoiceStore);
-
+    const router = useRouter();
     const refData = ref({
       unauthorized: false,
       noDataMessage: ["No Data"],
@@ -571,7 +572,7 @@ export default defineComponent({
       formType: "add",
       //loading
       loadingPage: false,
-
+      loadingAction: false,
       products: [],
     });
 
@@ -599,8 +600,6 @@ export default defineComponent({
 
     const loadingPage = ref(true);
 
-    const loading = ref(false);
-
     const removeInvoiceItem = (key) => {
       formData.value.items.splice(key, 1);
       calculateTotal();
@@ -615,46 +614,102 @@ export default defineComponent({
       });
     };
 
+    const formAddMoneyRequestRef = ref<null | HTMLFormElement>(null);
+
+    const formRules = ref({
+      bill_to_email: [
+        {
+          required: true,
+          message: "Recipient email is required",
+          trigger: "change",
+        },
+      ],
+      bill_to_name: [
+        {
+          required: true,
+          message: "Recipient name is required",
+          trigger: "change",
+        },
+      ],
+      sub_total: [
+        {
+          required: true,
+          message: "Sub total is required",
+          trigger: "change",
+        },
+      ],
+      total: [
+        {
+          required: true,
+          message: "Total amount requested is required",
+          trigger: "change",
+        },
+      ],
+      due_date: [
+        {
+          required: true,
+          message: "Due date is required",
+          trigger: "change",
+        },
+      ],
+    });
     const processInvoice = () => {
-      invoiceStore
-        .addInvoice(formData.value)
-        .then(() => {
-          Message({
-            message: "Invoice added successfully, please confirm details.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+      if (!formAddMoneyRequestRef.value) {
+        return;
+      }
+      formAddMoneyRequestRef.value.validate((valid) => {
+        if (valid) {
+          refData.value.loadingAction = true;
 
-          router.push(`/invoices`);
-        })
-        .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
+          invoiceStore
+            .addInvoice(formData.value)
+            .then(() => {
               Message({
-                message: errors[key][0],
+                message: "Invoice added successfully, please confirm details.",
                 position: "bottom-right",
-                type: "error",
+                type: "success",
                 duration: 5000,
                 zIndex: 99999,
               });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
-        })
-        .finally(() => (loading.value = false));
+
+              router.push(`/invoices`);
+
+              refData.value.loadingAction = false;
+            })
+            .catch((error) => {
+              // get errors from state
+              const response = error.response.data;
+
+              if (response.errors) {
+                const errors = response.errors;
+                for (const key in errors) {
+                  Message({
+                    message: errors[key][0],
+                    //TODO
+                    //position: "bottom-right",
+                    type: "error",
+                    duration: 5000,
+                    zIndex: 99999,
+                  });
+                }
+              } else if (response.error) {
+                Message({
+                  message: response.error,
+                  //TODO
+                  //position: "bottom-right",
+                  type: "error",
+                  duration: 5000,
+                  zIndex: 99999,
+                });
+              }
+            })
+            .finally(() => (refData.value.loadingAction = false));
+          //do nothing.
+        } else {
+          console.log("error");
+          return false;
+        }
+      });
     };
 
     const verifyQuantity = (detail, id) => {
@@ -703,8 +758,6 @@ export default defineComponent({
     return {
       loadingPage,
 
-      loading,
-
       removeInvoiceItem,
       addInvoiceItem,
       refData,
@@ -713,10 +766,13 @@ export default defineComponent({
 
       verifyQuantity,
 
-      formData,
-
       //state
       loadingInvoiceData,
+
+      //
+      formRules,
+      formData,
+      formAddMoneyRequestRef,
     };
   },
 });

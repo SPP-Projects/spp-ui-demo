@@ -67,12 +67,12 @@ export default defineComponent({
     const events = ref([
       {
         event:
-          'iInvoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#LOP-45640</a> has been <span class="badge badge-light-danger">Declined</span>',
+          'Invoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#LOP-45640</a> has been <span class="badge badge-light-danger">Declined</span>',
         date: "20 Dec 2021, 5:30 pm",
       },
       {
         event:
-          'iInvoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#DER-45645</a> status has changed from <span class="badge badge-light-info me-1">In Progress</span> to <span class="badge badge-light-primary">In Transit</span>',
+          'Invoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#DER-45645</a> status has changed from <span class="badge badge-light-info me-1">In Progress</span> to <span class="badge badge-light-primary">In Transit</span>',
         date: "24 Jun 2021, 5:20 pm",
       },
       {
@@ -82,7 +82,7 @@ export default defineComponent({
       },
       {
         event:
-          'iInvoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#KIO-45656</a> status has changed from <span class="badge badge-light-succees me-1">In Transit</span> to <span class="badge badge-light-success">Approved</span>',
+          'Invoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#KIO-45656</a> status has changed from <span class="badge badge-light-succees me-1">In Transit</span> to <span class="badge badge-light-success">Approved</span>',
         date: "20 Dec 2021, 6:43 am",
       },
       {
@@ -92,7 +92,7 @@ export default defineComponent({
       },
       {
         event:
-          'iInvoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#SEP-45656</a> status has changed from <span class="badge badge-light-warning me-1">Pending</span> to <span class="badge badge-light-info">In Progress</span>',
+          'Invoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#SEP-45656</a> status has changed from <span class="badge badge-light-warning me-1">Pending</span> to <span class="badge badge-light-info">In Progress</span>',
         date: "22 Sep 2021, 5:30 pm",
       },
       {
@@ -112,7 +112,7 @@ export default defineComponent({
       },
       {
         event:
-          'iInvoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#WER-45670</a> is <span class="badge badge-light-info">In Progress</span>',
+          'Invoice <a href="#" class="fw-bold text-gray-900 text-hover-primary me-1">#WER-45670</a> is <span class="badge badge-light-info">In Progress</span>',
         date: "10 Mar 2021, 9:23 pm",
       },
     ]);

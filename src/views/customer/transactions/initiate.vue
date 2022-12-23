@@ -9,16 +9,16 @@
       <div class="row">
         <div class="col-md-12">
           <h4 v-if="form.step === 'input'" class="text-center">
-            New iTransaction
+            New Transaction
           </h4>
           <h4 v-if="form.step === 'validated'" class="text-center">
-            Confirm iTransaction
+            Confirm Transaction
           </h4>
           <h4 v-if="form.step === 'initiated'" class="text-center">
-            Approve iTransaction
+            Approve Transaction
           </h4>
           <h4 v-if="form.step === 'confirmed'" class="text-center">
-            iTransaction Submitted
+            Transaction Submitted
           </h4>
           <hr />
         </div>
@@ -48,7 +48,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="mb-3">
-                <label class="form-label">Debit iInstitution</label>
+                <label class="form-label">Debit Institution</label>
 
                 <select
                   name="institution_id"
@@ -56,7 +56,7 @@
                   v-model="request.debit_account_institution"
                   :disabled="loading"
                 >
-                  <option value="">Select Debit iInstitution</option>
+                  <option value="">Select Debit Institution</option>
                   <option
                     v-for="institution in institutions"
                     :key="institution.id"
@@ -175,10 +175,10 @@
           <div class="col-md-12 mb-3">
             <h5>General Details</h5>
             <div class="col-md-12">
-              iTransaction Type Code: <b>{{ validated.type_code }}</b>
+              Transaction Type Code: <b>{{ validated.type_code }}</b>
             </div>
             <div class="col-md-12">
-              iTransaction Type Name: <b>{{ validated.type_name }}</b>
+              Transaction Type Name: <b>{{ validated.type_name }}</b>
             </div>
             <div class="col-md-12">
               Debit Currency: <b>{{ validated.debit_currency }}</b>
@@ -194,7 +194,7 @@
           <div class="col-md-12 mb-3">
             <h5>Sender Details</h5>
             <div class="col-md-12">
-              iInstitution:
+              Institution:
               <b>{{ validated.debit_account_institution_name }}</b>
             </div>
             <div class="col-md-12">
@@ -211,7 +211,7 @@
           <div class="col-md-12">
             <h5>Recipient Details</h5>
             <div class="col-md-12">
-              iInstitution:
+              Institution:
               <b>{{ validated.credit_account_institution_name }}</b>
             </div>
             <div class="col-md-12">
@@ -338,7 +338,7 @@
             >
           </div>
           <div class="col-md-12">
-            Recipient iInstitution:
+            Recipient Institution:
             <b>{{ validated.credit_account_institution_name }}</b>
           </div>
           <div class="col-md-12">
@@ -389,7 +389,7 @@
                     <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
                     <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
                   </svg>
-                  <span v-else> Another iTransaction</span>
+                  <span v-else> Another Transaction</span>
                 </button>
               </router-link>
             </div>
@@ -427,7 +427,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="mb-3">
-                <label class="form-label">Credit iInstitution</label>
+                <label class="form-label">Credit Institution</label>
 
                 <select
                   name="institution_id"
@@ -435,7 +435,7 @@
                   v-model="request.credit_account_institution"
                   :disabled="loading"
                 >
-                  <option value="">Select Credit iInstitution</option>
+                  <option value="">Select Credit Institution</option>
                   <option
                     v-for="institution in institutions"
                     :key="institution.id"
@@ -530,10 +530,10 @@
           <div class="col-md-12 mb-3">
             <h5>General Details</h5>
             <div class="col-md-12">
-              iTransaction Type Code: <b>{{ validated.type_code }}</b>
+              Transaction Type Code: <b>{{ validated.type_code }}</b>
             </div>
             <div class="col-md-12">
-              iTransaction Type Name: <b>{{ validated.type_name }}</b>
+              Transaction Type Name: <b>{{ validated.type_name }}</b>
             </div>
             <div class="col-md-12">
               Debit Currency: <b>{{ validated.debit_currency }}</b>
@@ -549,7 +549,7 @@
           <div class="col-md-12 mb-3">
             <h5>Sender Details</h5>
             <div class="col-md-12">
-              iInstitution:
+              Institution:
               <b>{{ validated.debit_account_institution_name }}</b>
             </div>
             <div class="col-md-12">
@@ -566,7 +566,7 @@
           <div class="col-md-12">
             <h5>Recipient Details</h5>
             <div class="col-md-12">
-              iInstitution:
+              Institution:
               <b>{{ validated.credit_account_institution_name }}</b>
             </div>
             <div class="col-md-12">
@@ -693,7 +693,7 @@
             >
           </div>
           <div class="col-md-12">
-            Recipient iInstitution:
+            Recipient Institution:
             <b>{{ validated.credit_account_institution_name }}</b>
           </div>
           <div class="col-md-12">
@@ -744,7 +744,7 @@
                     <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
                     <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
                   </svg>
-                  <span v-else> Another iTransaction</span>
+                  <span v-else> Another Transaction</span>
                 </button>
               </router-link>
             </div>
@@ -868,7 +868,7 @@ export default defineComponent({
       //   });
     };
 
-    // Validate iTransaction
+    // Validate Transaction
     const validateTransaction = () => {
       console.log(request.value);
 
@@ -917,7 +917,7 @@ export default defineComponent({
         .finally(() => (loading.value = false));
     };
 
-    // Confirm iTransaction
+    // Confirm Transaction
     const confirmTransaction = () => {
       loading.value = true;
       console.log(request);

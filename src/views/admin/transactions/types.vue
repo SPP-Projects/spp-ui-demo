@@ -92,7 +92,7 @@
   </div>
   <!--end::Card-->
 
-  <!--View iTransaction Modal-->
+  <!--View Transaction Modal-->
   <div
     class="modal fade"
     id="kt_modal_view_transaction"
@@ -127,7 +127,7 @@
               <div class="pb-12">
                 <!--begin::Title-->
                 <h1 class="fw-bold text-dark">
-                  iTransaction Details: {{ transaction.id }} -
+                  Transaction Details: {{ transaction.id }} -
                   {{ transaction.reference }}
                 </h1>
                 <!--end::Title-->
@@ -205,7 +205,7 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">iInstitution</td>
+                      <td class="text-muted">Institution</td>
                       <td class="text-gray-800">
                         {{ transaction.debit_account_institution.name }}
                       </td>
@@ -249,7 +249,7 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">Debit iInstitution</td>
+                      <td class="text-muted">Debit Institution</td>
                       <td class="text-gray-800">
                         {{ transaction.credit_account_institution.name }}
                       </td>
@@ -314,7 +314,7 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!--View iTransaction Modal-->
+  <!--View Transaction Modal-->
 </template>
 
 <script lang="ts">

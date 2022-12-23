@@ -9,7 +9,7 @@
         <div class="card-body pt-0 pb-5">
           <div v-if="!invoiceData">No Data</div>
           <div class="flex-lg-row-fluid mb-10 mb-xl-0" v-else>
-            <!--begin::iInvoice 2 content-->
+            <!--begin::Invoice 2 content-->
             <div class="mt-n1">
               <!--begin::Top-->
               <div class="d-flex flex-stack pb-10">
@@ -25,7 +25,7 @@
                   :to="`/pay/payment/${invoiceData.reference}/invoice`"
                 >
                   <button class="btn btn-sm btn-success">
-                    Pay for iInvoice
+                    Pay for Invoice
                   </button>
                 </router-link>
 
@@ -36,7 +36,7 @@
               <div class="m-0">
                 <!--begin::Label-->
                 <div class="fw-bold fs-3 text-gray-800 mb-8">
-                  iInvoice #{{ invoiceData.reference }} <br />
+                  Invoice #{{ invoiceData.reference }} <br />
                   Customer Reference:
                   {{ invoiceData.user_reference }}
                 </div>
@@ -234,7 +234,7 @@
               </div>
               <!--end::Wrapper-->
             </div>
-            <!--end::iInvoice 2 content-->
+            <!--end::Invoice 2 content-->
           </div>
         </div>
         <!--end::Card body-->

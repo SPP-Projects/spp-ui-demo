@@ -100,7 +100,7 @@
             class="info"
             @click.prevent="viewTransactionModal(data.transaction)"
           >
-            View iTransaction</button
+            View Transaction</button
           ><span v-else>{{ data.transaction }}</span>
         </template>
       </KTDatatable>
@@ -136,7 +136,7 @@
         <!--begin::Modal body-->
         <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
           <div v-if="transaction.id" class="modal-text">
-            iTransaction Details: {{ transaction.id }} -
+            Transaction Details: {{ transaction.id }} -
             {{ transaction.reference }}
 
             <h6 class="mb-42 mt-2">General</h6>
@@ -167,11 +167,11 @@
             <h6 class="mb-42 mt-3">Debit Account</h6>
             <div>
               <div>
-                iInstitution ID:
+                Institution ID:
                 <b>{{ transaction.debit_account_institution.id }}</b>
               </div>
               <div>
-                iInstitution Name:
+                Institution Name:
                 <b>{{ transaction.debit_account_institution.name }}</b>
               </div>
               <div>
@@ -188,11 +188,11 @@
             <h6 class="mb-42 mt-3">Credit Account</h6>
             <div>
               <div>
-                iInstitution ID:
+                Institution ID:
                 <b>{{ transaction.credit_account_institution.id }}</b>
               </div>
               <div>
-                iInstitution Name:
+                Institution Name:
                 <b>{{ transaction.credit_account_institution.name }}</b>
               </div>
               <div>

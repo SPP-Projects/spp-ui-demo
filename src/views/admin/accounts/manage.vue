@@ -267,7 +267,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td class="text-muted">iInstitution</td>
+                      <td class="text-muted">Institution</td>
                       <td class="text-gray-800">
                         {{ account.institution.name }}
                       </td>
@@ -460,7 +460,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >iInstitution</label
+                  >Institution</label
                 >
                 <!--end::Label-->
 

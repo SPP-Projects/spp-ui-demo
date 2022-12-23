@@ -11,6 +11,8 @@
         <div class="card-body pt-15">
           <!--begin::Summary-->
           <div class="d-flex flex-center flex-column mb-5" v-if="!loadingData">
+            <!--           TODO - Campaign Image-->
+
             <!--begin::Avatar-->
             <!--            <div class="symbol symbol-100px symbol-circle mb-7">-->
             <!--              {{ campaignDetails.image }} - <img src="/" alt="image" />-->
@@ -93,7 +95,7 @@
                 id="edit-btn"
                 data-bs-target="#kt_modal_update_campaign"
               >
-                Edit iCampaign
+                Edit Campaign
               </a>
             </span>
           </div>
@@ -117,7 +119,12 @@
                 {{ campaignDetails.youtube_url }}
               </div>
 
-              <div class="fw-bold mt-5">Total Doner Count</div>
+              <div class="fw-bold mt-5">Total Donation Attempts</div>
+              <div class="text-gray-600" v-if="campaignDetails.donations">
+                {{ campaignDetails.donations.total }}
+              </div>
+
+              <div class="fw-bold mt-5">Total Successful Donations</div>
               <div class="text-gray-600">
                 {{ donations.length }}
               </div>
@@ -150,10 +157,6 @@
                 {{ meta.total }}
               </span>
             </div>
-
-            <button class="btn btn-primary btn-sm btn-flex">
-              Refresh Payments
-            </button>
           </div>
           <!--end::Card toolbar-->
         </div>
@@ -285,7 +288,7 @@
               <div class="pb-12">
                 <!--begin::Title-->
                 <h1 class="fw-bold text-dark">
-                  iTransaction Details: {{ donation.transaction.id }} -
+                  Transaction Details: {{ donation.transaction.id }} -
                   {{ donation.transaction.reference }}
                 </h1>
                 <!--end::Title-->
@@ -364,7 +367,7 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">iInstitution</td>
+                      <td class="text-muted">Institution</td>
                       <td class="text-gray-800">
                         {{ donation.transaction.debit_account_institution_id }}
                       </td>
@@ -401,17 +404,17 @@
                 <span
                   class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
                 >
-                  Debit Account
+                  Credit Account
                 </span>
               </div>
               <div class="flex-equal table-responsive">
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">
+                      <td class="text-muted">Institution</td>
+                      <td class="text-gray-800">
                         {{ donation.transaction.credit_account_institution_id }}
                       </td>
-                      <td class="text-gray-800">AU</td>
                     </tr>
                     <tr>
                       <td class="text-muted">Account No.</td>
@@ -446,7 +449,7 @@
   </div>
   <!-- View Payment Modal-->
 
-  <!-- Update iCampaign Modal-->
+  <!-- Update Campaign Modal-->
   <div
     class="modal fade"
     id="kt_modal_update_campaign"
@@ -488,7 +491,7 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">{{ campaign.action }} iCampaign Details</h1>
+              <h1 class="mb-3">{{ campaign.action }} Campaign Details</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -497,7 +500,7 @@
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">iCampaign Title</span>
+                <span class="required">Campaign Title</span>
                 <i
                   class="fas fa-exclamation-circle ms-2 fs-7"
                   data-bs-toggle="tooltip"
@@ -619,7 +622,7 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!-- Update iCampaign Modal-->
+  <!-- Update Campaign Modal-->
 
   <!--end::Layout-->
 </template>
@@ -804,19 +807,19 @@ export default defineComponent({
         if (valid) {
           refData.value.loadingAction = true;
 
-          let batchUploadPayload = new FormData();
-          batchUploadPayload.append("title", campaign.value.title);
-          batchUploadPayload.append("description", campaign.value.description);
-          batchUploadPayload.append("goal", campaign.value.goal);
+          let formPayload = new FormData();
+          formPayload.append("title", campaign.value.title);
+          formPayload.append("description", campaign.value.description);
+          formPayload.append("goal", campaign.value.goal);
 
           if (payload.value.batch_file !== null) {
-            batchUploadPayload.append("image", payload.value.batch_file);
+            formPayload.append("image", payload.value.batch_file);
           }
 
-          batchUploadPayload.append("reference", campaign.value.reference);
+          formPayload.append("reference", campaign.value.reference);
 
           campaignStore
-            .updateCampaign([batchUploadPayload, campaign.value.reference])
+            .updateCampaign([formPayload, campaign.value.reference])
 
             .then((response) => {
               console.log(response);

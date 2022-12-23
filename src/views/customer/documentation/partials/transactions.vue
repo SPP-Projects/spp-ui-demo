@@ -22,23 +22,23 @@
 
       <p class="mb-4">
         <span>
-          You can also create transactions using the New iTransaction button.
-          The steps for creating transactions are as follows:</span
+          You can also create transactions using the New Transaction button. The
+          steps for creating transactions are as follows:</span
         >
 
         <!--              <ol class="test">-->
         <!--        <li>-->
-        <!--          <b>Enter iTransaction Details</b> - Select Credit and Debit Accounts,-->
-        <!--          Amount and iTransaction References.-->
+        <!--          <b>Enter Transaction Details</b> - Select Credit and Debit Accounts,-->
+        <!--          Amount and Transaction References.-->
         <!--        </li>-->
 
         <!--        <li>-->
-        <!--          <b>Validate iTransaction</b> - Clicking the validate transaction-->
+        <!--          <b>Validate Transaction</b> - Clicking the validate transaction-->
         <!--          performs all the checks including name validation for any third party-->
         <!--          account involved without actually creating the transaction.-->
         <!--        </li>-->
         <!--        <li>-->
-        <!--          <b>Submit iTransaction</b> - Submitting the transaction adds t he-->
+        <!--          <b>Submit Transaction</b> - Submitting the transaction adds t he-->
         <!--          transaction to the processing queue. For payments, an approval prompt-->
         <!--          will be sent to the number in question.-->
         <!--        </li>-->

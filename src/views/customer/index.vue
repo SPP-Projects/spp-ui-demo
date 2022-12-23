@@ -2,6 +2,21 @@
   <!--begin::Row-->
   <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
     <h1>Customer Dashboard</h1>
+
+    <!--    <div class="fa-3x" style="color: red">-->
+    <!--      <i class="fa-solid fa-sync fa-spin fs-4x" style="color: #bad5ef"></i>-->
+    <!--      <i class="fa-solid fa-circle-notch fa-spin fs-4x"></i>-->
+    <!--      <i-->
+    <!--        class="fa-solid fa-cog fa-spin fs-4x fa-fade"-->
+    <!--        style="color: #bad5ef"-->
+    <!--      ></i>-->
+
+    <!--      <i-->
+    <!--        class="fa-solid fa-spinner fa-spin-pulse fs-5x fs-4x"-->
+    <!--        style="color: #bad5ef"-->
+    <!--      ></i>-->
+    <!--    </div>-->
+
     <!--begin::Col-->
     <div class="col-xl-8">
       <div class="card card-flush">
@@ -72,6 +87,7 @@
                             src="/media/icons/duotune/arrows/arr066.svg"
                           />
                         </span>
+
                         {{ transaction.currency.code }}
                         {{ transaction.amount }}
                       </span>
@@ -255,9 +271,9 @@ export default defineComponent({
       sort: { column: "created_at", direction: "DESC" },
     });
 
-    onMounted(async () => {
-      await getTransactions(table_options.value);
-      await getAccounts({
+    onMounted(() => {
+      getTransactions(table_options.value);
+      getAccounts({
         current_page: 1,
         page_size: 10, // Add view more at the bottom to link to accounts
         search_text: "",

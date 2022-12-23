@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add iInstitution Payment Method Map
+            Add Institution Payment Method Map
           </button>
         </div>
         <!--end::Group actions-->
@@ -175,7 +175,7 @@
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
                 <label class="required fs-5 fw-semobold mb-2"
-                  >iInstitution</label
+                  >Institution</label
                 >
                 <!--end::Label-->
 

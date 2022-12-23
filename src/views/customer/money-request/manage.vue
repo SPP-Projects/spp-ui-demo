@@ -1,7 +1,7 @@
 <template>
-  <!--begin::Card-->
   <PermissionDenied v-if="refData.unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
+  <!--begin::Card-->
   <div class="card">
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
@@ -65,10 +65,6 @@
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
-
         <template v-slot:status_id="{ row: data }">
           <span
             v-if="data.status_id === '1'"
@@ -122,195 +118,195 @@
       </KTDatatable>
     </div>
 
-    <!--Modal-->
-    <div
-      class="modal fade"
-      id="kt_modal_add_money_request"
-      ref="AddMoneyRequestModalRef"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <!--begin::Modal dialog-->
-      <div class="modal-dialog mw-650px">
-        <!--begin::Modal content-->
-        <div class="modal-content">
-          <!--begin::Modal header-->
-          <div class="modal-header pb-0 border-0 justify-content-end">
-            <!--begin::Close-->
-            <div
-              class="btn btn-sm btn-icon btn-active-color-primary"
-              data-bs-dismiss="modal"
-            >
-              <span class="svg-icon svg-icon-1">
-                <inline-svg src="/media/icons/duotune/arrows/arr061.svg" />
-              </span>
-            </div>
-            <!--end::Close-->
-          </div>
-          <!--begin::Modal header-->
-
-          <!--begin::Modal body-->
-          <div
-            class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15"
-            v-if="moneyRequest"
-          >
-            <el-form
-              @submit.prevent="processMoneyRequestAction()"
-              class="form"
-              :model="moneyRequest"
-              :rules="rules"
-              ref="formAddMoneyRequestRef"
-            >
-              <!--begin::Heading-->
-              <div class="mb-13 text-center">
-                <!--begin::Title-->
-                <h1 class="mb-3">
-                  {{ moneyRequest.action }} Money Request Details
-                </h1>
-                <!--end::Title-->
-              </div>
-              <!--end::Heading-->
-
-              <!--begin::Input group-->
-              <div class="d-flex flex-column mb-4 fv-row">
-                <!--begin::Label-->
-                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                  <span class="required">Payer Email</span>
-                  <i
-                    class="fas fa-exclamation-circle ms-2 fs-7"
-                    data-bs-toggle="tooltip"
-                    title="Specify email"
-                  ></i>
-                </label>
-                <!--end::Label-->
-
-                <el-form-item prop="giver_user_email">
-                  <el-input
-                    v-model="moneyRequest.giver_user_email"
-                    placeholder="Enter giver_user_email"
-                    name="giver_user_email"
-                  ></el-input>
-                </el-form-item>
-              </div>
-              <div class="d-flex flex-column mb-4 fv-row">
-                <!--begin::Label-->
-                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                  <span class="required">Your account no.</span>
-
-                  <i
-                    class="fas fa-exclamation-circle ms-2 fs-7"
-                    data-bs-toggle="tooltip"
-                    title="Specify your account number"
-                  ></i>
-                </label>
-                <!--end::Label-->
-
-                <el-form-item prop="requester_account_no">
-                  <el-select
-                    v-model="moneyRequest.requester_account_no"
-                    placeholder="Select"
-                  >
-                    <el-option
-                      v-for="item in accounts"
-                      :key="item.id"
-                      :value="item.id"
-                      :disabled="refData.loadingAction"
-                      >#{{ item.id }} - {{ item.name_on_account }}</el-option
-                    >
-                  </el-select>
-                </el-form-item>
-              </div>
-              <div class="d-flex flex-column mb-4 fv-row">
-                <!--begin::Label-->
-                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                  <span class="required">Description</span>
-                  <i
-                    class="fas fa-exclamation-circle ms-2 fs-7"
-                    data-bs-toggle="tooltip"
-                    title="Specify a target name for future usage and reference"
-                  ></i>
-                </label>
-                <!--end::Label-->
-
-                <el-form-item prop="description">
-                  <el-input
-                    v-model="moneyRequest.description"
-                    placeholder="Enter description"
-                    name="description"
-                  ></el-input>
-                </el-form-item>
-              </div>
-              <div class="d-flex flex-column mb-4 fv-row">
-                <!--begin::Label-->
-                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                  <span class="required">Amount</span>
-                  <i
-                    class="fas fa-exclamation-circle ms-2 fs-7"
-                    data-bs-toggle="tooltip"
-                    title="Specify a target name for future usage and reference"
-                  ></i>
-                </label>
-                <!--end::Label-->
-
-                <el-form-item prop="amount">
-                  <el-input
-                    v-model="moneyRequest.amount"
-                    placeholder="Enter amount"
-                    name="amount"
-                  ></el-input>
-                </el-form-item>
-              </div>
-
-              <!--end::Input group-->
-            </el-form>
-          </div>
-          <div class="modal-footer flex-center" v-if="moneyRequest">
-            <!--begin::Button-->
-            <button
-              type="reset"
-              id="kt_modal_add_money_request_cancel"
-              class="btn btn-light me-3"
-              data-bs-dismiss="modal"
-              :disabled="refData.loadingAction"
-            >
-              Cancel
-            </button>
-            <!--end::Button-->
-
-            <!--begin::Button-->
-            <button
-              :data-kt-indicator="refData.loadingAction ? 'on' : null"
-              class="btn btn-lg btn-primary"
-              type="submit"
-              @click="processMoneyRequestAction()"
-            >
-              <span v-if="!refData.loadingAction" class="indicator-label">
-                Add Request
-                <span class="svg-icon svg-icon-3 ms-2 me-0">
-                  <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
-                </span>
-              </span>
-              <span v-if="refData.loadingAction" class="indicator-progress">
-                Please wait...
-                <span
-                  class="spinner-border spinner-border-sm align-middle ms-2"
-                ></span>
-              </span>
-            </button>
-            <!--end::Button-->
-          </div>
-          <!--end::Modal body-->
-        </div>
-        <!--end::Modal content-->
-      </div>
-      <!--end::Modal dialog-->
-    </div>
-    <!--Modal-->
-
     <!--end::Card body-->
   </div>
-
   <!--end::Card-->
+  <!--Money Request Modal-->
+  <div
+    class="modal fade"
+    id="kt_modal_add_money_request"
+    ref="AddMoneyRequestModalRef"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog mw-650px">
+      <!--begin::Modal content-->
+      <div class="modal-content">
+        <!--begin::Modal header-->
+        <div class="modal-header pb-0 border-0 justify-content-end">
+          <!--begin::Close-->
+          <div
+            class="btn btn-sm btn-icon btn-active-color-primary"
+            data-bs-dismiss="modal"
+          >
+            <span class="svg-icon svg-icon-1">
+              <inline-svg src="/media/icons/duotune/arrows/arr061.svg" />
+            </span>
+          </div>
+          <!--end::Close-->
+        </div>
+        <!--begin::Modal header-->
+
+        <!--begin::Modal body-->
+        <div
+          class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15"
+          v-if="moneyRequest"
+        >
+          <el-form
+            @submit.prevent="processMoneyRequestAction()"
+            class="form"
+            :model="moneyRequest"
+            :rules="rules"
+            ref="formAddMoneyRequestRef"
+          >
+            <!--begin::Heading-->
+            <div class="mb-13 text-center">
+              <!--begin::Title-->
+              <h1 class="mb-3">
+                {{ moneyRequest.action }} Money Request Details
+              </h1>
+              <!--end::Title-->
+            </div>
+            <!--end::Heading-->
+
+            <!--begin::Input group-->
+            <div class="d-flex flex-column mb-4 fv-row">
+              <!--begin::Label-->
+              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                <span class="required">SPayer Email</span>
+                <i
+                  class="fas fa-exclamation-circle ms-2 fs-7"
+                  data-bs-toggle="tooltip"
+                  title="Specify valid SPPAY user account email"
+                ></i>
+              </label>
+              <!--end::Label-->
+
+              <el-form-item prop="giver_user_email">
+                <el-input
+                  v-model="moneyRequest.giver_user_email"
+                  placeholder="Enter valid SPPAY User Email"
+                  name="giver_user_email"
+                ></el-input>
+              </el-form-item>
+            </div>
+            <div class="d-flex flex-column mb-4 fv-row">
+              <!--begin::Label-->
+              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                <span class="required">Your account no.</span>
+
+                <i
+                  class="fas fa-exclamation-circle ms-2 fs-7"
+                  data-bs-toggle="tooltip"
+                  title="Specify your account number"
+                ></i>
+              </label>
+              <!--end::Label-->
+
+              <el-form-item prop="requester_account_no">
+                <el-select
+                  v-model="moneyRequest.requester_account_no"
+                  placeholder="Select Account to receive this request"
+                >
+                  <el-option
+                    v-for="item in accounts"
+                    :key="item.id"
+                    :value="item.id"
+                    :disabled="refData.loadingAction"
+                    >#{{ item.id }} - {{ item.name_on_account }}</el-option
+                  >
+                </el-select>
+              </el-form-item>
+            </div>
+            <div class="d-flex flex-column mb-4 fv-row">
+              <!--begin::Label-->
+              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                <span class="required">Description</span>
+                <i
+                  class="fas fa-exclamation-circle ms-2 fs-7"
+                  data-bs-toggle="tooltip"
+                  title="Specify a target name for future usage and reference"
+                ></i>
+              </label>
+              <!--end::Label-->
+
+              <el-form-item prop="description">
+                <el-input
+                  v-model="moneyRequest.description"
+                  placeholder="Enter description"
+                  name="description"
+                  type="textarea"
+                ></el-input>
+              </el-form-item>
+            </div>
+            <div class="d-flex flex-column mb-4 fv-row">
+              <!--begin::Label-->
+              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                <span class="required">Amount</span>
+                <i
+                  class="fas fa-exclamation-circle ms-2 fs-7"
+                  data-bs-toggle="tooltip"
+                  title="Specify a target name for future usage and reference"
+                ></i>
+              </label>
+              <!--end::Label-->
+
+              <el-form-item prop="amount">
+                <el-input
+                  v-model="moneyRequest.amount"
+                  placeholder="Enter amount"
+                  name="amount"
+                  type="number"
+                ></el-input>
+              </el-form-item>
+            </div>
+
+            <!--end::Input group-->
+          </el-form>
+        </div>
+        <div class="modal-footer flex-center" v-if="moneyRequest">
+          <!--begin::Button-->
+          <button
+            type="reset"
+            id="kt_modal_add_money_request_cancel"
+            class="btn btn-light me-3"
+            data-bs-dismiss="modal"
+            :disabled="refData.loadingAction"
+          >
+            Cancel
+          </button>
+          <!--end::Button-->
+
+          <!--begin::Button-->
+          <button
+            :data-kt-indicator="refData.loadingAction ? 'on' : null"
+            class="btn btn-lg btn-primary"
+            type="submit"
+            @click="processMoneyRequestAction()"
+          >
+            <span v-if="!refData.loadingAction" class="indicator-label">
+              Add Request
+              <span class="svg-icon svg-icon-3 ms-2 me-0">
+                <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+              </span>
+            </span>
+            <span v-if="refData.loadingAction" class="indicator-progress">
+              Please wait...
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </button>
+          <!--end::Button-->
+        </div>
+        <!--end::Modal body-->
+      </div>
+      <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+  </div>
+  <!--Money Request Modal-->
 </template>
 
 <script lang="ts">
@@ -363,16 +359,13 @@ export default defineComponent({
     });
     const formAddMoneyRequestRef = ref<null | HTMLFormElement>(null);
     const AddMoneyRequestModalRef = ref<null | HTMLElement>(null);
-    const rules = ref({
-      giver_user_email: [
-        {
-          required: true,
-          message: "giver_user_email is required",
-          trigger: "change",
-        },
-      ],
-    });
+
     const tableHeader = ref([
+      {
+        columnLabel: "reference",
+        columnName: "reference",
+        sortEnabled: true,
+      },
       {
         columnLabel: "created_at",
         columnName: "created dated",
@@ -383,16 +376,10 @@ export default defineComponent({
         columnName: "status",
         sortEnabled: true,
       },
-      { columnLabel: "id", columnName: "ID", sortEnabled: true },
-      {
-        columnLabel: "reference",
-        columnName: "reference",
-        sortEnabled: true,
-      },
 
       {
         columnLabel: "giver_user_email",
-        columnName: "giver_user_email",
+        columnName: "giver user email",
         sortEnabled: true,
       },
       { columnLabel: "amount", columnName: "amount", sortEnabled: false },
@@ -425,6 +412,36 @@ export default defineComponent({
       reference: "",
     } as any);
 
+    const rules = ref({
+      giver_user_email: [
+        {
+          required: true,
+          message: "Payer email is required",
+          trigger: "change",
+        },
+      ],
+      requester_account_no: [
+        {
+          required: true,
+          message: "Your SPPAY account number is required",
+          trigger: "change",
+        },
+      ],
+      description: [
+        {
+          required: true,
+          message: "Request description is required",
+          trigger: "change",
+        },
+      ],
+      amount: [
+        {
+          required: true,
+          message: "Amount requested is required",
+          trigger: "change",
+        },
+      ],
+    });
     //functions
 
     const processMoneyRequestAction = () => {
@@ -435,22 +452,19 @@ export default defineComponent({
         if (valid) {
           refData.value.loadingAction = true;
 
-          const batchUploadPayload = new FormData();
-          batchUploadPayload.append(
+          const formPayload = new FormData();
+          formPayload.append(
             "giver_user_email",
             moneyRequest.value.giver_user_email
           );
-          batchUploadPayload.append(
+          formPayload.append(
             "requester_account_no",
             moneyRequest.value.requester_account_no
           );
-          batchUploadPayload.append(
-            "description",
-            moneyRequest.value.description
-          );
-          batchUploadPayload.append("amount", moneyRequest.value.amount);
+          formPayload.append("description", moneyRequest.value.description);
+          formPayload.append("amount", moneyRequest.value.amount);
           moneyRequestStore
-            .addMoneyRequest(batchUploadPayload)
+            .addMoneyRequest(formPayload)
 
             .then((response) => {
               // update moneyRequest action to edit
@@ -555,6 +569,7 @@ export default defineComponent({
       });
       refData.value.loadingPage = false;
     });
+
     watch(
       () => table_options.value.search_text,
       () => {

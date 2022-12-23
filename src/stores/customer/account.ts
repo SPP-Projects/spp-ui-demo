@@ -14,7 +14,7 @@ export const useCustomerAccountStore = defineStore("customerAccountStore", {
     //shared
     unauthorized: false,
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
-    loadingAccountData: false,
+    loadingAccountData: true,
     error: null,
   }),
   actions: {

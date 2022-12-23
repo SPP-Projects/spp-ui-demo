@@ -3,7 +3,7 @@
   <PermissionDenied v-if="refData.unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
 
-  <div class="d-flex flex-column flex-lg-row">
+  <div class="d-flex flex-column flex-lg-row" v-else>
     <!--begin::Content-->
     <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
       <!--begin::Alert-->
@@ -22,7 +22,7 @@
           <!--end::Title-->
           <!--begin::Content-->
           <span
-            >The request was cancelled at
+            >The request was cancelled on
             {{ moneyRequestDetails.status.updated_at }}.</span
           >
           <!--end::Content-->
@@ -68,7 +68,7 @@
         <!--begin::Card body-->
         <div class="card-body pt-3">
           <!--begin::Section-->
-          <div class="mb-10">
+          <div class="mb-1">
             <!--begin::Title-->
             <h5 class="mb-4">Requester Details:</h5>
             <!--end::Title-->
@@ -81,18 +81,16 @@
                   <!--begin::Row-->
                   <tr>
                     <td class="text-gray-400 min-w-175px w-175px">
-                      Reference:
+                      Request Reference:
                     </td>
                     <td class="text-gray-800 min-w-200px">
-                      <a href="#" class="text-gray-800 text-hover-primary">{{
-                        moneyRequestDetails.reference
-                      }}</a>
+                      {{ moneyRequestDetails.reference }}
                     </td>
                   </tr>
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">description:</td>
+                    <td class="text-gray-400">Description:</td>
                     <td class="text-gray-800">
                       {{ moneyRequestDetails.description }}
                     </td>
@@ -108,7 +106,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">amount:</td>
+                    <td class="text-gray-400">Amount:</td>
                     <td class="text-gray-800">
                       {{ moneyRequestDetails.amount }}
                     </td>
@@ -121,26 +119,26 @@
               <!--begin::Row-->
               <div class="flex-equal">
                 <!--begin::Details-->
-                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400 min-w-175px w-175px">
-                      Customer ID:
-                    </td>
-                    <td class="text-gray-800 min-w-200px">
-                      {{ moneyRequestDetails.requester_customer_id }}
-                    </td>
-                  </tr>
-                  <!--end::Row-->
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400">Customer ID:</td>
-                    <td class="text-gray-800">
-                      {{ moneyRequestDetails.requester_user_id }}
-                    </td>
-                  </tr>
-                  <!--end::Row-->
-                </table>
+                <!--                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">-->
+                <!--                  &lt;!&ndash;begin::Row&ndash;&gt;-->
+                <!--                  <tr>-->
+                <!--                    <td class="text-gray-400 min-w-175px w-175px">-->
+                <!--                      Customer ID:-->
+                <!--                    </td>-->
+                <!--                    <td class="text-gray-800 min-w-200px">-->
+                <!--                      {{ moneyRequestDetails.requester_customer_id }}-->
+                <!--                    </td>-->
+                <!--                  </tr>-->
+                <!--                  &lt;!&ndash;end::Row&ndash;&gt;-->
+                <!--                  &lt;!&ndash;begin::Row&ndash;&gt;-->
+                <!--                  <tr>-->
+                <!--                    <td class="text-gray-400">Customer ID:</td>-->
+                <!--                    <td class="text-gray-800">-->
+                <!--                      {{ moneyRequestDetails.requester_user_id }}-->
+                <!--                    </td>-->
+                <!--                  </tr>-->
+                <!--                  &lt;!&ndash;end::Row&ndash;&gt;-->
+                <!--                </table>-->
                 <!--end::Details-->
               </div>
               <!--end::Row-->
@@ -152,9 +150,9 @@
           <div class="separator separator-dashed mb-10"></div>
 
           <!--begin::Section-->
-          <div class="mb-10">
+          <div class="mb-5">
             <!--begin::Title-->
-            <h5 class="mb-4">Giver Details:</h5>
+            <h5 class="mb-1">Giver Details:</h5>
             <!--end::Title-->
             <!--begin::Details-->
             <div class="d-flex flex-wrap py-5">
@@ -166,15 +164,13 @@
                   <tr>
                     <td class="text-gray-400 min-w-175px w-175px">Email:</td>
                     <td class="text-gray-800 min-w-200px">
-                      <a href="#" class="text-gray-800 text-hover-primary">{{
-                        moneyRequestDetails.giver_user_email
-                      }}</a>
+                      {{ moneyRequestDetails.giver_user_email }}
                     </td>
                   </tr>
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">iTransaction Reference:</td>
+                    <td class="text-gray-400">Transaction Reference:</td>
                     <td class="text-gray-800">
                       {{ moneyRequestDetails.transaction_reference }}
                     </td>
@@ -188,12 +184,6 @@
                     </td>
                   </tr>
                   <!--end::Row-->
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400">.</td>
-                    <td class="text-gray-800">.</td>
-                  </tr>
-                  <!--end::Row-->
                 </table>
                 <!--end::Details-->
               </div>
@@ -201,15 +191,168 @@
               <!--begin::Row-->
               <div class="flex-equal">
                 <!--begin::Details-->
+                <!--                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">-->
+                <!--                  &lt;!&ndash;begin::Row&ndash;&gt;-->
+                <!--                  <tr>-->
+                <!--                    <td class="text-gray-400 min-w-175px w-175px">.</td>-->
+                <!--                    <td class="text-gray-800 min-w-200px">.</td>-->
+                <!--                  </tr>-->
+                <!--                  &lt;!&ndash;end::Row&ndash;&gt;-->
+                <!--                  &lt;!&ndash;begin::Row&ndash;&gt;-->
+
+                <!--                  &lt;!&ndash;end::Row&ndash;&gt;-->
+                <!--                </table>-->
+                <!--end::Details-->
+              </div>
+              <!--end::Row-->
+            </div>
+            <!--end::Row-->
+          </div>
+          <!--end::Section-->
+
+          <div
+            class="separator separator-dashed mb-10"
+            v-if="moneyRequestDetails.transaction"
+          ></div>
+
+          <!--begin::Section-->
+          <div class="mb-1" v-if="moneyRequestDetails.transaction">
+            <!--begin::Title-->
+            <h5 class="mb-1">Transaction Details:</h5>
+            <!--end::Title-->
+            <!--begin::Details-->
+            <div class="d-flex flex-wrap py-5">
+              <!--begin::Row-->
+              <div class="flex-equal me-5">
+                <!--begin::Details-->
                 <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400 min-w-175px w-175px">.</td>
-                    <td class="text-gray-800 min-w-200px">.</td>
+                    <td class="text-gray-400 min-w-175px w-175px">Status:</td>
+                    <td class="text-gray-800 min-w-200px">
+                      {{ moneyRequestDetails.transaction.status_message }}
+                    </td>
                   </tr>
                   <!--end::Row-->
-                  <!--begin::Row-->
 
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Transaction Reference:</td>
+                    <td class="text-gray-800">
+                      {{ moneyRequestDetails.transaction.reference }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+
+                  <!--Debit-->
+                  <template
+                    v-if="
+                      authenticatedUser.id !==
+                        parseInt(moneyRequestDetails.requester_user_id) &&
+                      !refData.loadingAccounts &&
+                      moneyRequestDetails.status_id !== '3'
+                    "
+                  >
+                    <!--begin::Row-->
+                    <tr>
+                      <td class="text-gray-400">Debit Account:</td>
+                      <td class="text-gray-800">
+                        {{ moneyRequestDetails.transaction.debit_account_no }} /
+                        {{ moneyRequestDetails.transaction.debit_account_name }}
+                      </td>
+                    </tr>
+                    <!--end::Row-->
+                    <!--begin::Row-->
+                    <tr>
+                      <td class="text-gray-400">
+                        Debit Account Balance Before Transaction:
+                      </td>
+                      <td class="text-gray-800">
+                        {{
+                          moneyRequestDetails.transaction
+                            .debit_account_balance_before
+                        }}
+                      </td>
+                    </tr>
+                    <!--end::Row-->
+
+                    <!--begin::Row-->
+                    <tr>
+                      <td class="text-gray-400">
+                        Debit Account Balance After Transaction:
+                      </td>
+                      <td class="text-gray-800">
+                        {{
+                          moneyRequestDetails.transaction
+                            .debit_account_balance_after
+                        }}
+                      </td>
+                    </tr>
+                    <!--end::Row-->
+                    <!--begin::Row-->
+                    <tr>
+                      <td class="text-gray-400">Debit Status:</td>
+                      <td class="text-gray-800">
+                        {{
+                          moneyRequestDetails.transaction.debit_status_message
+                        }}
+                      </td>
+                    </tr>
+                    <!--end::Row-->
+                  </template>
+                  <!--                  Credit-->
+                  <template v-else>
+                    <!--begin::Row-->
+                    <tr>
+                      <td class="text-gray-400">Credit Account:</td>
+                      <td class="text-gray-800">
+                        {{ moneyRequestDetails.transaction.credit_account_no }}
+                        /
+                        {{
+                          moneyRequestDetails.transaction.credit_account_name
+                        }}
+                      </td>
+                    </tr>
+                    <!--end::Row-->
+                    <!--begin::Row-->
+                    <tr>
+                      <td class="text-gray-400">
+                        Credit Account Balance Before Transaction:
+                      </td>
+                      <td class="text-gray-800">
+                        {{
+                          moneyRequestDetails.transaction
+                            .credit_account_balance_before
+                        }}
+                      </td>
+                    </tr>
+                    <!--end::Row-->
+
+                    <!--begin::Row-->
+                    <tr>
+                      <td class="text-gray-400">
+                        Credit Aaccount Balance After Transaction:
+                      </td>
+                      <td class="text-gray-800">
+                        {{
+                          moneyRequestDetails.transaction
+                            .credit_account_balance_after
+                        }}
+                      </td>
+                    </tr>
+                    <!--end::Row-->
+                    <!--begin::Row-->
+                    <tr>
+                      <td class="text-gray-400">Credit Status message:</td>
+                      <td class="text-gray-800">
+                        {{
+                          moneyRequestDetails.transaction.credit_status_message
+                        }}
+                      </td>
+                    </tr>
+                    <!--end::Row-->
+                    <!--begin::Row-->
+                  </template>
                   <!--end::Row-->
                 </table>
                 <!--end::Details-->
@@ -247,94 +390,18 @@
         <div class="card-header">
           <!--begin::Card title-->
           <div class="card-title">
-            <h2>ACTION</h2>
+            <h2>Action</h2>
           </div>
           <!--end::Card title-->
-          <!--begin::Card toolbar-->
-          <div class="card-toolbar">
-            <!--begin::More options-->
-            <a
-              href="#"
-              class="btn btn-sm btn-light btn-icon"
-              data-kt-menu-trigger="click"
-              data-kt-menu-placement="bottom-end"
-            >
-              <!--begin::Svg Icon | path: icons/duotune/general/gen052.svg-->
-              <span class="svg-icon svg-icon-3">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    x="10"
-                    y="10"
-                    width="4"
-                    height="4"
-                    rx="2"
-                    fill="currentColor"
-                  />
-                  <rect
-                    x="17"
-                    y="10"
-                    width="4"
-                    height="4"
-                    rx="2"
-                    fill="currentColor"
-                  />
-                  <rect
-                    x="3"
-                    y="10"
-                    width="4"
-                    height="4"
-                    rx="2"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
-              <!--end::Svg Icon-->
-            </a>
-            <!--begin::Menu-->
-            <div
-              class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-6 w-200px py-4"
-              data-kt-menu="true"
-            >
-              <!--begin::Menu item-->
-              <div class="menu-item px-3">
-                <a
-                  href="#"
-                  class="menu-link px-3"
-                  data-kt-subscriptions-view-action="delete"
-                  >Cancel Request</a
-                >
-              </div>
-              <!--end::Menu item-->
-              <!--begin::Menu item-->
-              <div class="menu-item px-3">
-                <a
-                  href="#"
-                  class="menu-link text-danger px-3"
-                  data-kt-subscriptions-view-action="edit"
-                  >Fulfill Request</a
-                >
-              </div>
-              <!--end::Menu item-->
-            </div>
-            <!--end::Menu-->
-            <!--end::More options-->
-          </div>
-          <!--end::Card toolbar-->
         </div>
         <!--end::Card header-->
         <!--begin::Card body-->
         <div class="card-body pt-0 fs-6">
           <!--begin::Seperator-->
-          <div class="separator separator-dashed mb-7"></div>
+          <div class="separator separator-dashed mb-2"></div>
           <!--end::Seperator-->
           <!--begin::Section-->
-          <div class="mb-10">
+          <div class="mb-5">
             <!--begin::Details-->
             <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2">
               <!--begin::Row-->
@@ -368,80 +435,86 @@
           <!--end::Seperator-->
           <!--begin::Section-->
           <!--          TODO-->
-          <div
-            class="mb-10"
-            v-if="
-              authenticatedUser.id !==
-                parseInt(moneyRequestDetails.requester_user_id) &&
-              !refData.loadingAccounts &&
-              moneyRequestDetails.status_id !== '3'
-            "
-          >
-            <!--begin::Title-->
-            <h5 class="mb-4">Pay from Account</h5>
-            <!--end::Title-->
-            <!--begin::Details-->
-            <div class="mb-0">
-              <!--begin::Card info-->
-              <div
-                class="fw-semibold text-gray-600 d-flex align-items-center row"
-              >
-                <div class="col-md-12">
-                  <div class="mb-3">
-                    <label class="form-label">Payment Method</label>
 
-                    <select
-                      name="institution_id"
-                      class="form-select form-control"
-                      v-model="payMoneyRequestForm.debit_account_no"
-                      :disabled="refData.loadingAccounts"
-                    >
-                      <option value="">Select Credit Account</option>
-                      <option
-                        v-for="account in accounts"
-                        :key="account.id"
-                        :value="account.id"
+          <template v-if="moneyRequestDetails.status_id === '2'"> </template>
+
+          <template v-else>
+            <div
+              class="mb-10"
+              v-if="
+                authenticatedUser.id !==
+                  parseInt(moneyRequestDetails.requester_user_id) &&
+                !refData.loadingAccounts &&
+                moneyRequestDetails.status_id !== '3'
+              "
+            >
+              <!--begin::Title-->
+              <h5 class="mb-4">Pay from Account</h5>
+              <!--end::Title-->
+              <!--begin::Details-->
+              <div class="mb-0">
+                <!--begin::Card info-->
+                <div
+                  class="fw-semibold text-gray-600 d-flex align-items-center row"
+                >
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <select
+                        name="institution_id"
+                        class="form-select form-control"
+                        v-model="payMoneyRequestForm.debit_account_no"
+                        :disabled="refData.loadingAccounts"
                       >
-                        {{ account.id + " - " + account.name_on_account }}
-                      </option>
-                    </select>
+                        <option value="">Select Account</option>
+                        <option
+                          v-for="account in accounts"
+                          :key="account.id"
+                          :value="account.id"
+                        >
+                          {{ account.id + " - " + account.name_on_account }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="mb-3">
-                    <button
-                      :data-kt-indicator="refData.loadingAccounts ? 'on' : null"
-                      class="btn btn-lg btn-danger"
-                      @click="payMoneyRequestAction()"
-                    >
-                      <span
-                        v-if="!refData.loadingAccounts"
-                        class="indicator-label"
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <button
+                        :data-kt-indicator="
+                          refData.loadingAccounts ? 'on' : null
+                        "
+                        class="btn btn-lg btn-danger btn-sm"
+                        @click="payMoneyRequestAction()"
                       >
-                        Fulfill Payment
-                        <span class="svg-icon svg-icon-3 ms-2 me-0">
-                          <inline-svg
-                            src="/media/icons/duotune/arrows/arr064.svg"
-                          />
-                        </span>
-                      </span>
-                      <span
-                        v-if="refData.loadingAccounts"
-                        class="indicator-progress"
-                      >
-                        Please wait...
                         <span
-                          class="spinner-border spinner-border-sm align-middle ms-2"
-                        ></span>
-                      </span>
-                    </button>
+                          v-if="!refData.loadingAccounts"
+                          class="indicator-label"
+                        >
+                          Fulfill Payment
+                          <span class="svg-icon svg-icon-3 ms-2 me-0">
+                            <inline-svg
+                              src="/media/icons/duotune/arrows/arr064.svg"
+                            />
+                          </span>
+                        </span>
+                        <span
+                          v-if="refData.loadingAccounts"
+                          class="indicator-progress"
+                        >
+                          Please wait...
+                          <span
+                            class="spinner-border spinner-border-sm align-middle ms-2"
+                          ></span>
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
+                <!--end::Card info-->
               </div>
-              <!--end::Card info-->
-            </div>
-            <!--end::Details-->
-          </div>
+              <!--end::Details-->
+            </div></template
+          >
+
           <!--end::Section-->
         </div>
         <!--end::Card body-->
@@ -502,7 +575,7 @@
             <div class="d-flex flex-column mb-4 fv-row">
               <div class="modal-text">
                 <h6 class="text-center" style="color: red">
-                  Are you sure you want to process this money request?
+                  Are you sure you want to cancel this money request?
                 </h6>
               </div>
             </div>
@@ -721,9 +794,9 @@ export default defineComponent({
               refData.value.loadingAction = false;
 
               Message({
-                message: "Data updated successfully.",
-                //TBC
-                //position: "bottom-right",
+                message: "Payment Fulfilled successfully.",
+
+                position: "bottom-right",
                 type: "success",
                 duration: 5000,
                 zIndex: 99999,
@@ -742,8 +815,8 @@ export default defineComponent({
                 for (const key in errors) {
                   Message({
                     message: errors[key][0],
-                    //TBC
-                    //position: "bottom-right",
+
+                    position: "bottom-right",
                     type: "error",
                     duration: 5000,
                     zIndex: 99999,
@@ -752,8 +825,8 @@ export default defineComponent({
               } else if (response.error) {
                 Message({
                   message: response.error,
-                  //TBC
-                  //position: "bottom-right",
+
+                  position: "bottom-right",
                   type: "error",
                   duration: 5000,
                   zIndex: 99999,
@@ -780,10 +853,7 @@ export default defineComponent({
         sort: { column: "", direction: "" },
       });
     });
-    //get authenticated user
-    //TODO
-    // const store = useStore();
-    // const authSppUser = computed(() => store.getters.authorisedUser);
+
     return {
       //variables
       refData,

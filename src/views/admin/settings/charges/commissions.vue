@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add iTransaction Commission Setting
+            Add Transaction Commission Setting
           </button>
         </div>
         <!--end::Group actions-->

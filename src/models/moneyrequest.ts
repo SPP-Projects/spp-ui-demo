@@ -1,3 +1,5 @@
+import type { iTransaction } from "@/models/transaction";
+
 export interface iMoneyRequest {
   id: number;
   reference: string;
@@ -13,7 +15,7 @@ export interface iMoneyRequest {
   status_id: string;
   created_at: string;
   updated_at: string;
-  transaction: null;
+  transaction: iTransaction;
   status: {
     id: number;
     name: string;

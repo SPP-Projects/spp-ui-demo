@@ -29,14 +29,14 @@
         <!--begin::Group actions-->
         <div class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
-            <span class="me-2">
+            <span class="me-2" v-if="meta.total >= 1">
               Showing {{ meta.from }} to {{ meta.to }} of
               {{ meta.total }}
             </span>
           </div>
 
           <router-link to="/invoices/new" class="btn btn-primary btn-sm">
-            New iInvoice
+            New Invoice
           </router-link>
         </div>
         <!--end::Group actions-->
@@ -60,10 +60,6 @@
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
-
         <template v-slot:created_at="{ row: data }">
           <p class="text-muted">{{ data.created_at }}</p>
         </template>
@@ -72,6 +68,20 @@
           {{ data.reference }}
         </template>
 
+        <template v-slot:status="{ row: data }">
+          <span v-if="data.status_id === '1'" class="badge badge-light-primary"
+            >Pending</span
+          >
+          <span v-if="data.status_id === '2'" class="badge badge-light-success"
+            >Completed</span
+          >
+          <span v-if="data.status_id === '3'" class="badge badge-light-warning"
+            >Rejected</span
+          >
+          <span v-if="data.status_id === '4'" class="badge badge-light-danger"
+            >Cancelled</span
+          >
+        </template>
         <template v-slot:total="{ row: data }">
           {{ data.total }} {{ data.currency_code }}
         </template>
@@ -136,10 +146,14 @@ export default defineComponent({
         sortEnabled: true,
       },
 
-      { columnLabel: "id", columnName: "ID", sortEnabled: true },
       {
         columnLabel: "reference",
         columnName: "reference",
+        sortEnabled: true,
+      },
+      {
+        columnLabel: "status",
+        columnName: "status",
         sortEnabled: true,
       },
 
@@ -174,33 +188,6 @@ export default defineComponent({
       debounce: 2000,
       kDebounceTimeoutMs: 1000,
     });
-
-    //functions
-    // const getAllInvoices = async (table_options): Promise<void> => {
-    //   refData.value.loadingInvoiceData = true;
-    //
-    //   await store
-    //     .dispatch("invoice/getAllInvoices", table_options)
-    //     .then((response) => {
-    //       invoiceData.value = response.data;
-    //
-    //       // Populate transaction meta
-    //       meta.value.total = response.total;
-    //       meta.value.from = response.from;
-    //       meta.value.to = response.to;
-    //       meta.value.last_page = response.last_page;
-    //     })
-    //     .catch((error) => {
-    //       if (error.response.status === 403) {
-    //         // unauthorized.
-    //         refData.value.unauthorized = true;
-    //       }
-    //     })
-    //     .finally(() => {
-    //       refData.value.loadingPage = false;
-    //       refData.value.loadingInvoiceData = false;
-    //     });
-    // };
 
     const handlePerPageChange = (size: number) => {
       table_options.value.current_page = 1;

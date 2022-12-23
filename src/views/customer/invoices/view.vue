@@ -5,13 +5,34 @@
   <div class="d-flex flex-column flex-lg-row" v-if="!loadingInvoiceData">
     <!--begin::Content-->
     <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
+      <!--begin::Alert-->
+      <div
+        class="alert alert-danger d-flex align-items-center p-5"
+        v-if="invoiceDetails.status_id === '4'"
+      >
+        <!--begin::Icon-->
+        <span class="svg-icon svg-icon-2hx svg-icon-primary me-3"></span>
+        <!--end::Icon-->
+
+        <!--begin::Wrapper-->
+        <div class="d-flex flex-column">
+          <!--begin::Title-->
+          <h4 class="mb-1 text-dark">Alert!</h4>
+          <!--end::Title-->
+          <!--begin::Content-->
+          <span>Invoice was cancelled on {{ invoiceDetails.updated_at }}.</span>
+          <!--end::Content-->
+        </div>
+        <!--end::Wrapper-->
+      </div>
+      <!--end::Alert-->
       <!--begin::Card-->
       <div class="card card-flush pt-3 mb-5 mb-xl-10">
         <!--begin::Card header-->
         <div class="card-header">
           <!--begin::Card title-->
           <div class="card-title">
-            <h2 class="fw-bold">iInvoice # {{ invoiceDetails.reference }}</h2>
+            <h2 class="fw-bold">Invoice # {{ invoiceDetails.reference }}</h2>
           </div>
           <!--begin::Card title-->
           <!--begin::Card toolbar-->
@@ -19,10 +40,19 @@
           <div class="card-toolbar" v-if="!loadingInvoiceData">
             <h2 class="fw-bold">
               Status:
-              <span class="text-danger" v-if="invoiceDetails.paid === 0">
-                Pending Payment
-              </span>
-              <span class="text-primary" v-else>Paid</span>
+
+              <template v-if="invoiceDetails.status_id === '4'">
+                <span class="text-danger" v-if="invoiceDetails.paid === 0">
+                  Cancelled
+                </span></template
+              >
+              <template v-else>
+                <span class="text-danger" v-if="invoiceDetails.paid === 0">
+                  Pending Payment
+                </span>
+
+                <span class="text-primary" v-else>Paid</span>
+              </template>
             </h2>
           </div>
           <!--end::Card toolbar-->
@@ -222,7 +252,7 @@
         <div class="card-header">
           <!--begin::Card title-->
           <div class="card-title">
-            <h2>iInvoice Payments</h2>
+            <h2>Invoice Payments</h2>
           </div>
           <!--end::Card title-->
           <!--begin::Toolbar-->
@@ -293,7 +323,7 @@
             </template>
 
             <template v-slot:donor="{ row: data }">
-              {{ data.donor_email }} <br />
+              {{ data.payee_email }} <br />
               {{ data.transaction.debit_account_no }}
             </template>
 
@@ -345,37 +375,14 @@
           <!--begin::Seperator-->
           <div class="separator separator-dashed mb-7"></div>
           <!--end::Seperator-->
-          <!--begin::Section-->
-          <div class="mb-7">
-            <!--begin::Title-->
-            <h5 class="mb-4">Payment Summary</h5>
-            <!--end::Title-->
-            <!--begin::Details-->
-            <div class="mb-0">
-              <!--begin::Plan-->
-              <span class="badge badge-light-info me-2">Payments</span>
-              <!--end::Plan-->
-              <!--begin::Price-->
-              <span class="fw-semibold text-gray-600">TBC</span>
-              <!--end::Price-->
-            </div>
-            <!--end::Details-->
-          </div>
-          <!--end::Section-->
 
-          <!--begin::Seperator-->
-          <div class="separator separator-dashed mb-7"></div>
-          <!--end::Seperator-->
           <!--begin::Section-->
-          <div class="mb-10">
-            <!--begin::Title-->
-            <h5 class="mb-4">iInvoice Summary</h5>
-            <!--end::Title-->
+          <div class="mb-1">
             <!--begin::Details-->
             <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2">
               <!--begin::Row-->
               <tr class="">
-                <td class="text-gray-400">iInvoice ID:</td>
+                <td class="text-gray-400">Invoice ID:</td>
                 <td class="text-gray-800">{{ invoiceDetails.reference }}</td>
               </tr>
               <!--end::Row-->
@@ -393,10 +400,16 @@
               <!--end::Row-->
               <!--begin::Row-->
               <tr class="">
+                <td class="text-gray-400">Paid:</td>
+                <td class="text-gray-800">{{ invoiceDetails.paid }}</td>
+              </tr>
+              <!--end::Row-->
+              <!--begin::Row-->
+              <tr class="">
                 <td class="text-gray-400">Status:</td>
                 <td>
                   <span class="badge badge-light-success">{{
-                    invoiceDetails.paid
+                    invoiceDetails.status_id
                   }}</span>
                 </td>
               </tr>
@@ -405,10 +418,40 @@
             <!--end::Details-->
           </div>
           <!--end::Section-->
+
+          <!--begin::Seperator-->
+          <div class="separator separator-dashed mb-7"></div>
+          <!--end::Seperator-->
+          <!--begin::Section-->
+          <div class="mb-10">
+            <!--begin::Details-->
+            <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2">
+              <!--begin::Row-->
+              <tr class="">
+                <td class="text-gray-400">Created at:</td>
+                <td class="text-gray-800">{{ invoiceDetails.created_at }}</td>
+              </tr>
+              <!--end::Row-->
+              <!--begin::Row-->
+              <tr class="">
+                <td class="text-gray-400">Updated at:</td>
+                <td class="text-gray-800">{{ invoiceDetails.updated_at }}</td>
+              </tr>
+              <!--end::Row-->
+            </table>
+            <!--end::Details-->
+          </div>
+          <!--end::Section-->
+
           <!--begin::Actions-->
-          <div class="mb-0">
-            <a href="#" class="btn btn-primary" id="kt_invoice_update_button"
-              >Todo - Update Status</a
+          <div class="mb-0" v-if="invoiceDetails.status_id !== '4'">
+            <a
+              href="#"
+              class="btn btn-primary"
+              id="kt_invoice_update_button"
+              data-bs-toggle="modal"
+              data-bs-target="#kt_modal_update_invoice"
+              >Cancel Invoice</a
             >
           </div>
           <!--end::Actions-->
@@ -419,7 +462,7 @@
     </div>
     <!--end::Sidebar-->
   </div>
-  <!--View iTransaction Modal-->
+  <!--View Transaction Modal-->
   <div
     class="modal fade"
     id="kt_modal_view_transaction"
@@ -450,12 +493,11 @@
           <div data-kt-stepper-element="content">
             <!--begin::Wrapper-->
             <div class="w-100" v-if="transaction.id">
-              {{ transaction }}
               <!--begin::Heading-->
               <div class="pb-12">
                 <!--begin::Title-->
                 <h1 class="fw-bold text-dark">
-                  iTransaction Details: {{ transaction.transaction.id }} -
+                  Transaction Details: {{ transaction.transaction.id }} -
                   {{ transaction.transaction.reference }}
                 </h1>
                 <!--end::Title-->
@@ -524,9 +566,7 @@
               class="py-2 border-bottom border-bottom-dashed border-gray-300"
             >
               <div class="ms">
-                <span
-                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
-                >
+                <span class="d-flex align-items-center fs-5 fw-bold text-dark">
                   Debit Account
                 </span>
               </div>
@@ -534,7 +574,7 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">iInstitution</td>
+                      <td class="text-muted">Institution</td>
                       <td class="text-gray-800">
                         {{
                           transaction.transaction.debit_account_institution_id
@@ -570,9 +610,7 @@
               class="py-2 border-bottom border-bottom-dashed border-gray-300"
             >
               <div class="ms">
-                <span
-                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
-                >
+                <span class="d-flex align-items-center fs-5 fw-bold text-dark">
                   Debit Account
                 </span>
               </div>
@@ -580,12 +618,12 @@
                 <table class="table table-flush fw-semobold gy-1">
                   <tbody>
                     <tr>
-                      <td class="text-muted">
+                      <td class="text-muted">Institution</td>
+                      <td class="text-gray-800">
                         {{
                           transaction.transaction.credit_account_institution_id
                         }}
                       </td>
-                      <td class="text-gray-800">AU</td>
                     </tr>
                     <tr>
                       <td class="text-muted">Account No.</td>
@@ -618,9 +656,9 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!--View iTransaction Modal-->
+  <!--View Transaction Modal-->
 
-  <!--update iInvoice Modal-->
+  <!--update Invoice Modal-->
   <div
     class="modal fade"
     id="kt_modal_update_invoice"
@@ -662,30 +700,18 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">{{ invoiceForm.action }} iInvoice Status</h1>
+              <h1 class="mb-3">Cancel Invoice</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
 
             <!--begin::Input group-->
             <div class="d-flex flex-column mb-4 fv-row">
-              <!--begin::Label-->
-              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Status</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                ></i>
-              </label>
-              <!--end::Label-->
-
-              <el-form-item prop="paid">
-                <el-input
-                  v-model="invoiceForm.paid"
-                  placeholder="Enter Status"
-                  name="paid"
-                ></el-input>
-              </el-form-item>
+              <div class="modal-text">
+                <h6 class="text-center" style="color: red">
+                  Are you sure you want to cancel this money request?
+                </h6>
+              </div>
             </div>
 
             <!--end::Input group-->
@@ -700,7 +726,7 @@
             data-bs-dismiss="modal"
             :disabled="refData.loadingAction"
           >
-            Cancel
+            Discard
           </button>
           <!--end::Button-->
 
@@ -712,7 +738,7 @@
             @click="processInvoiceAction()"
           >
             <span v-if="!refData.loadingAction" class="indicator-label">
-              Update
+              Cancel Invoice
               <span class="svg-icon svg-icon-3 ms-2 me-0">
                 <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
               </span>
@@ -732,7 +758,7 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!--update iInvoice Modal-->
+  <!--update Invoice Modal-->
 
   <!--end::Layout-->
 </template>
@@ -800,7 +826,7 @@ export default defineComponent({
 
       {
         columnLabel: "transaction_reference",
-        columnName: "reference",
+        columnName: "Payment reference",
         sortEnabled: false,
       },
       {
@@ -811,7 +837,7 @@ export default defineComponent({
 
       {
         columnLabel: "donor",
-        columnName: "donor",
+        columnName: "Payee",
         sortEnabled: false,
       },
       {
@@ -858,19 +884,17 @@ export default defineComponent({
         if (valid) {
           refData.value.loadingAction = true;
 
-          let batchUploadPayload = new FormData();
-          batchUploadPayload.append("paid", invoiceForm.value.paid);
+          let formPayload = new FormData();
+          formPayload.append("paid", invoiceForm.value.paid);
 
-          batchUploadPayload.append(
-            "reference",
-            invoiceDetails.value.reference
-          );
+          formPayload.append("reference", invoiceDetails.value.reference);
+
+          const payload = {
+            action: "cancel",
+          };
 
           invoiceStore
-            .updateInvoiceStatus([
-              invoiceDetails.value,
-              invoiceForm.value.reference,
-            ])
+            .updateInvoiceStatus([payload, invoiceForm.value.reference])
             .then(() => {
               invoiceForm.value.action = "Edit";
 

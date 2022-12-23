@@ -41,7 +41,7 @@
             data-bs-target="#kt_modal_add_campaign"
             @click="showAddCampaignModal"
           >
-            Add iCampaign
+            Add Campaign
           </button>
         </div>
         <!--end::Group actions-->
@@ -126,7 +126,7 @@
   </div>
   <!--end::Card-->
 
-  <!--View iCampaign Modal-->
+  <!--View Campaign Modal-->
   <div
     class="modal fade"
     id="kt_modal_add_campaign"
@@ -168,7 +168,7 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">{{ campaign.action }} iCampaign Details</h1>
+              <h1 class="mb-3">{{ campaign.action }} Campaign Details</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -177,7 +177,7 @@
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">iCampaign Title</span>
+                <span class="required">Campaign Title</span>
                 <i
                   class="fas fa-exclamation-circle ms-2 fs-7"
                   data-bs-toggle="tooltip"
@@ -228,13 +228,14 @@
                   v-model="campaign.goal"
                   placeholder="Enter goal"
                   name="goal"
+                  type="number"
                 ></el-input>
               </el-form-item>
             </div>
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Image/Banner</span>
+                <span>Image/Banner</span>
                 <i
                   class="fas fa-exclamation-circle ms-2 fs-7"
                   data-bs-toggle="tooltip"
@@ -297,7 +298,7 @@
     </div>
     <!--end::Modal dialog-->
   </div>
-  <!--View iCampaign Modal-->
+  <!--View Campaign Modal-->
 </template>
 
 <script lang="ts">
@@ -433,17 +434,17 @@ export default defineComponent({
         if (valid) {
           refData.value.loadingAction = true;
 
-          let batchUploadPayload = new FormData();
-          batchUploadPayload.append("title", campaign.value.title);
-          batchUploadPayload.append("description", campaign.value.description);
-          batchUploadPayload.append("goal", campaign.value.goal);
+          let formPayload = new FormData();
+          formPayload.append("title", campaign.value.title);
+          formPayload.append("description", campaign.value.description);
+          formPayload.append("goal", campaign.value.goal);
 
           if (payload.value.batch_file !== null) {
-            batchUploadPayload.append("image", payload.value.batch_file);
+            formPayload.append("image", payload.value.batch_file);
           }
 
           campaignStore
-            .addCampaign(batchUploadPayload)
+            .addCampaign(formPayload)
 
             .then((response) => {
               // update campaign action to edit
@@ -515,7 +516,21 @@ export default defineComponent({
       title: [
         {
           required: true,
-          message: "title is required",
+          message: "Campaign Title is required",
+          trigger: "change",
+        },
+      ],
+      description: [
+        {
+          required: true,
+          message: "Description is required",
+          trigger: "change",
+        },
+      ],
+      goal: [
+        {
+          required: true,
+          message: "Campaign goal/amount is required",
           trigger: "change",
         },
       ],

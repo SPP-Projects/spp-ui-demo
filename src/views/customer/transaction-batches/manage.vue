@@ -40,7 +40,7 @@
             data-bs-toggle="modal"
             data-bs-target="#kt_modal_add_batch_transaction"
           >
-            New iTransaction Batch Upload
+            New Transaction Batch Upload
           </button>
         </div>
         <!--end::Group actions-->
@@ -143,7 +143,7 @@
         <!--begin::Modal header-->
         <div class="modal-header" id="kt_modal_add_customer_header">
           <!--begin::Modal title-->
-          <h2 class="fw-bold">Process iTransaction Batch</h2>
+          <h2 class="fw-bold">Process Transaction Batch</h2>
           <!--end::Modal title-->
 
           <!--begin::Close-->
@@ -212,7 +212,7 @@
               :disabled="loading_batch.submit"
             >
               <span v-if="loading_batch.process"
-                >Uploading iTransaction Batch ...
+                >Uploading Transaction Batch ...
               </span>
               <span v-else>Upload Batch </span>
             </button>
@@ -237,7 +237,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Process iTransaction Batch</h5>
+          <h5 class="modal-title">Process Transaction Batch</h5>
 
           <!--begin::Close-->
           <div
