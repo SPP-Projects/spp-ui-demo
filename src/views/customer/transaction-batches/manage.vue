@@ -29,7 +29,7 @@
         <!--begin::Group actions-->
         <div class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
-            <span class="me-2">
+            <span class="me-2" v-if="meta.total >= 1">
               Showing {{ meta.from }} to {{ meta.to }} of
               {{ meta.total }}
             </span>
@@ -74,7 +74,7 @@
           <span v-if="data.status_id === '2'" class="badge badge-warning"
             >Validating</span
           >
-          <span v-if="data.status_id === 3" class="badge badge-success"
+          <span v-if="data.status_id === '3'" class="badge badge-success"
             >Validated</span
           >
           <span v-if="data.status_id === '4'" class="badge badge-warning"
@@ -103,17 +103,16 @@
         <template v-slot:transaction_count="{ row: data }">
           {{ data.transaction_count }}
         </template>
-        <!--                @click="transaction = { ...data }"-->
+
         <template v-slot:actions="{ row: data }">
           <router-link :to="`batch/${data.batch_reference}`">
-            <button class="btn btn-sm btn-info btn-active-info me-5">
+            <button class="btn btn-sm btn-info btn-active-info me-2 mb-2">
               View
             </button></router-link
           >
           <button
-            class="btn btn-sm btn-light-info btn-active-light-info"
+            class="btn btn-sm btn-light-info btn-active-light-info mb-2"
             data-bs-toggle="modal"
-            id="edit-btn"
             data-bs-target="#kt_modal_confirm_transaction_batch"
             @click="showConfirmTransactionBatchModal(data)"
             v-if="data.status_id === '3'"

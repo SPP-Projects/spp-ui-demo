@@ -5,6 +5,8 @@ import JwtService from "@/core/services/JwtService";
 import type { AxiosResponse } from "axios";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
+import type { ProgressFinisher } from "@marcoschulte/vue3-progress";
+import { useProgress } from "@marcoschulte/vue3-progress";
 /**
  * @description service to call HTTP request via Axios
  */
@@ -37,6 +39,26 @@ class ApiService {
           store.logout();
           router.push({ name: "sign-in" });
         }
+        return Promise.reject(error);
+      }
+    );
+
+    //TODO
+    //progress-bar for api connections
+    const progresses = [] as ProgressFinisher[];
+
+    axios.interceptors.request.use((config) => {
+      progresses.push(useProgress().start());
+      return config;
+    });
+
+    axios.interceptors.response.use(
+      (resp) => {
+        progresses.pop()?.finish();
+        return resp;
+      },
+      (error) => {
+        progresses.pop()?.finish();
         return Promise.reject(error);
       }
     );

@@ -362,3 +362,9 @@
 * `Customer Invoice`
   * fixed typescript bugs
 
+
+## 2022-12-24
+### Added
+* `UI`
+  * Add progress bar linked with axios api connection
+

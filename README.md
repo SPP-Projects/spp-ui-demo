@@ -9,6 +9,7 @@ Additional Libraries + Metronic
 1. vue-m-message
 2. vue-json-pretty
 3. dayjs
+4. @marcoschulte/vue3-progress
 
 ## Build Setup
 

@@ -79,6 +79,10 @@ app.config.globalProperties.$filters = {
   },
 };
 
+//TODO
+//progressbar
+import { Vue3ProgressPlugin } from "@marcoschulte/vue3-progress";
+app.use(Vue3ProgressPlugin, { disableGlobalInstance: false });
 //SPP - imports for app initialization
 
 app.mount("#app");

@@ -29,7 +29,7 @@
         <!--begin::Group actions-->
         <div class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
-            <span class="me-2">
+            <span class="me-2" v-if="meta.total >= 1">
               Showing {{ meta.from }} to {{ meta.to }} of
               {{ meta.total }}
             </span>

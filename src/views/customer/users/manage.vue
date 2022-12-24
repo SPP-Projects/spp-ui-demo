@@ -29,14 +29,14 @@
         <!--begin::Group actions-->
         <div class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
-            <span class="me-2">
+            <span class="me-2" v-if="meta.total >= 1">
               Showing {{ meta.from }} to {{ meta.to }} of
               {{ meta.total }}
             </span>
           </div>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-primary btn-sm"
             data-bs-toggle="modal"
             data-bs-target="#kt_modal_add_customer"
             @click="showAddUserModal"
@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add Customer
+            Add User
           </button>
         </div>
         <!--end::Group actions-->

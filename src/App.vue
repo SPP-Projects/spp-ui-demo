@@ -1,4 +1,5 @@
 <template>
+  <vue3-progress-bar></vue3-progress-bar>
   <RouterView />
 </template>
 
@@ -65,6 +66,13 @@ export default defineComponent({
 @import "assets/sass/element-ui.dark";
 @import "assets/sass/plugins";
 @import "assets/sass/style";
+
+//TODO
+//progressbar
+$vue3-progress-bar-color: #e8065d;
+@import "@marcoschulte/vue3-progress/dist";
+//@import "@marcoschulte/vue3-progress/dist/index.css";
+//progressbar
 
 #app {
   display: contents;
