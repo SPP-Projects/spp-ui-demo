@@ -143,6 +143,212 @@
   <!--end::Card-->
 
   <!--Add user Modal-->
+  <!--  <div-->
+  <!--    class="modal fade"-->
+  <!--    id="kt_modal_add_customer"-->
+  <!--    ref="AddUpdateUserModalRef"-->
+  <!--    tabindex="-1"-->
+  <!--    aria-hidden="true"-->
+  <!--  >-->
+  <!--    &lt;!&ndash;begin::Modal dialog&ndash;&gt;-->
+  <!--    <div class="modal-dialog mw-650px">-->
+  <!--      &lt;!&ndash;begin::Modal content&ndash;&gt;-->
+  <!--      <div class="modal-content">-->
+  <!--        &lt;!&ndash;begin::Modal header&ndash;&gt;-->
+  <!--        <div class="modal-header pb-0 border-0 justify-content-end">-->
+  <!--          &lt;!&ndash;begin::Close&ndash;&gt;-->
+  <!--          <div-->
+  <!--            class="btn btn-sm btn-icon btn-active-color-primary"-->
+  <!--            data-bs-dismiss="modal"-->
+  <!--          >-->
+  <!--            <span class="svg-icon svg-icon-1">-->
+  <!--              <inline-svg src="/media/icons/duotune/arrows/arr061.svg" />-->
+  <!--            </span>-->
+  <!--          </div>-->
+  <!--          &lt;!&ndash;end::Close&ndash;&gt;-->
+  <!--        </div>-->
+  <!--        &lt;!&ndash;begin::Modal header&ndash;&gt;-->
+
+  <!--        &lt;!&ndash;begin::Modal body&ndash;&gt;-->
+  <!--        <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15" v-if="user">-->
+  <!--          <el-form-->
+  <!--            @submit.prevent="processUserAction()"-->
+  <!--            class="form"-->
+  <!--            :model="user"-->
+  <!--            :rules="rules"-->
+  <!--            ref="formAddUpdateUserRef"-->
+  <!--          >-->
+  <!--            &lt;!&ndash;begin::Heading&ndash;&gt;-->
+  <!--            <div class="mb-13 text-center">-->
+  <!--              &lt;!&ndash;begin::Title&ndash;&gt;-->
+  <!--              <h1 class="mb-3">{{ user.action }} Customer Details</h1>-->
+  <!--              &lt;!&ndash;end::Title&ndash;&gt;-->
+  <!--            </div>-->
+  <!--            &lt;!&ndash;end::Heading&ndash;&gt;-->
+
+  <!--            &lt;!&ndash;begin::Input group&ndash;&gt;-->
+  <!--            <div class="d-flex flex-column mb-4 fv-row">-->
+  <!--              &lt;!&ndash;begin::Label&ndash;&gt;-->
+  <!--              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">-->
+  <!--                <span class="required">Name</span>-->
+  <!--                <i-->
+  <!--                  class="fas fa-exclamation-circle ms-2 fs-7"-->
+  <!--                  data-bs-toggle="tooltip"-->
+  <!--                  title="Specify a target name for future usage and reference"-->
+  <!--                ></i>-->
+  <!--              </label>-->
+  <!--              &lt;!&ndash;end::Label&ndash;&gt;-->
+
+  <!--              <el-form-item prop="name">-->
+  <!--                <el-input-->
+  <!--                  v-model="user.name"-->
+  <!--                  placeholder="Enter Name"-->
+  <!--                  name="name"-->
+  <!--                ></el-input>-->
+  <!--              </el-form-item>-->
+  <!--            </div>-->
+  <!--            <div class="d-flex flex-column mb-4 fv-row">-->
+  <!--              &lt;!&ndash;begin::Label&ndash;&gt;-->
+  <!--              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">-->
+  <!--                <span class="required">Email</span>-->
+  <!--                <i-->
+  <!--                  class="fas fa-exclamation-circle ms-2 fs-7"-->
+  <!--                  data-bs-toggle="tooltip"-->
+  <!--                  title="Specify a target name for future usage and reference"-->
+  <!--                ></i>-->
+  <!--              </label>-->
+  <!--              &lt;!&ndash;end::Label&ndash;&gt;-->
+
+  <!--              <el-form-item prop="email">-->
+  <!--                <el-input-->
+  <!--                  v-model="user.email"-->
+  <!--                  placeholder="Enter Email"-->
+  <!--                  name="email"-->
+  <!--                ></el-input>-->
+  <!--              </el-form-item>-->
+  <!--            </div>-->
+  <!--            <div class="d-flex flex-column mb-4 fv-row">-->
+  <!--              &lt;!&ndash;begin::Label&ndash;&gt;-->
+  <!--              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">-->
+  <!--                <span class="required">Phone</span>-->
+  <!--                <i-->
+  <!--                  class="fas fa-exclamation-circle ms-2 fs-7"-->
+  <!--                  data-bs-toggle="tooltip"-->
+  <!--                  title="Specify a target name for future usage and reference"-->
+  <!--                ></i>-->
+  <!--              </label>-->
+  <!--              &lt;!&ndash;end::Label&ndash;&gt;-->
+
+  <!--              <el-form-item prop="phone">-->
+  <!--                <el-input-->
+  <!--                  v-model="user.phone"-->
+  <!--                  placeholder="Enter Phone"-->
+  <!--                  name="phone"-->
+  <!--                ></el-input>-->
+  <!--              </el-form-item>-->
+  <!--            </div>-->
+  <!--            &lt;!&ndash;end::Input group&ndash;&gt;-->
+
+  <!--            &lt;!&ndash;begin::Input group&ndash;&gt;-->
+  <!--            <div class="row g-9 mb-8">-->
+  <!--              &lt;!&ndash;begin::Col&ndash;&gt;-->
+  <!--              <div class="col-md-6 fv-row">-->
+  <!--                <label class="required fs-6 fw-semobold mb-2">Status</label>-->
+
+  <!--                <el-select v-model="user.status_id" placeholder="Select">-->
+  <!--                  <el-option-->
+  <!--                    v-for="item in options"-->
+  <!--                    :key="item.value"-->
+  <!--                    :label="item.label"-->
+  <!--                    :value="item.value"-->
+  <!--                    :disabled="refData.loadingAction"-->
+  <!--                  />-->
+  <!--                </el-select>-->
+  <!--              </div>-->
+  <!--              &lt;!&ndash;end::Col&ndash;&gt;-->
+  <!--            </div>-->
+  <!--            &lt;!&ndash;end::Input group&ndash;&gt;-->
+
+  <!--            &lt;!&ndash;begin::Input group&ndash;&gt;-->
+  <!--            <h4>Permissions</h4>-->
+  <!--            <div-->
+  <!--              class="mb-5 row fv-row"-->
+  <!--              v-for="(permission_group, key) in user.permissions"-->
+  <!--              :key="key"-->
+  <!--            >-->
+  <!--              <div class="">-->
+  <!--                <div class="fw-semobold me-5">-->
+  <!--                  <label class="fs-6">{{ key }}</label>-->
+  <!--                </div>-->
+  <!--                <div-->
+  <!--                  class="d-flex align-items-center m-3"-->
+  <!--                  v-for="permission in permission_group"-->
+  <!--                  :key="permission.id"-->
+  <!--                >-->
+  <!--                  <label-->
+  <!--                    class="form-check form-check-custom form-check-solid me-10"-->
+  <!--                  >-->
+  <!--                    <input-->
+  <!--                      class="form-check-input h-20px w-20px checkbox-success"-->
+  <!--                      type="checkbox"-->
+  <!--                      :value="permission.permission_id"-->
+  <!--                      v-model="checkedRows"-->
+  <!--                    />-->
+
+  <!--                    <span class="form-check-label fw-semobold">-->
+  <!--                      <b>Can</b> {{ permission.name }}-->
+  <!--                    </span>-->
+  <!--                  </label>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            &lt;!&ndash;end::Input group&ndash;&gt;-->
+  <!--          </el-form>-->
+  <!--        </div>-->
+  <!--        <div class="modal-footer flex-center" v-if="user">-->
+  <!--          &lt;!&ndash;begin::Button&ndash;&gt;-->
+  <!--          <button-->
+  <!--            type="reset"-->
+  <!--            id="kt_modal_add_customer_cancel"-->
+  <!--            class="btn btn-light me-3"-->
+  <!--            data-bs-dismiss="modal"-->
+  <!--            :disabled="refData.loadingAction"-->
+  <!--          >-->
+  <!--            Cancel-->
+  <!--          </button>-->
+  <!--          &lt;!&ndash;end::Button&ndash;&gt;-->
+
+  <!--          &lt;!&ndash;begin::Button&ndash;&gt;-->
+  <!--          <button-->
+  <!--            :data-kt-indicator="refData.loadingAction ? 'on' : null"-->
+  <!--            class="btn btn-lg btn-primary"-->
+  <!--            type="submit"-->
+  <!--            @click="processUserAction()"-->
+  <!--          >-->
+  <!--            <span v-if="!refData.loadingAction" class="indicator-label">-->
+  <!--              {{ user.action === "Add" ? "Add" : "Update" }}-->
+  <!--              <span class="svg-icon svg-icon-3 ms-2 me-0">-->
+  <!--                <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />-->
+  <!--              </span>-->
+  <!--            </span>-->
+  <!--            <span v-if="refData.loadingAction" class="indicator-progress">-->
+  <!--              Please wait...-->
+  <!--              <span-->
+  <!--                class="spinner-border spinner-border-sm align-middle ms-2"-->
+  <!--              ></span>-->
+  <!--            </span>-->
+  <!--          </button>-->
+  <!--          &lt;!&ndash;end::Button&ndash;&gt;-->
+  <!--        </div>-->
+  <!--        &lt;!&ndash;end::Modal body&ndash;&gt;-->
+  <!--      </div>-->
+  <!--      &lt;!&ndash;end::Modal content&ndash;&gt;-->
+  <!--    </div>-->
+  <!--    &lt;!&ndash;end::Modal dialog&ndash;&gt;-->
+  <!--  </div>-->
+  <!--Add user Modal-->
+
+  <!--Add transactionCommission Modal-->
   <div
     class="modal fade"
     id="kt_modal_add_customer"
@@ -151,204 +357,222 @@
     aria-hidden="true"
   >
     <!--begin::Modal dialog-->
-    <div class="modal-dialog mw-650px">
+    <div class="modal-dialog modal-dialog-centered mw-650px">
       <!--begin::Modal content-->
       <div class="modal-content">
-        <!--begin::Modal header-->
-        <div class="modal-header pb-0 border-0 justify-content-end">
-          <!--begin::Close-->
-          <div
-            class="btn btn-sm btn-icon btn-active-color-primary"
-            data-bs-dismiss="modal"
-          >
-            <span class="svg-icon svg-icon-1">
-              <inline-svg src="/media/icons/duotune/arrows/arr061.svg" />
-            </span>
-          </div>
-          <!--end::Close-->
-        </div>
-        <!--begin::Modal header-->
+        <!--begin::Form-->
+        <el-form
+          class="form"
+          @submit.prevent="processUserAction()"
+          :model="user"
+          :rules="rules"
+          ref="formAddUpdateUserRef"
+        >
+          <!--begin::Modal header-->
+          <div class="modal-header" id="kt_modal_new_payment_map_header">
+            <!--begin::Modal title-->
+            <h2>{{ user.action }} Customer Details</h2>
+            <!--end::Modal title-->
 
-        <!--begin::Modal body-->
-        <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15" v-if="user">
-          <el-form
-            @submit.prevent="processUserAction()"
-            class="form"
-            :model="user"
-            :rules="rules"
-            ref="formAddUpdateUserRef"
-          >
-            <!--begin::Heading-->
-            <div class="mb-13 text-center">
-              <!--begin::Title-->
-              <h1 class="mb-3">{{ user.action }} Customer Details</h1>
-              <!--end::Title-->
-            </div>
-            <!--end::Heading-->
-
-            <!--begin::Input group-->
-            <div class="d-flex flex-column mb-4 fv-row">
-              <!--begin::Label-->
-              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Name</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                  title="Specify a target name for future usage and reference"
-                ></i>
-              </label>
-              <!--end::Label-->
-
-              <el-form-item prop="name">
-                <el-input
-                  v-model="user.name"
-                  placeholder="Enter Name"
-                  name="name"
-                ></el-input>
-              </el-form-item>
-            </div>
-            <div class="d-flex flex-column mb-4 fv-row">
-              <!--begin::Label-->
-              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Email</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                  title="Specify a target name for future usage and reference"
-                ></i>
-              </label>
-              <!--end::Label-->
-
-              <el-form-item prop="email">
-                <el-input
-                  v-model="user.email"
-                  placeholder="Enter Email"
-                  name="email"
-                ></el-input>
-              </el-form-item>
-            </div>
-            <div class="d-flex flex-column mb-4 fv-row">
-              <!--begin::Label-->
-              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Phone</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                  title="Specify a target name for future usage and reference"
-                ></i>
-              </label>
-              <!--end::Label-->
-
-              <el-form-item prop="phone">
-                <el-input
-                  v-model="user.phone"
-                  placeholder="Enter Phone"
-                  name="phone"
-                ></el-input>
-              </el-form-item>
-            </div>
-            <!--end::Input group-->
-
-            <!--begin::Input group-->
-            <div class="row g-9 mb-8">
-              <!--begin::Col-->
-              <div class="col-md-6 fv-row">
-                <label class="required fs-6 fw-semobold mb-2">Status</label>
-
-                <el-select v-model="user.status_id" placeholder="Select">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                    :disabled="refData.loadingAction"
-                  />
-                </el-select>
-              </div>
-              <!--end::Col-->
-            </div>
-            <!--end::Input group-->
-
-            <!--begin::Input group-->
-
-            <h4>Permissions</h4>
+            <!--begin::Close-->
             <div
-              class="mb-5 row fv-row"
-              v-for="(permission_group, key) in user.permissions"
-              :key="key"
+              class="btn btn-sm btn-icon btn-active-color-primary"
+              data-bs-dismiss="modal"
             >
-              <div class="">
-                <div class="fw-semobold me-5">
-                  <label class="fs-6">{{ key }}</label>
-                </div>
-                <div
-                  class="d-flex align-items-center m-3"
-                  v-for="permission in permission_group"
-                  :key="permission.id"
-                >
-                  <label
-                    class="form-check form-check-custom form-check-solid me-10"
-                  >
-                    <input
-                      class="form-check-input h-20px w-20px checkbox-success"
-                      type="checkbox"
-                      :value="permission.permission_id"
-                      v-model="checkedRows"
-                    />
-
-                    <span class="form-check-label fw-semobold">
-                      <b>Can</b> {{ permission.name }}
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <!--end::Input group-->
-          </el-form>
-        </div>
-        <div class="modal-footer flex-center" v-if="user">
-          <!--begin::Button-->
-          <button
-            type="reset"
-            id="kt_modal_add_customer_cancel"
-            class="btn btn-light me-3"
-            data-bs-dismiss="modal"
-            :disabled="refData.loadingAction"
-          >
-            Cancel
-          </button>
-          <!--end::Button-->
-
-          <!--begin::Button-->
-          <button
-            :data-kt-indicator="refData.loadingAction ? 'on' : null"
-            class="btn btn-lg btn-primary"
-            type="submit"
-            @click="processUserAction()"
-          >
-            <span v-if="!refData.loadingAction" class="indicator-label">
-              {{ user.action === "Add" ? "Add" : "Update" }}
-              <span class="svg-icon svg-icon-3 ms-2 me-0">
-                <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+              <span class="svg-icon svg-icon-1">
+                <inline-svg src="/media/icons/duotune/arrows/arr061.svg" />
               </span>
-            </span>
-            <span v-if="refData.loadingAction" class="indicator-progress">
-              Please wait...
-              <span
-                class="spinner-border spinner-border-sm align-middle ms-2"
-              ></span>
-            </span>
-          </button>
-          <!--end::Button-->
-        </div>
-        <!--end::Modal body-->
+            </div>
+            <!--end::Close-->
+          </div>
+          <!--end::Modal header-->
+
+          <!--begin::Modal body-->
+          <div class="modal-body py-10 px-lg-17">
+            <!--begin::Scroll-->
+            <div
+              class="scroll-y me-n7 pe-7"
+              id="kt_modal_new_new_payment_scroll"
+              data-kt-scroll="true"
+              data-kt-scroll-activate="{default: false, lg: true}"
+              data-kt-scroll-max-height="auto"
+              data-kt-scroll-dependencies="#kt_modal_new_payment_map_header"
+              data-kt-scroll-wrappers="#kt_modal_new_new_payment_scroll"
+              data-kt-scroll-offset="300px"
+            >
+              <!--begin::Input group-->
+              <div class="d-flex flex-column mb-4 fv-row">
+                <!--begin::Label-->
+                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                  <span class="required">Name</span>
+                  <i
+                    class="fas fa-exclamation-circle ms-2 fs-7"
+                    data-bs-toggle="tooltip"
+                    title="Specify a target name for future usage and reference"
+                  ></i>
+                </label>
+                <!--end::Label-->
+
+                <el-form-item prop="name">
+                  <el-input
+                    v-model="user.name"
+                    placeholder="Enter Name"
+                    name="name"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="d-flex flex-column mb-4 fv-row">
+                <!--begin::Label-->
+                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                  <span class="required">Email</span>
+                  <i
+                    class="fas fa-exclamation-circle ms-2 fs-7"
+                    data-bs-toggle="tooltip"
+                    title="Specify a target name for future usage and reference"
+                  ></i>
+                </label>
+                <!--end::Label-->
+
+                <el-form-item prop="email">
+                  <el-input
+                    v-model="user.email"
+                    placeholder="Enter Email"
+                    name="email"
+                    type="email"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="d-flex flex-column mb-4 fv-row">
+                <!--begin::Label-->
+                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                  <span class="required">Phone</span>
+                  <i
+                    class="fas fa-exclamation-circle ms-2 fs-7"
+                    data-bs-toggle="tooltip"
+                    title="Specify a target name for future usage and reference"
+                  ></i>
+                </label>
+                <!--end::Label-->
+
+                <el-form-item prop="phone">
+                  <el-input
+                    v-model="user.phone"
+                    placeholder="Enter Phone"
+                    name="phone"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <!--end::Input group-->
+
+              <!--begin::Input group-->
+              <div class="row g-9 mb-8">
+                <!--begin::Col-->
+                <div class="col-md-6 fv-row">
+                  <label class="required fs-6 fw-semobold mb-2">Status</label>
+
+                  <el-select v-model="user.status_id" placeholder="Select">
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                      :disabled="refData.loadingAction"
+                    />
+                  </el-select>
+                </div>
+                <!--end::Col-->
+              </div>
+              <!--end::Input group-->
+
+              <!--begin::Input group-->
+              <h4>Permissions</h4>
+
+              <DataLoader v-if="loadingUserData"></DataLoader>
+              <!--              v-for="(permission_group, key) in user.permissions"-->
+              <template v-else>
+                <div
+                  class="mb-5 row fv-row"
+                  v-for="(permission_group, key) in customerPermissions"
+                  :key="key"
+                >
+                  <div class="">
+                    <div class="fw-semobold me-5">
+                      <label class="fs-6">{{ key }}</label>
+                    </div>
+                    <div
+                      class="d-flex align-items-center m-3"
+                      v-for="permission in permission_group"
+                      :key="permission.id"
+                    >
+                      <label
+                        class="form-check form-check-custom form-check-solid me-10"
+                      >
+                        <input
+                          class="form-check-input h-20px w-20px checkbox-success"
+                          type="checkbox"
+                          :value="permission.permission_id"
+                          v-model="checkedRows"
+                        />
+
+                        <span class="form-check-label fw-semobold">
+                          <b>Can</b> {{ permission.name }}
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div></template
+              >
+
+              <!--end::Input group-->
+            </div>
+            <!--end::Scroll-->
+          </div>
+          <!--end::Modal body-->
+
+          <!--begin::Modal footer-->
+          <div class="modal-footer flex-center">
+            <!--begin::Button-->
+            <button
+              type="reset"
+              id="kt_modal_add_customer_cancel"
+              class="btn btn-light me-3"
+              data-bs-dismiss="modal"
+              :disabled="refData.loadingAction"
+            >
+              Cancel
+            </button>
+            <!--end::Button-->
+
+            <!--begin::Button-->
+            <button
+              :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              class="btn btn-lg btn-primary"
+              type="submit"
+              @click="processUserAction()"
+              :disabled="refData.loadingAction"
+            >
+              <span v-if="!refData.loadingAction" class="indicator-label">
+                {{ user.action === "Add" ? "Add" : "Update" }}
+                <span class="svg-icon svg-icon-3 ms-2 me-0">
+                  <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+                </span>
+              </span>
+              <span v-if="refData.loadingAction" class="indicator-progress">
+                Please wait...
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+            </button>
+            <!--end::Button-->
+          </div>
+          <!--end::Modal footer-->
+        </el-form>
+        <!--end::Form-->
       </div>
-      <!--end::Modal content-->
     </div>
-    <!--end::Modal dialog-->
   </div>
-  <!--Add user Modal-->
+  <!--Add transactionCommission Modal-->
 </template>
 
 <script lang="ts">
@@ -361,10 +585,12 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import DataLoader from "@/components/DataLoader.vue";
 
 export default defineComponent({
   name: "manage-users",
   components: {
+    DataLoader,
     KTDatatable,
     PermissionDenied,
     PageLoader,
@@ -372,8 +598,9 @@ export default defineComponent({
   setup() {
     //store
     const userStore = useCustomerUserStore();
-    const { users, meta, loadingUserData } = storeToRefs(userStore);
-    const { getUsers } = useCustomerUserStore();
+    const { users, meta, loadingUserData, customerPermissions } =
+      storeToRefs(userStore);
+    const { getUsers, getCustomerPermissions } = useCustomerUserStore();
 
     //data variables
     const refData = ref({
@@ -434,6 +661,20 @@ export default defineComponent({
           trigger: "change",
         },
       ],
+      email: [
+        {
+          required: true,
+          message: "Email is required",
+          trigger: "change",
+        },
+      ],
+      status_id: [
+        {
+          required: true,
+          message: "Status is required",
+          trigger: "change",
+        },
+      ],
     });
     const options = [
       {
@@ -466,19 +707,57 @@ export default defineComponent({
         if (valid) {
           refData.value.loadingAction = true;
           user.value.enabled_permissions = checkedRows.value;
+
           switch (user.value.action) {
             case "Add":
               //TODO - work on add user api
               userStore
-                .updateUser(user.value)
+                .addUser(user.value)
 
                 .then((response: any) => {
-                  // update user action to edit
-                  user.value = response;
-                  user.value.action = "Edit";
+                  // user.value = response;
+                  console.log(response);
+                  Message({
+                    message: "User added successfully.",
+                    //TBC
+                    position: "bottom-right",
+                    type: "success",
+                    duration: 5000,
+                    zIndex: 99999,
+                  });
 
                   // update user records
                   getUsers(table_options.value);
+                })
+                .catch((error) => {
+                  // get errors from state
+                  const response = error.response.data;
+
+                  if (response.errors) {
+                    const errors = response.errors;
+                    for (const key in errors) {
+                      Message({
+                        message: errors[key][0],
+                        //TBC
+                        position: "bottom-right",
+                        type: "error",
+                        duration: 5000,
+                        zIndex: 99999,
+                      });
+                    }
+                  } else if (response.error) {
+                    Message({
+                      message: response.error,
+                      //TBC
+                      position: "bottom-right",
+                      type: "error",
+                      duration: 5000,
+                      zIndex: 99999,
+                    });
+                  }
+
+                  // update loading status
+                  refData.value.loadingAction = false;
                 })
                 .finally(() => (refData.value.loadingAction = false));
               break;
@@ -496,7 +775,7 @@ export default defineComponent({
                   Message({
                     message: "User updated successfully.",
                     //TBC
-                    //position: "bottom-right",
+                    position: "bottom-right",
                     type: "success",
                     duration: 5000,
                     zIndex: 99999,
@@ -517,7 +796,7 @@ export default defineComponent({
                       Message({
                         message: errors[key][0],
                         //TBC
-                        //position: "bottom-right",
+                        position: "bottom-right",
                         type: "error",
                         duration: 5000,
                         zIndex: 99999,
@@ -527,7 +806,7 @@ export default defineComponent({
                     Message({
                       message: response.error,
                       //TBC
-                      //position: "bottom-right",
+                      position: "bottom-right",
                       type: "error",
                       duration: 5000,
                       zIndex: 99999,
@@ -536,7 +815,8 @@ export default defineComponent({
 
                   // update loading status
                   refData.value.loadingAction = false;
-                });
+                })
+                .finally(() => (refData.value.loadingAction = false));
               break;
             default:
             //do nothing.
@@ -602,6 +882,7 @@ export default defineComponent({
     onMounted(() => {
       refData.value.loadingPage = true;
       getUsers(table_options.value);
+      getCustomerPermissions();
       refData.value.loadingPage = false;
     });
 
@@ -651,6 +932,9 @@ export default defineComponent({
       loadingUserData,
 
       checkedRows,
+
+      //state
+      customerPermissions,
     };
   },
 });

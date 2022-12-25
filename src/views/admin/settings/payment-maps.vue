@@ -437,7 +437,7 @@ export default defineComponent({
                       Message({
                         message: errors[key][0],
                         //TBC
-                        //position: "bottom-right",
+                        position: "bottom-right",
                         type: "error",
                         duration: 5000,
                         zIndex: 99999,
@@ -447,7 +447,7 @@ export default defineComponent({
                     Message({
                       message: response.error,
                       //TBC
-                      //position: "bottom-right",
+                      position: "bottom-right",
                       type: "error",
                       duration: 5000,
                       zIndex: 99999,

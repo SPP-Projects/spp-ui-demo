@@ -54,6 +54,7 @@ export const useCustomerTransactionBatchStore = defineStore(
           this.loadingData = true;
           TransactionBatchService.getTransactionBatch(options)
             .then(({ data }) => {
+              console.log(data);
               this.transactionBatches = data.data;
               this.meta.total = data.total;
               this.meta.from = data.from;

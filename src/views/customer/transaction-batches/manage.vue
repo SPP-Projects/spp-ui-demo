@@ -39,6 +39,7 @@
             class="btn btn-primary btn-sm"
             data-bs-toggle="modal"
             data-bs-target="#kt_modal_add_batch_transaction"
+            @click="openUploadBatchModal()"
           >
             New Transaction Batch Upload
           </button>
@@ -160,29 +161,37 @@
         <!--end::Modal header-->
 
         <!--begin::Form-->
-        <el-form ref="formAddSenderIdRef">
+        <el-form
+          ref="formAddSenderIdRef"
+          @submit.prevent="submitTransactionBatch()"
+          class="form"
+          :model="formData"
+          :rules="formRules"
+        >
           <!--begin::Modal body-->
           <div class="modal-body py-10 px-lg-17">
             <!--begin::Scroll-->
             <div class="">
               <label class="form-label">Batch File (.csv)</label>
-              <input
-                type="file"
-                class="mb-4"
-                placeholder="Select Batch File"
-                :ref="batch_file"
-                :disabled="loading_batch.submit"
-                @change="handleFileUpload($event)"
-              />
+              <el-form-item prop="batch_file">
+                <input
+                  type="file"
+                  class="mb-4"
+                  name="batch_file"
+                  placeholder="Select Batch File"
+                  :ref="batch_file"
+                  :disabled="loading_batch.submit"
+                  @change="handleFileUpload($event)"
+              /></el-form-item>
             </div>
             <div class="d-flex flex-column mb-4 fv-row">
               <el-form-item prop="validation" class="m-3">
                 <input
                   type="checkbox"
-                  v-model="payload.validate"
-                  placeholder="Select Batch File"
+                  v-model="formData.validate"
+                  placeholder="Validate transactions?"
                   :disabled="loading_batch.submit"
-                  required
+                  class="me-2"
                 />
                 Validate transactions before processing
               </el-form-item>
@@ -207,6 +216,7 @@
             <!--begin::Button-->
             <button
               class="btn btn-primary"
+              type="submit"
               @click="submitTransactionBatch()"
               :disabled="loading_batch.submit"
             >
@@ -267,10 +277,11 @@
 
           <button
             class="btn btn-primary"
-            @click="processTransactionBatch()"
-            :disabled="loading_batch.process"
+            type="submit"
+            @click.prevent="processTransactionBatch()"
+            :disabled="transaction_batch.process"
           >
-            <span v-if="loading_batch.process"
+            <span v-if="transaction_batch.process"
               >Submitting for Processing ...
             </span>
             <span v-else>Submit for Processing </span>
@@ -361,7 +372,7 @@ export default defineComponent({
       process: false,
       submit: false,
     });
-    const payload = ref({
+    const formData = ref({
       batch_file: null,
       validate: true,
     });
@@ -390,34 +401,6 @@ export default defineComponent({
 
     const loadingAddSenderIdForm = ref<boolean>(false);
 
-    //functions
-
-    // const getAllTransactionBatches = async (table_options): Promise<void> => {
-    //   refData.value.loadingData = true;
-    //
-    //   await store
-    //     .dispatch("transaction/getAllTransactionBatches", table_options)
-    //     .then((response) => {
-    //       transactionBatches.value = response.data;
-    //
-    //       // Populate transaction meta
-    //       meta.value.total = response.total;
-    //       meta.value.from = response.from;
-    //       meta.value.to = response.to;
-    //       meta.value.last_page = response.last_page;
-    //     })
-    //     .catch((error) => {
-    //       if (error.response.status === 403) {
-    //         // unauthorized.
-    //         refData.value.unauthorized = true;
-    //       }
-    //     })
-    //     .finally(() => {
-    //       refData.value.loadingPage = false;
-    //       refData.value.loadingData = false;
-    //     });
-    // };
-
     const handlePerPageChange = (size: number) => {
       table_options.value.current_page = 1;
       table_options.value.page_size = size;
@@ -441,7 +424,7 @@ export default defineComponent({
     };
 
     const handleFileUpload = ($event) => {
-      payload.value.batch_file = $event.target.files[0];
+      formData.value.batch_file = $event.target.files[0];
     };
 
     const showConfirmTransactionBatchModal = (data) => {
@@ -452,7 +435,6 @@ export default defineComponent({
       transaction_batch.value.process = true;
       transactionBatchStore
         .processTransactionBatch(transaction_batch.value.batch_reference)
-
         .then(() => {
           Message({
             message: "Batch submitted for processing successfully.",
@@ -461,10 +443,9 @@ export default defineComponent({
             duration: 5000,
             zIndex: 99999,
           });
-
+          loading_batch.value.process = false;
           getAllTransactionBatches(table_options.value);
           hideModal(confirmTransactionBatchModalRef.value);
-          // data.$bvModal.hide("confirmTransactionBatchModal");
         })
         .catch((error) => {
           if (error.response.status === 403) {
@@ -496,82 +477,108 @@ export default defineComponent({
           }
         })
         .finally(() => {
-          loading_batch.value.process = !loading_batch.value.process;
+          loading_batch.value.process = false;
         });
     };
 
     const submitTransactionBatch = () => {
-      loading_batch.value.submit = true;
-
-      // prepare payload
-      let batchUploadPayload = new FormData();
-
-      batchUploadPayload.append("validate", payload.value.validate ? "1" : "0");
-
-      if (payload.value.batch_file !== null) {
-        batchUploadPayload.append("batch_file", payload.value.batch_file);
-      } else {
-        loading_batch.value.submit = !loading_batch.value.submit;
+      if (!formAddSenderIdRef.value) {
         return;
       }
-      for (let pair of batchUploadPayload.entries()) {
-        console.log(pair[0] + " " + pair[1]);
-      }
-      console.log("file", JSON.stringify(batchUploadPayload));
-      transactionBatchStore
-        .submitTransactionBatch(batchUploadPayload)
 
-        .then(() => {
-          Message({
-            message: "Batch uploaded successfully.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+      formAddSenderIdRef.value.validate((valid) => {
+        if (valid) {
+          loading_batch.value.submit = true;
 
-          getAllTransactionBatches(table_options.value);
-          hideModal(uploadTransactionBatchModalRef.value);
-        })
-        .catch((error) => {
-          if (error.response.status === 403) {
-            // unauthorized.
-            refData.value.unauthorized = true;
+          // prepare data
+          let batchUploadPayload = new FormData();
+
+          batchUploadPayload.append(
+            "validate",
+            formData.value.validate ? "1" : "0"
+          );
+
+          if (formData.value.batch_file !== null) {
+            batchUploadPayload.append("batch_file", formData.value.batch_file);
+          } else {
+            loading_batch.value.submit = !loading_batch.value.submit;
+            return;
           }
 
-          let response = error.response.data;
-
-          if (response.errors) {
-            let errors = response.errors;
-            for (const key in errors) {
+          transactionBatchStore
+            .submitTransactionBatch(batchUploadPayload)
+            .then(() => {
               Message({
-                message: errors[key][0],
+                message: "Batch uploaded successfully.",
                 position: "bottom-right",
-                type: "error",
+                type: "success",
                 duration: 5000,
                 zIndex: 99999,
               });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
+
+              getAllTransactionBatches(table_options.value);
+              hideModal(uploadTransactionBatchModalRef.value);
+            })
+            .catch((error) => {
+              if (error.response.status === 403) {
+                // unauthorized.
+                refData.value.unauthorized = true;
+              }
+
+              let response = error.response.data;
+
+              if (response.errors) {
+                let errors = response.errors;
+                for (const key in errors) {
+                  Message({
+                    message: errors[key][0],
+                    position: "bottom-right",
+                    type: "error",
+                    duration: 5000,
+                    zIndex: 99999,
+                  });
+                }
+              } else if (response.error) {
+                Message({
+                  message: response.error,
+                  position: "bottom-right",
+                  type: "error",
+                  duration: 5000,
+                  zIndex: 99999,
+                });
+              }
+            })
+            .finally(() => {
+              loading_batch.value.submit = !loading_batch.value.submit;
             });
-          }
-        })
-        .finally(() => {
-          loading_batch.value.submit = !loading_batch.value.submit;
-        });
+        } else {
+          return false;
+        }
+      });
+    };
+
+    const formRules = ref({
+      batch_file: [
+        {
+          required: true,
+          message: "Upload file is required",
+          trigger: "change",
+        },
+      ],
+    });
+
+    const openUploadBatchModal = () => {
+      //clear all fields
+      Object.keys(formData.value).forEach((key) => (formData.value[key] = ""));
     };
 
     onMounted(() => {
       refData.value.loadingPage = true;
       getAllTransactionBatches(table_options.value);
+
       refData.value.loadingPage = false;
     });
+
     watch(
       () => table_options.value.search_text,
       () => {
@@ -602,7 +609,7 @@ export default defineComponent({
       table_options,
       batch_file,
       loading_batch,
-      payload,
+      formData,
       searchRecords,
       transactions,
       transaction,
@@ -617,10 +624,10 @@ export default defineComponent({
       submitTransactionBatch,
       processTransactionBatch,
       handleFileUpload,
-
+      openUploadBatchModal,
       //modal
       showConfirmTransactionBatchModal,
-
+      formRules,
       //state
       transactionBatches,
       loadingData,

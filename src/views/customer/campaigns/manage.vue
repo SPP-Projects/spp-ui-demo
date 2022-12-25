@@ -276,6 +276,7 @@
             class="btn btn-lg btn-primary"
             type="submit"
             @click="processCampaignAction()"
+            :disabled="refData.loadingAction"
           >
             <span v-if="!refData.loadingAction" class="indicator-label">
               {{ campaign.action === "Add" ? "Add" : "Update" }}
@@ -457,7 +458,7 @@ export default defineComponent({
               Message({
                 message: "Campaign updated successfully.",
                 //TBC
-                //position: "bottom-right",
+                position: "bottom-right",
                 type: "success",
                 duration: 5000,
                 zIndex: 99999,

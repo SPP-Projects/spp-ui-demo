@@ -368,3 +368,17 @@
 * `UI`
   * Add progress bar linked with axios api connection
 
+
+## 2022-12-25
+### Added
+* `Customer / Users`
+  * Add new user
+  * New user form validation
+
+### Fixed
+* `Admin UI`
+  * UI message/notification bug fixes
+* `Customer / Transaction`
+  * Batch transactions ui fixes
+  * add transaction validation
+

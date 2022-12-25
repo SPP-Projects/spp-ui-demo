@@ -284,6 +284,7 @@
             class="btn btn-lg btn-primary"
             type="submit"
             @click="processMoneyRequestAction()"
+            :disabled="refData.loadingAction"
           >
             <span v-if="!refData.loadingAction" class="indicator-label">
               Add Request
@@ -477,7 +478,7 @@ export default defineComponent({
               Message({
                 message: "Money request added successfully.",
                 //TBC
-                //position: "bottom-right",
+                position: "bottom-right",
                 type: "success",
                 duration: 5000,
                 zIndex: 99999,
@@ -498,7 +499,7 @@ export default defineComponent({
                   Message({
                     message: errors[key][0],
                     //TODO
-                    //position: "bottom-right",
+                    position: "bottom-right",
                     type: "error",
                     duration: 5000,
                     zIndex: 99999,
@@ -508,7 +509,7 @@ export default defineComponent({
                 Message({
                   message: response.error,
                   //TODO
-                  //position: "bottom-right",
+                  position: "bottom-right",
                   type: "error",
                   duration: 5000,
                   zIndex: 99999,

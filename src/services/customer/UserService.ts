@@ -18,10 +18,18 @@ class UserService {
   updateUser(payload) {
     return ApiService.post(`/v1/user/${payload.id}`, payload);
   }
+  addUser(payload) {
+    return ApiService.post(`/v1/users/add`, payload);
+  }
 
   //TODO - merge wth main AuthService
   getAuthenticatedUser() {
     return ApiService.get("/v1/user?with_permissions=true&with_customer=true");
+  }
+
+  //TODO - move to central locatio?
+  getCustomerPermissions() {
+    return ApiService.get("/v1/permissions");
   }
 }
 

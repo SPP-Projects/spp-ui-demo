@@ -45,127 +45,142 @@
       <!-- Payment -->
       <div v-if="form.transaction_type === 'payment'" class="row">
         <div v-if="form.step === 'input'" class="col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Debit Institution</label>
+          <el-form
+            @submit.prevent="validateTransaction()"
+            class="form"
+            :model="request"
+            :rules="formValidateTransactionRules"
+            ref="paymentValidationRef"
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Debit Institution</label>
 
-                <select
-                  name="institution_id"
-                  class="form-select form-control"
-                  v-model="request.debit_account_institution"
-                  :disabled="loading"
-                >
-                  <option value="">Select Debit Institution</option>
-                  <option
-                    v-for="institution in institutions"
-                    :key="institution.id"
-                    :value="institution.id"
-                  >
-                    {{ institution.name }}
-                  </option>
-                </select>
+                  <el-form-item prop="debit_account_institution">
+                    <select
+                      name="institution_id"
+                      class="form-select form-control"
+                      v-model="request.debit_account_institution"
+                      :disabled="loading"
+                    >
+                      <option value="">Select Debit Institution</option>
+                      <option
+                        v-for="institution in institutions"
+                        :key="institution.id"
+                        :value="institution.id"
+                      >
+                        {{ institution.name }}
+                      </option>
+                    </select>
+                  </el-form-item>
+                </div>
               </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Debit Account Number</label>
-                <input
-                  v-model="request.debit_account_no"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Account Number to Initiate Payment From E.g. 027XXXXXXX"
-                  :disabled="loading"
-                />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Credit Account</label>
-
-                <select
-                  name="institution_id"
-                  class="form-select form-control"
-                  v-model="request.credit_account_no"
-                  :disabled="loading"
-                >
-                  <option value="">Select Credit Account</option>
-                  <option
-                    v-for="account in accounts"
-                    :key="account.id"
-                    :value="account.id"
-                  >
-                    {{ account.id + " - " + account.name_on_account }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Amount</label>
-                <input
-                  v-model="request.amount"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter amount"
-                  :disabled="loading"
-                />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Reference (Optional)</label>
-                <input
-                  v-model="request.external_reference"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter reference"
-                  :disabled="loading"
-                />
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Debit Account Number</label>
+                  <el-form-item prop="debit_account_no">
+                    <input
+                      v-model="request.debit_account_no"
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter Account Number to Initiate Payment From E.g. 027XXXXXXX"
+                      :disabled="loading"
+                  /></el-form-item>
+                </div>
               </div>
             </div>
             <hr />
-          </div>
-          <div class="row">
-            <div class="col-12 mb-3 text-right">
-              <button
-                class="btn btn-success w-100"
-                type="submit"
-                @click.prevent="validateTransaction()"
-                :disabled="loading"
-              >
-                <svg
-                  v-if="loading"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="feather feather-loader spin ml-2"
-                >
-                  <line x1="12" y1="2" x2="12" y2="6"></line>
-                  <line x1="12" y1="18" x2="12" y2="22"></line>
-                  <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-                  <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-                  <line x1="2" y1="12" x2="6" y2="12"></line>
-                  <line x1="18" y1="12" x2="22" y2="12"></line>
-                  <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
-                  <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
-                </svg>
-                <span v-else>Validate Payment</span>
-              </button>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Credit Account</label>
+
+                  <el-form-item prop="credit_account_no">
+                    <select
+                      name="institution_id"
+                      class="form-select form-control"
+                      v-model="request.credit_account_no"
+                      :disabled="loading"
+                    >
+                      <option value="">Select Credit Account</option>
+                      <option
+                        v-for="account in accounts"
+                        :key="account.id"
+                        :value="account.id"
+                      >
+                        {{ account.id + " - " + account.name_on_account }}
+                      </option>
+                    </select></el-form-item
+                  >
+                </div>
+              </div>
             </div>
-          </div>
+            <hr />
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Amount</label>
+                  <el-form-item prop="amount">
+                    <input
+                      v-model="request.amount"
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter amount"
+                      :disabled="loading"
+                      required
+                  /></el-form-item>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Reference (Optional)</label>
+                  <input
+                    v-model="request.external_reference"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter reference"
+                    :disabled="loading"
+                  />
+                </div>
+              </div>
+              <hr />
+            </div>
+            <div class="row">
+              <div class="col-12 mb-3 text-right">
+                <button
+                  class="btn btn-success w-100"
+                  type="submit"
+                  @click.prevent="validateTransaction()"
+                  :disabled="loading"
+                >
+                  <svg
+                    v-if="loading"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-loader spin ml-2"
+                  >
+                    <line x1="12" y1="2" x2="12" y2="6"></line>
+                    <line x1="12" y1="18" x2="12" y2="22"></line>
+                    <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                    <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                    <line x1="2" y1="12" x2="6" y2="12"></line>
+                    <line x1="18" y1="12" x2="22" y2="12"></line>
+                    <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                    <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                  </svg>
+                  <span v-else>Validate Payment</span>
+                </button>
+              </div>
+            </div>
+          </el-form>
         </div>
         <div
           v-if="form.step === 'validated'"
@@ -400,127 +415,140 @@
       <!-- Transfer -->
       <div v-else class="row">
         <div v-if="form.step === 'input'" class="col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Debit Account</label>
-
-                <select
-                  name="institution_id"
-                  class="form-select form-control"
-                  v-model="request.debit_account_no"
-                  :disabled="loading"
-                >
-                  <option value="">Select Debit Account</option>
-                  <option
-                    v-for="account in accounts"
-                    :key="account.id"
-                    :value="account.id"
+          <el-form
+            @submit.prevent="validateTransaction()"
+            class="form"
+            :model="request"
+            :rules="formValidateTransactionRules"
+            ref="paymentValidationRef"
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Debit Account</label>
+                  <el-form-item prop="debit_account_no">
+                    <select
+                      name="institution_id"
+                      class="form-select form-control"
+                      v-model="request.debit_account_no"
+                      :disabled="loading"
+                    >
+                      <option value="">Select Debit Account</option>
+                      <option
+                        v-for="account in accounts"
+                        :key="account.id"
+                        :value="account.id"
+                      >
+                        {{ account.id + " - " + account.name_on_account }}
+                      </option>
+                    </select></el-form-item
                   >
-                    {{ account.id + " - " + account.name_on_account }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Credit Institution</label>
-
-                <select
-                  name="institution_id"
-                  class="form-select form-control"
-                  v-model="request.credit_account_institution"
-                  :disabled="loading"
-                >
-                  <option value="">Select Credit Institution</option>
-                  <option
-                    v-for="institution in institutions"
-                    :key="institution.id"
-                    :value="institution.id"
-                  >
-                    {{ institution.name }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Credit Account Number</label>
-                <input
-                  v-model="request.credit_account_no"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Account Number to Transfer To E.g. 027XXXXXXX"
-                  :disabled="loading"
-                />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Amount</label>
-                <input
-                  v-model="request.amount"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter amount"
-                  :disabled="loading"
-                />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Reference (Optional)</label>
-                <input
-                  v-model="request.external_reference"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter reference"
-                  :disabled="loading"
-                />
+                </div>
               </div>
             </div>
             <hr />
-          </div>
-          <div class="row">
-            <div class="col-12 mb-3 text-right">
-              <button
-                class="btn btn-success w-100"
-                type="submit"
-                @click.prevent="validateTransaction()"
-                :disabled="loading"
-              >
-                <svg
-                  v-if="loading"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="feather feather-loader spin ml-2"
-                >
-                  <line x1="12" y1="2" x2="12" y2="6"></line>
-                  <line x1="12" y1="18" x2="12" y2="22"></line>
-                  <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-                  <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-                  <line x1="2" y1="12" x2="6" y2="12"></line>
-                  <line x1="18" y1="12" x2="22" y2="12"></line>
-                  <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
-                  <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
-                </svg>
-                <span v-else>Validate Transfer</span>
-              </button>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Credit Institution</label>
+
+                  <el-form-item prop="credit_account_institution">
+                    <select
+                      name="institution_id"
+                      class="form-select form-control"
+                      v-model="request.credit_account_institution"
+                      :disabled="loading"
+                    >
+                      <option value="">Select Credit Institution</option>
+                      <option
+                        v-for="institution in institutions"
+                        :key="institution.id"
+                        :value="institution.id"
+                      >
+                        {{ institution.name }}
+                      </option>
+                    </select></el-form-item
+                  >
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Credit Account Number</label>
+                  <el-form-item prop="credit_account_no">
+                    <input
+                      v-model="request.credit_account_no"
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter Account Number to Transfer To E.g. 027XXXXXXX"
+                      :disabled="loading"
+                  /></el-form-item>
+                </div>
+              </div>
             </div>
-          </div>
+            <hr />
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Amount</label>
+                  <el-form-item prop="amount">
+                    <input
+                      v-model="request.amount"
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter amount"
+                      :disabled="loading"
+                  /></el-form-item>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Reference (Optional)</label>
+                  <input
+                    v-model="request.external_reference"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter reference"
+                    :disabled="loading"
+                  />
+                </div>
+              </div>
+              <hr />
+            </div>
+            <div class="row">
+              <div class="col-12 mb-3 text-right">
+                <button
+                  class="btn btn-success w-100"
+                  type="submit"
+                  @click.prevent="validateTransaction()"
+                  :disabled="loading"
+                >
+                  <svg
+                    v-if="loading"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-loader spin ml-2"
+                  >
+                    <line x1="12" y1="2" x2="12" y2="6"></line>
+                    <line x1="12" y1="18" x2="12" y2="22"></line>
+                    <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                    <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                    <line x1="2" y1="12" x2="6" y2="12"></line>
+                    <line x1="18" y1="12" x2="22" y2="12"></line>
+                    <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                    <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                  </svg>
+                  <span v-else>Validate Transfer</span>
+                </button>
+              </div>
+            </div>
+          </el-form>
         </div>
         <div
           v-if="form.step === 'validated'"
@@ -766,6 +794,7 @@ import type { iValidatedTransaction } from "@/models/transaction";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import { hideModal } from "@/core/helpers/dom";
 
 export default defineComponent({
   name: "manage-accounts",
@@ -869,52 +898,107 @@ export default defineComponent({
     };
 
     // Validate Transaction
+    // const validateTransaction = () => {
+    //   loading.value = true;
+    //
+    //   transactionStore
+    //     .validateTransaction(request.value)
+    //     .then((response: iValidatedTransaction) => {
+    //       validated.value = response;
+    //       form.value.step = "validated";
+    //
+    //       Message({
+    //         message: "Validation successful, please confirm details.",
+    //         position: "bottom-right",
+    //         type: "success",
+    //         duration: 5000,
+    //         zIndex: 99999,
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       // get errors from state
+    //       loading.value = false;
+    //       const response = error.response.data;
+    //
+    //       if (response.errors) {
+    //         const errors = response.errors;
+    //         for (const key in errors) {
+    //           Message({
+    //             message: errors[key][0],
+    //             position: "bottom-right",
+    //             type: "error",
+    //             duration: 5000,
+    //             zIndex: 99999,
+    //           });
+    //         }
+    //       } else if (response.error) {
+    //         Message({
+    //           message: response.error,
+    //           position: "bottom-right",
+    //           type: "error",
+    //           duration: 5000,
+    //           zIndex: 99999,
+    //         });
+    //       }
+    //     })
+    //     .finally(() => (loading.value = false));
+    // };
+
     const validateTransaction = () => {
-      console.log(request.value);
+      if (!paymentValidationRef.value) {
+        return;
+      }
+      console.log(paymentValidationRef.value);
 
-      loading.value = true;
+      paymentValidationRef.value.validate((valid) => {
+        if (valid) {
+          loading.value = true;
 
-      transactionStore
-        .validateTransaction(request.value)
-        .then((response: iValidatedTransaction) => {
-          validated.value = response;
-          form.value.step = "validated";
+          transactionStore
+            .validateTransaction(request.value)
+            .then((response: iValidatedTransaction) => {
+              validated.value = response;
+              form.value.step = "validated";
 
-          Message({
-            message: "Validation successful, please confirm details.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
-        })
-        .catch((error) => {
-          // get errors from state
-          loading.value = false;
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
               Message({
-                message: errors[key][0],
+                message: "Validation successful, please confirm details.",
                 position: "bottom-right",
-                type: "error",
+                type: "success",
                 duration: 5000,
                 zIndex: 99999,
               });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
-        })
-        .finally(() => (loading.value = false));
+            })
+            .catch((error) => {
+              // get errors from state
+              loading.value = false;
+              const response = error.response.data;
+
+              if (response.errors) {
+                const errors = response.errors;
+                for (const key in errors) {
+                  Message({
+                    message: errors[key][0],
+                    position: "bottom-right",
+                    type: "error",
+                    duration: 5000,
+                    zIndex: 99999,
+                  });
+                }
+              } else if (response.error) {
+                Message({
+                  message: response.error,
+                  position: "bottom-right",
+                  type: "error",
+                  duration: 5000,
+                  zIndex: 99999,
+                });
+              }
+            })
+            .finally(() => (loading.value = false));
+        } else {
+          return false;
+        }
+      });
     };
 
     // Confirm Transaction
@@ -961,6 +1045,44 @@ export default defineComponent({
         })
         .finally(() => (loading.value = false));
     };
+    const paymentValidationRef = ref<null | HTMLFormElement>(null);
+    const formValidateTransactionRules = ref({
+      amount: [
+        {
+          required: true,
+          message: "Amount is required",
+          trigger: "change",
+        },
+      ],
+      debit_account_no: [
+        {
+          required: true,
+          message: "Debit account number is required",
+          trigger: "change",
+        },
+      ],
+      credit_account_no: [
+        {
+          required: true,
+          message: "Credit account number is required",
+          trigger: "change",
+        },
+      ],
+      debit_account_institution: [
+        {
+          required: true,
+          message: "Debit account institution number is required",
+          trigger: "change",
+        },
+      ],
+      credit_account_institution: [
+        {
+          required: true,
+          message: "Credit account institution number is required",
+          trigger: "change",
+        },
+      ],
+    });
 
     onMounted(async () => {
       await getInstitutions({ type_id: 3 });
@@ -991,6 +1113,9 @@ export default defineComponent({
       validateTransaction,
       instantiateForm,
 
+      //form
+      formValidateTransactionRules,
+      paymentValidationRef,
       //state
       institutions,
       accounts,

@@ -38,7 +38,8 @@
             type="button"
             class="btn btn-primary btn-sm"
             data-bs-toggle="modal"
-            data-bs-target="#kt_modal_add_customer"
+            data-bs-target="#kt_modal_add_sender_id"
+            @click="showSenderIdModal('Add', {})"
           >
             Add Sender ID
           </button>
@@ -102,7 +103,7 @@
     <!--Modal-->
     <div
       class="modal fade"
-      id="kt_modal_add_customer"
+      id="kt_modal_add_sender_id"
       ref="AddSenderIdModalRef"
       tabindex="-1"
       aria-hidden="true"
@@ -112,14 +113,14 @@
         <!--begin::Modal content-->
         <div class="modal-content">
           <!--begin::Modal header-->
-          <div class="modal-header" id="kt_modal_add_customer_header">
+          <div class="modal-header" id="kt_modal_add_sender_id_header">
             <!--begin::Modal title-->
             <h2 class="fw-bold">Add Sender ID</h2>
             <!--end::Modal title-->
 
             <!--begin::Close-->
             <div
-              id="kt_modal_add_customer_close"
+              id="kt_modal_add_sender_id_close"
               data-bs-dismiss="modal"
               class="btn btn-icon btn-sm btn-active-icon-primary"
             >
@@ -142,12 +143,12 @@
               <!--begin::Scroll-->
               <div
                 class="scroll-y me-n7 pe-7"
-                id="kt_modal_add_customer_scroll"
+                id="kt_modal_add_sender_id_scroll"
                 data-kt-scroll="true"
                 data-kt-scroll-activate="{default: false, lg: true}"
                 data-kt-scroll-max-height="auto"
-                data-kt-scroll-dependencies="#kt_modal_add_customer_header"
-                data-kt-scroll-wrappers="#kt_modal_add_customer_scroll"
+                data-kt-scroll-dependencies="#kt_modal_add_sender_id_header"
+                data-kt-scroll-wrappers="#kt_modal_add_sender_id_scroll"
                 data-kt-scroll-offset="300px"
               >
                 <!--begin::Input group-->
@@ -162,6 +163,7 @@
                       v-model="senderID.name"
                       type="text"
                       placeholder=""
+                      :v-validate="{ required: true, min: 6 }"
                     />
                   </el-form-item>
                   <!--end::Input-->
@@ -177,9 +179,10 @@
               <!--begin::Button-->
               <button
                 type="reset"
-                id="kt_modal_add_customer_cancel"
+                id="kt_modal_add_sender_id_cancel"
                 class="btn btn-light me-3"
                 data-bs-dismiss="modal"
+                :disabled="loadingAddSenderIdForm"
               >
                 Discard
               </button>
@@ -190,6 +193,7 @@
                 :data-kt-indicator="loadingAddSenderIdForm ? 'on' : null"
                 class="btn btn-lg btn-primary"
                 type="submit"
+                :disabled="loadingAddSenderIdForm"
               >
                 <span v-if="!loadingAddSenderIdForm" class="indicator-label">
                   Submit
@@ -255,6 +259,8 @@ export default defineComponent({
     //senderIds
 
     const senderID = ref({
+      id: 0,
+      action: "Add",
       name: "",
     });
 
@@ -334,7 +340,7 @@ export default defineComponent({
               Message({
                 message: "Sender ID submitted successfully.",
                 //TODO
-                //position: "bottom-right",
+                position: "bottom-right",
                 type: "success",
                 duration: 5000,
                 zIndex: 99999,
@@ -354,7 +360,7 @@ export default defineComponent({
                   Message({
                     message: errors[key][0],
                     //TODO
-                    //position: "bottom-right",
+                    position: "bottom-right",
                     type: "error",
                     duration: 5000,
                     zIndex: 99999,
@@ -364,7 +370,7 @@ export default defineComponent({
                 Message({
                   message: response.error,
                   //TODO
-                  //position: "bottom-right",
+                  position: "bottom-right",
                   type: "error",
                   duration: 5000,
                   zIndex: 99999,
@@ -400,6 +406,17 @@ export default defineComponent({
       table_options.value.current_page = 1;
 
       getSenderIDs(table_options.value);
+    };
+
+    //modal
+    const showSenderIdModal = (action, data) => {
+      if (action === "Add") {
+        senderID.value.name = "";
+      } else {
+        senderID.value = data;
+      }
+
+      senderID.value.action = action;
     };
 
     onMounted(() => {
@@ -440,6 +457,9 @@ export default defineComponent({
       meta,
       table_options,
       addSenderIdFormRules,
+
+      //modal
+      showSenderIdModal,
 
       //state
       loadingData,

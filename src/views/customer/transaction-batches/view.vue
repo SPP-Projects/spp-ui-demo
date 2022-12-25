@@ -45,9 +45,10 @@
       </div>
       <!--end::Card toolbar-->
     </div>
+
     <div class="card-body pt-0">
       <KTDatatable
-        :data="transactions"
+        :data="transactionBatches"
         :header="tableHeader"
         :enable-items-per-page-dropdown="false"
         :checkbox-enabled="false"
@@ -239,7 +240,7 @@ export default defineComponent({
     //store
     const transactionBatchStore = useCustomerTransactionBatchStore();
 
-    const { transactions, meta, loadingData } = storeToRefs(
+    const { transactionBatches, meta, loadingData } = storeToRefs(
       transactionBatchStore
     );
     const { getTransactionBatch } = useCustomerTransactionBatchStore();
@@ -361,6 +362,8 @@ export default defineComponent({
         ? route.params.reference[0]
         : route.params.reference;
       getTransactionBatch(table_options.value);
+
+      refData.value.loadingPage = false;
     });
     ////////////////
 
@@ -394,7 +397,7 @@ export default defineComponent({
       meta,
       table_options,
 
-      transactions,
+      transactionBatches,
       transaction,
 
       //functions

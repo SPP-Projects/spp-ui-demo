@@ -736,6 +736,7 @@
             class="btn btn-lg btn-primary"
             type="submit"
             @click="processInvoiceAction()"
+            :disabled="refData.loadingAction"
           >
             <span v-if="!refData.loadingAction" class="indicator-label">
               Cancel Invoice
@@ -903,7 +904,7 @@ export default defineComponent({
               Message({
                 message: "Data updated successfully.",
                 //TBC
-                //position: "bottom-right",
+                position: "bottom-right",
                 type: "success",
                 duration: 5000,
                 zIndex: 99999,
@@ -923,7 +924,7 @@ export default defineComponent({
                   Message({
                     message: errors[key][0],
                     //TBC
-                    //position: "bottom-right",
+                    position: "bottom-right",
                     type: "error",
                     duration: 5000,
                     zIndex: 99999,
@@ -933,7 +934,7 @@ export default defineComponent({
                 Message({
                   message: response.error,
                   //TBC
-                  //position: "bottom-right",
+                  position: "bottom-right",
                   type: "error",
                   duration: 5000,
                   zIndex: 99999,

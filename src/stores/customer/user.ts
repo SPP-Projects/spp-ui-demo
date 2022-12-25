@@ -13,6 +13,9 @@ export const useCustomerUserStore = defineStore("customerUserStore", {
     user: {} as iUser,
     usersTotal: {},
 
+    //customerPermissions
+    customerPermissions: {},
+
     //shared
     loadingUserData: false,
     error: null,
@@ -128,6 +131,29 @@ export const useCustomerUserStore = defineStore("customerUserStore", {
       });
     },
 
+    addUser(payload) {
+      return new Promise((resolve, reject) => {
+        this.loadingUserData = true;
+        UserService.addUser(payload)
+          .then(({ data }) => {
+            resolve(data);
+          })
+          .catch((error) => {
+            if (error.response.status === 403) {
+              // unauthorized.
+              this.unauthorized = true;
+            }
+
+            this.loadingUserData = false;
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingUserData = false;
+          });
+      });
+    },
+
     getAuthenticatedUser() {
       return new Promise((resolve, reject) => {
         this.loadingUserData = true;
@@ -138,6 +164,34 @@ export const useCustomerUserStore = defineStore("customerUserStore", {
             //TODO - CONSIDER REFACTORING
             // save customer type id
             localStorage.setItem("customer_type_id", data.customer.id);
+
+            resolve(data);
+          })
+          .catch((error) => {
+            //TODO: if error remove user from localstorage
+            // localStorage.removeItem("user");
+            //sign out
+            if (error.response.status === 403) {
+              // unauthorized.
+              this.unauthorized = true;
+            }
+
+            this.loadingUserData = false;
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingUserData = false;
+          });
+      });
+    },
+
+    getCustomerPermissions() {
+      return new Promise((resolve, reject) => {
+        this.loadingUserData = true;
+        UserService.getCustomerPermissions()
+          .then(({ data }) => {
+            this.customerPermissions = data;
 
             resolve(data);
           })

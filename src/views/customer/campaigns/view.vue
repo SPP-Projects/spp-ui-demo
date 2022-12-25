@@ -152,7 +152,7 @@
           <!--begin::Card toolbar-->
           <div class="card-toolbar">
             <div class="fw-bold me-5">
-              <span class="me-2">
+              <span class="me-2" v-if="meta.total >= 1">
                 Showing {{ meta.from }} to {{ meta.to }} of
                 {{ meta.total }}
               </span>
@@ -600,6 +600,7 @@
             class="btn btn-lg btn-primary"
             type="submit"
             @click="processCampaignAction()"
+            :disabled="refData.loadingAction"
           >
             <span v-if="!refData.loadingAction" class="indicator-label">
               {{ campaign.action === "Add" ? "Add" : "Update" }}
@@ -832,7 +833,7 @@ export default defineComponent({
               Message({
                 message: "Data updated successfully.",
                 //TBC
-                //position: "bottom-right",
+                position: "bottom-right",
                 type: "success",
                 duration: 5000,
                 zIndex: 99999,
@@ -853,7 +854,7 @@ export default defineComponent({
                   Message({
                     message: errors[key][0],
                     //TBC
-                    //position: "bottom-right",
+                    position: "bottom-right",
                     type: "error",
                     duration: 5000,
                     zIndex: 99999,
@@ -863,7 +864,7 @@ export default defineComponent({
                 Message({
                   message: response.error,
                   //TBC
-                  //position: "bottom-right",
+                  position: "bottom-right",
                   type: "error",
                   duration: 5000,
                   zIndex: 99999,
