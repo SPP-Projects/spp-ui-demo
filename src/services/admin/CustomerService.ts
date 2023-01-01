@@ -23,8 +23,6 @@ class CustomerService {
     return ApiService.get(`/v1/admin/customer-kyc-details/${id}`);
   }
   updateKYCDetails(id, payload) {
-    console.log("id", id);
-
     return ApiService.post(
       `/v1/admin/customer-kyc-details/${id}?_method=PATCH`,
       payload
@@ -72,8 +70,6 @@ class CustomerService {
     return ApiService.get(`/v1/admin/customers/${customer_id}/permissions`);
   }
   updateCustomerPermissions(payload) {
-    console.log(payload.request);
-    console.log(payload.customer_id);
     return ApiService.post(
       `/v1/admin/customers/${payload.customer_id}/permissions`,
       payload.request
@@ -107,7 +103,6 @@ class CustomerService {
     return ApiService.get(`/v1/admin/customer-types/${id}`);
   }
   updateCustomerType(payload) {
-    console.log(payload);
     return ApiService.patch(`/v1/admin/customer-types/${payload.id}`, payload);
   }
 }

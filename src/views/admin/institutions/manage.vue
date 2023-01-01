@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -55,6 +55,7 @@
 
     <!--begin::Card body-->
     <div class="card-body pt-0">
+      {{ meta }}
       <KTDatatable
         :data="institutions"
         :header="tableHeader"
@@ -352,8 +353,13 @@ export default defineComponent({
   setup() {
     //store
     const institutionStore = useAdminInstitutionStore();
-    const { institutions, meta, loadingInstitutionData, institutionTypes } =
-      storeToRefs(institutionStore);
+    const {
+      institutions,
+      meta,
+      loadingInstitutionData,
+      institutionTypes,
+      unauthorized,
+    } = storeToRefs(institutionStore);
     const { getInstitutions, getInstitutionTypes } = useAdminInstitutionStore();
 
     //data variables
@@ -627,6 +633,7 @@ export default defineComponent({
       institutions,
       loadingInstitutionData,
       institutionTypes,
+      unauthorized,
     };
   },
 });

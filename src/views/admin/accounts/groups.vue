@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -188,6 +188,7 @@
               id="kt_modal_account_group_submit"
               class="btn btn-primary btn-sm"
               :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              :disabled="refData.loadingAction"
             >
               <span v-if="!refData.loadingAction" class="indicator-label">
                 {{ accountGroup.action === "Add" ? "Add" : "Update" }}
@@ -235,7 +236,7 @@ export default defineComponent({
   setup() {
     //admin account store
     const accountStore = useAdminAccountStore();
-    const { accountGroups, meta, loadingAccountData } =
+    const { accountGroups, meta, loadingAccountData, unauthorized } =
       storeToRefs(accountStore);
     const { getAccountGroups } = useAdminAccountStore();
 
@@ -477,6 +478,7 @@ export default defineComponent({
       accountGroups,
       loadingAccountData,
       meta,
+      unauthorized,
     };
   },
 });

@@ -60,7 +60,7 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
 
     getGeneralSettingOptions() {
       return new Promise((resolve, reject) => {
-        //  commit("SET_LOADING", true);
+        this.loadingSettingsData = true;
         SettingsService.getSettingOptions()
           .then(({ data }) => {
             console.log(data.groups);
@@ -79,7 +79,7 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
 
     addGeneralSettings(payload) {
       return new Promise((resolve, reject) => {
-        //   commit("SET_LOADING", true);
+        this.loadingSettingsData = true;
         SettingsService.addGeneralSettings(payload)
           .then((response) => {
             // commit("ADD_GENERAL_SETTING", response);
@@ -104,14 +104,16 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
           .catch((err) => {
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingSettingsData = false;
+          });
       });
     },
 
     /******* MANAGE SETTING GROUPS ***/
     getSettingsGroups(options) {
       return new Promise((resolve, reject) => {
-        //  commit("SET_LOADING", true);
+        this.loadingSettingsData = true;
         SettingsService.getSettingGroups(options)
           .then(({ data }) => {
             this.settingsGroups = data.data;
@@ -125,13 +127,15 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
             //  commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingSettingsData = false;
+          });
       });
     },
 
     addSettingsGroup(options) {
       return new Promise((resolve, reject) => {
-        //  commit("SET_LOADING", true);
+        this.loadingSettingsData = true;
         SettingsService.addSettingGroups(options)
           .then(({ data }) => {
             //    commit("ADD_SETTING_GROUP", data);
@@ -140,11 +144,14 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
           .catch((err) => {
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingSettingsData = false;
+          });
       });
     },
 
     updateSettingsGroup(options) {
+      this.loadingSettingsData = true;
       return new Promise((resolve, reject) => {
         SettingsService.updateSettingGroups(options)
           .then(({ data }) => {
@@ -153,7 +160,9 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
           .catch((err) => {
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingSettingsData = false;
+          });
       });
     },
 
@@ -161,7 +170,7 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
 
     getSettingsTypes(options) {
       return new Promise((resolve, reject) => {
-        //     commit("SET_LOADING", true);
+        this.loadingSettingsData = true;
         SettingsService.getSettingTypes(options)
           .then(({ data }) => {
             this.settingsTypes = data.data;
@@ -175,13 +184,15 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
             //    commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingSettingsData = false;
+          });
       });
     },
 
     addSettingsType(options) {
       return new Promise((resolve, reject) => {
-        //  commit("SET_LOADING", true);
+        this.loadingSettingsData = true;
         SettingsService.addSettingTypes(options)
           .then(({ data }) => {
             //   commit("ADD_SETTING_TYPES", data);
@@ -190,11 +201,14 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
           .catch((err) => {
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingSettingsData = false;
+          });
       });
     },
 
     updateSettingsType(options) {
+      this.loadingSettingsData = true;
       return new Promise((resolve, reject) => {
         SettingsService.updateSettingTypes(options)
           .then(({ data }) => {
@@ -203,14 +217,11 @@ export const useAdminSettingStore = defineStore("adminSettingStore", {
           .catch((err) => {
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingSettingsData = false;
+          });
       });
     },
   },
-  getters: {
-    // loading: (state) => state.loading,
-    // error: (state) => state.error,
-    // settings: (state) => state.settings,
-    // setting_options: (state) => state.setting_options,
-  },
+  getters: {},
 });

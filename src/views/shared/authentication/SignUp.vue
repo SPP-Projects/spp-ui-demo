@@ -497,7 +497,11 @@ export default defineComponent({
       onboardingStore
         .registerCustomer(formData)
 
-        .then(() => {
+        .then((response) => {
+          console.log(response);
+
+          router.push({ name: "dashboard" });
+
           Message({
             message: "Registration successful! Welcome to SP Pay.",
             position: "bottom-right",
@@ -505,8 +509,6 @@ export default defineComponent({
             duration: 5000,
             zIndex: 99999,
           });
-
-          router.push({ name: "dashboard" });
         })
         .catch((error) => {
           // get errors from state

@@ -89,7 +89,7 @@
                         </span>
 
                         {{ transaction.currency.code }}
-                        {{ transaction.amount }}
+                        {{ formatCurrencyAmount(transaction.amount) }}
                       </span>
                       <span v-else class="badge badge-light-danger fs-base">
                         <span class="svg-icon svg-icon-5 svg-icon-danger ms-n1">
@@ -98,7 +98,7 @@
                           />
                         </span>
                         {{ transaction.currency.code }}
-                        {{ transaction.amount }}
+                        {{ formatCurrencyAmount(transaction.amount) }}
                       </span>
                     </td>
 
@@ -118,7 +118,10 @@
                       >
                     </td>
                     <td class="text-end pe-0">
-                      {{ transaction.created_at }}
+                      {{ formatDate(transaction.created_at) }}
+                      <span class="text-gray-400 fw-semibold d-block fs-7">
+                        {{ formatTime(transaction.created_at) }}</span
+                      >
                     </td>
 
                     <td class="text-end">
@@ -210,7 +213,7 @@
 
                 <div class="text-gray-100 fw-bold fs-2 mb-2 mt-5">
                   <span class="w-currency">{{ account.currency.code }} </span>
-                  {{ account.actual_balance }}
+                  {{ formatCurrencyAmount(account.actual_balance) }}
                 </div>
                 <div class="fw-semibold text-gray-100">
                   {{ account.type.name }} Account /
@@ -235,6 +238,7 @@ import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerTransactionStore } from "@/stores/customer/transaction";
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "customer-dashboard",
@@ -255,6 +259,9 @@ export default defineComponent({
     const { getAccounts } = useCustomerAccountStore();
     const { accounts, loadingAccountData } = storeToRefs(accountStore);
 
+    //outputformatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     const loading = ref({
       page: true,
       transactions: true,
@@ -290,6 +297,10 @@ export default defineComponent({
       loadingAccountData,
       transactions,
       accounts,
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

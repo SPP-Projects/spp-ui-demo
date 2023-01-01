@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -82,7 +82,7 @@
         </template>
         <template v-slot:type="{ row: data }"> {{ data.type.name }} </template>
         <template v-slot:updated_at="{ row: data }">
-          {{ data.updated_at }}
+          {{ formatDateTime(data.updated_at) }}
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -322,6 +322,7 @@
               id="kt_modal_new_general_setting_submit"
               class="btn btn-primary btn-sm"
               :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              :disabled="refData.loadingAction"
             >
               <span v-if="!refData.loadingAction" class="indicator-label">
                 {{ generalSetting.action === "Add" ? "Add" : "Update" }}
@@ -357,6 +358,7 @@ import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "admin-manage-general-settings",
@@ -373,6 +375,7 @@ export default defineComponent({
       meta,
       loadingSettingsData,
       generalSettingsOptions,
+      unauthorized,
     } = storeToRefs(settingStore);
     const { getGeneralSettings, getGeneralSettingOptions } =
       useAdminSettingStore();
@@ -640,6 +643,9 @@ export default defineComponent({
       }
     );
 
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -667,6 +673,13 @@ export default defineComponent({
       generalSettings,
       loadingSettingsData,
       generalSettingsOptions,
+      unauthorized,
+
+      //output formatting
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

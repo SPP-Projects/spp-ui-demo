@@ -55,7 +55,6 @@ class AccountService {
     return ApiService.patch(`/v1/admin/account-types/${options.id}`, options);
   }
   addAccountType(options) {
-    console.log(options);
     return ApiService.post(`/v1/admin/account-types`, options);
   }
 

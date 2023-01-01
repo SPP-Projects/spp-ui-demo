@@ -1,8 +1,8 @@
 <template>
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
   <!--begin::Card-->
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -93,7 +93,7 @@
         </template>
 
         <template v-slot:created_at="{ row: data }">
-          <p class="text-muted">{{ data.created_at }}</p>
+          <p class="text-muted">{{ formatDateTime(data.created_at) }}</p>
         </template>
 
         <template v-slot:reference="{ row: data }">
@@ -101,7 +101,7 @@
         </template>
 
         <template v-slot:goal="{ row: data }">
-          {{ data.goal }}
+          {{ data.currency_code }} {{ formatCurrencyAmount(data.goal) }}
         </template>
 
         <template v-slot:donated="{ row: data }">
@@ -312,6 +312,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "manage-campaigns",
@@ -323,12 +324,12 @@ export default defineComponent({
   setup() {
     //store
     const campaignStore = useCustomerCampaignStore();
-    const { campaigns, meta, loadingData } = storeToRefs(campaignStore);
+    const { campaigns, meta, loadingData, unauthorized } =
+      storeToRefs(campaignStore);
     const { getCampaigns } = useCustomerCampaignStore();
 
     //data variables
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -558,6 +559,10 @@ export default defineComponent({
       getCampaigns(table_options.value);
       refData.value.loadingPage = false;
     });
+
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -587,6 +592,13 @@ export default defineComponent({
       //state
       loadingData,
       campaigns,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

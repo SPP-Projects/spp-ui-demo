@@ -79,7 +79,7 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     },
     getNotification(id) {
       return new Promise((resolve, reject) => {
-        //  commit("SET_LOADING", true);
+        this.loadingNotificationData = true;
         NotificationService.getSingleNotification(id)
           .then(({ data }) => {
             //    commit("SET_NOTIFICATION", data.data);
@@ -100,7 +100,7 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     },
     addNotification(payload) {
       return new Promise((resolve, reject) => {
-        //   commit("SET_LOADING", true);
+        this.loadingNotificationData = true;
         NotificationService.addNotification(payload)
           .then((response) => {
             //      commit("SET_NEW_NOTIFICATION", response);
@@ -122,6 +122,7 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     },
     updateNotification(payload) {
       return new Promise((resolve, reject) => {
+        this.loadingNotificationData = true;
         NotificationService.updateNotification(payload)
           .then(({ data }) => {
             resolve(data);
@@ -129,12 +130,14 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
           .catch((err) => {
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingNotificationData = false;
+          });
       });
     },
     getNotificationOptions() {
       return new Promise((resolve, reject) => {
-        //  commit("SET_LOADING", true);
+        this.loadingNotificationData = true;
         NotificationService.getNotificationOptions()
           .then(({ data }) => {
             this.notificationOptions = data;
@@ -145,7 +148,9 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
             //  commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingNotificationData = false;
+          });
       });
     },
 
@@ -154,7 +159,7 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
      */
     getNotificationActivities(options) {
       return new Promise((resolve, reject) => {
-        //   commit("SET_LOADING", true);
+        this.loadingNotificationData = true;
         NotificationService.getNotificationActivities(options)
           .then(({ data }) => {
             this.notificationActivities = data.data;
@@ -175,7 +180,7 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     },
     addNotificationActivity(payload) {
       return new Promise((resolve, reject) => {
-        //  commit("SET_LOADING", true);
+        this.loadingNotificationData = true;
         NotificationService.addNotificationActivity(payload)
           .then((response) => {
             resolve(response);
@@ -184,11 +189,14 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
             //     commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingNotificationData = false;
+          });
       });
     },
     updateNotificationActivity(payload) {
       return new Promise((resolve, reject) => {
+        this.loadingNotificationData = true;
         NotificationService.updateNotificationActivity(payload)
           .then(({ data }) => {
             resolve(data);
@@ -201,7 +209,7 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     },
     getNotificationActivityOptions() {
       return new Promise((resolve, reject) => {
-        //  commit("SET_LOADING", true);
+        this.loadingNotificationData = true;
         NotificationService.getNotificationActivityOptions()
           .then(({ data }) => {
             console.log(data);
@@ -212,7 +220,9 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
             //    commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingNotificationData = false;
+          });
       });
     },
 
@@ -291,7 +301,7 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     },
     getNotificationTemplateOptions() {
       return new Promise((resolve, reject) => {
-        //commit("SET_LOADING", true);
+        this.loadingNotificationData = true;
         NotificationService.getNotificationTemplateOptions()
           .then(({ data }) => {
             this.notificationTemplateOptions = data;
@@ -387,13 +397,5 @@ export const useAdminNotificationStore = defineStore("adminNotificationStore", {
     },
   },
 
-  getters: {
-    // loading: (state) => state.loading,
-    // error: (state) => state.error,
-    // getnotifications: (state) => state.notifications,
-    // getnotification: (state) => state.notification,
-    // notificationOptions: (state) => state.notification_options,
-    // notificationTemplateOptions: (state) => state.notification_template_options,
-    // notificationActivityOptions: (state) => state.notification_activity_options,
-  },
+  getters: {},
 });

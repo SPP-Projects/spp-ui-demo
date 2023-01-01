@@ -1,6 +1,6 @@
 <template>
   <!--begin::Layout-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
 
   <div class="d-flex flex-column flex-lg-row" v-else>
@@ -108,7 +108,7 @@
                   <tr>
                     <td class="text-gray-400">Amount:</td>
                     <td class="text-gray-800">
-                      {{ moneyRequestDetails.amount }}
+                      {{ formatCurrencyAmount(moneyRequestDetails.amount) }}
                     </td>
                   </tr>
                   <!--end::Row-->
@@ -269,8 +269,10 @@
                       </td>
                       <td class="text-gray-800">
                         {{
-                          moneyRequestDetails.transaction
-                            .debit_account_balance_before
+                          formatCurrencyAmount(
+                            moneyRequestDetails.transaction
+                              .debit_account_balance_before
+                          )
                         }}
                       </td>
                     </tr>
@@ -283,8 +285,10 @@
                       </td>
                       <td class="text-gray-800">
                         {{
-                          moneyRequestDetails.transaction
-                            .debit_account_balance_after
+                          formatCurrencyAmount(
+                            moneyRequestDetails.transaction
+                              .debit_account_balance_after
+                          )
                         }}
                       </td>
                     </tr>
@@ -321,8 +325,10 @@
                       </td>
                       <td class="text-gray-800">
                         {{
-                          moneyRequestDetails.transaction
-                            .credit_account_balance_before
+                          formatCurrencyAmount(
+                            moneyRequestDetails.transaction
+                              .credit_account_balance_before
+                          )
                         }}
                       </td>
                     </tr>
@@ -335,8 +341,10 @@
                       </td>
                       <td class="text-gray-800">
                         {{
-                          moneyRequestDetails.transaction
-                            .credit_account_balance_after
+                          formatCurrencyAmount(
+                            moneyRequestDetails.transaction
+                              .credit_account_balance_after
+                          )
                         }}
                       </td>
                     </tr>
@@ -416,13 +424,15 @@
               <tr class="">
                 <td class="text-gray-400">Created At:</td>
                 <td class="text-gray-800" v-if="moneyRequestDetails.status">
-                  {{ moneyRequestDetails.status.created_at }}
+                  {{ formatDate(moneyRequestDetails.status.created_at) }} <br />
+                  {{ formatTime(moneyRequestDetails.status.created_at) }}
                 </td>
               </tr>
               <tr class="">
                 <td class="text-gray-400">Updated At:</td>
                 <td class="text-gray-800" v-if="moneyRequestDetails.status">
-                  {{ moneyRequestDetails.status.updated_at }}
+                  {{ formatDate(moneyRequestDetails.status.updated_at) }} <br />
+                  {{ formatTime(moneyRequestDetails.status.updated_at) }}
                 </td>
               </tr>
               <!--end::Row-->
@@ -643,6 +653,7 @@ import { hideModal } from "@/core/helpers/dom";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "money-request-details",
@@ -650,7 +661,8 @@ export default defineComponent({
   setup() {
     //store
     const moneyRequestStore = useCustomerMoneyRequestStore();
-    const { moneyRequestDetails } = storeToRefs(moneyRequestStore);
+    const { moneyRequestDetails, unauthorized } =
+      storeToRefs(moneyRequestStore);
     const { getMoneyRequest } = useCustomerMoneyRequestStore();
 
     //account store
@@ -663,7 +675,6 @@ export default defineComponent({
     const { authenticatedUser } = storeToRefs(authStore);
     //ref data
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -855,7 +866,9 @@ export default defineComponent({
         sort: { column: "", direction: "" },
       });
     });
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -878,6 +891,13 @@ export default defineComponent({
       moneyRequestDetails,
       authenticatedUser,
       accounts,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

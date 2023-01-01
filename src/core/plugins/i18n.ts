@@ -358,6 +358,14 @@ const i18n = createI18n({
   locale: "en",
   globalInjection: true,
   messages,
+  numberFormats: {
+    en: {
+      currency: {
+        style: "currency",
+        currency: "USD",
+      },
+    },
+  },
 });
 
 export default i18n;

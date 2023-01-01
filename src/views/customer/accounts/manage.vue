@@ -1,8 +1,8 @@
 <template>
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
   <!--begin::Card-->
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -75,7 +75,8 @@
           >
         </template>
         <template v-slot:balance="{ row: data }">
-          {{ data.currency.code }} {{ data.actual_balance }}
+          {{ data.currency.code }}
+          {{ formatCurrencyAmount(data.actual_balance) }}
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -103,6 +104,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import router from "@/router";
 import PageLoader from "@/components/PageLoader.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "manage-accounts",
@@ -114,12 +116,12 @@ export default defineComponent({
   setup() {
     //store
     const accountStore = useCustomerAccountStore();
-    const { accounts, meta, loadingAccountData } = storeToRefs(accountStore);
+    const { accounts, meta, loadingAccountData, unauthorized } =
+      storeToRefs(accountStore);
     const { getAccounts } = useCustomerAccountStore();
 
     //refdata
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
       loadingPage: true,
 
@@ -224,7 +226,9 @@ export default defineComponent({
         }, searchRecords.value.kDebounceTimeoutMs);
       }
     );
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -243,6 +247,13 @@ export default defineComponent({
       loadingAccountData,
       getAccounts,
       accounts,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

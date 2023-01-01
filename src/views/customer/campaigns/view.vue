@@ -1,8 +1,8 @@
 <template>
   <!--begin::Layout-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="d-flex flex-column flex-xl-row">
+  <div class="d-flex flex-column flex-xl-row" v-else>
     <!--begin::Sidebar-->
     <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
       <!--begin::Card-->
@@ -36,7 +36,10 @@
                 class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3"
               >
                 <div class="fs-4 fw-bold text-gray-700">
-                  <span class="w-75px"> {{ campaignDetails.goal }}</span>
+                  <span class="w-75px">
+                    {{ campaignDetails.currency_code }}
+                    {{ formatCurrencyAmount(campaignDetails.goal) }}</span
+                  >
                 </div>
                 <div class="fw-semobold text-muted">Goal</div>
               </div>
@@ -45,7 +48,10 @@
                 class="border border-gray-300 border-dashed rounded py-3 px-3 mx-4 mb-3"
               >
                 <div class="fs-4 fw-bold text-gray-700">
-                  <span class="w-50px"> {{ campaignDetails.donated }}</span>
+                  <span class="w-50px">
+                    {{ campaignDetails.currency_code }}
+                    {{ formatCurrencyAmount(campaignDetails.donated) }}</span
+                  >
                 </div>
                 <div class="fw-semobold text-muted">Donated</div>
               </div>
@@ -55,7 +61,10 @@
               >
                 <div class="fs-4 fw-bold text-gray-700">
                   <span class="w-50px">
-                    {{ campaignDetails.amount_to_goal }}</span
+                    {{ campaignDetails.currency_code }}
+                    {{
+                      formatCurrencyAmount(campaignDetails.amount_to_goal)
+                    }}</span
                   >
                 </div>
                 <div class="fw-semobold text-muted">Amt Left</div>
@@ -217,7 +226,7 @@
             </template>
 
             <template v-slot:created_at="{ row: data }">
-              {{ data.created_at }}
+              {{ formatDateTime(data.created_at) }}
             </template>
 
             <template v-slot:transaction_reference="{ row: data }">
@@ -226,7 +235,7 @@
 
             <template v-slot:amount="{ row: data }">
               {{ data.currency_code }}
-              {{ data.amount }}
+              {{ formatCurrencyAmount(data.amount) }}
             </template>
 
             <template v-slot:donor="{ row: data }">
@@ -641,6 +650,7 @@ import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerCampaignStore } from "@/stores/customer/campaign";
 import { storeToRefs } from "pinia";
 import type { iCampaignDonation } from "@/models/campaign";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "campaign-payments",
@@ -652,8 +662,13 @@ export default defineComponent({
   setup() {
     //store
     const campaignStore = useCustomerCampaignStore();
-    const { campaignPayments, meta, loadingData, campaignDetails } =
-      storeToRefs(campaignStore);
+    const {
+      campaignPayments,
+      meta,
+      loadingData,
+      campaignDetails,
+      unauthorized,
+    } = storeToRefs(campaignStore);
     const { getCampaign } = useCustomerCampaignStore();
 
     //route
@@ -661,7 +676,6 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -903,6 +917,10 @@ export default defineComponent({
       }
     );
 
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
+
     return {
       //variables
       searchRecords,
@@ -935,6 +953,12 @@ export default defineComponent({
       loadingData,
       campaignPayments,
       getCampaign,
+      unauthorized,
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

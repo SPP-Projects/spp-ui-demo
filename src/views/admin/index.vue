@@ -68,7 +68,7 @@ export default defineComponent({
   setup() {
     //transactions
     const transactionStore = useCustomerTransactionStore();
-    const { transactions, loadingTransactionData } =
+    const { transactions, loadingTransactionData, unauthorized } =
       storeToRefs(transactionStore);
     const { getTransactions } = useCustomerTransactionStore();
 
@@ -113,6 +113,7 @@ export default defineComponent({
       loadingAccountData,
       transactions,
       accounts,
+      unauthorized,
     };
   },
 });

@@ -1,9 +1,9 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
 
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
 
     <div class="card-header border-0 pt-1">
@@ -82,10 +82,11 @@
           {{ data.institution.name }}
         </template>
         <template v-slot:actual_balance="{ row: data }">
-          {{ data.currency.code }} {{ data.actual_balance }}
+          {{ data.currency.code }}
+          {{ formatCurrencyAmount(data.actual_balance) }}
         </template>
         <template v-slot:created_at="{ row: data }">
-          {{ data.created_at }}
+          {{ formatDateTime(data.created_at) }}
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -98,13 +99,13 @@
             View
           </button>
           <button
-            class="btn btn-sm btn-light-info btn-active-light-info"
+            class="btn btn-sm btn-light-success"
             @click="showAddAddAccountModal('Edit', data)"
             data-bs-toggle="modal"
             id="edit-btn"
             data-bs-target="#kt_modal_add_account"
           >
-            View/Edit
+            Edit
           </button>
         </template>
       </KTDatatable>
@@ -530,6 +531,7 @@
               id="kt_modal_new_account_submit"
               class="btn btn-primary btn-sm"
               :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              :disabled="refData.loadingAction"
             >
               <span v-if="!refData.loadingAction" class="indicator-label">
                 {{ account.action === "Add" ? "Add" : "Update" }}
@@ -569,6 +571,7 @@ import PageLoader from "@/components/PageLoader.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 
 import Message from "vue-m-message";
+import useOutputFormat from "@/composables/useOutputFormat";
 export default defineComponent({
   name: "accounts-list",
   components: {
@@ -581,7 +584,7 @@ export default defineComponent({
 
     const accountStore = useAdminAccountStore();
     const { getAccounts, getAccountOptions } = useAdminAccountStore();
-    const { accounts, meta, loadingAccountData, accountOptions } =
+    const { accounts, meta, loadingAccountData, accountOptions, unauthorized } =
       storeToRefs(accountStore);
 
     //admin customer store
@@ -594,7 +597,6 @@ export default defineComponent({
     const { getInstitutions } = useAdminInstitutionStore();
     const { institutions } = storeToRefs(institutionStore);
 
-    const { formatDateTime } = sppay();
     const refData = ref({
       unauthorized: false,
       noDataMessage: ["No Data"],
@@ -892,6 +894,11 @@ export default defineComponent({
         },
       ],
     });
+
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
+
     return {
       //ref
       tableHeader,
@@ -916,7 +923,7 @@ export default defineComponent({
 
       //api data
       account,
-      formatDateTime,
+
       accountOptions,
       customers,
       institutions,
@@ -925,6 +932,13 @@ export default defineComponent({
       loadingAccountData,
       accounts,
       meta,
+      unauthorized,
+
+      //output formatting
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

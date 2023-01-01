@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -100,7 +100,7 @@
           >
         </template>
         <template v-slot:created_at="{ row: data }">
-          <p class="text-muted">{{ data.created_at }}</p>
+          <p class="text-muted">{{ formatDateTime(data.created_at) }}</p>
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -238,6 +238,7 @@
               id="kt_modal_sender_id_submit"
               class="btn btn-primary btn-sm"
               :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              :disabled="refData.loadingAction"
             >
               <span v-if="!refData.loadingAction" class="indicator-label">
                 {{ senderID.action === "Add" ? "Add" : "Update" }}
@@ -274,6 +275,7 @@ import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import sppData from "@/helpers/data";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "admin-manage-sender-ids",
@@ -285,7 +287,8 @@ export default defineComponent({
   setup() {
     //admin sms store
     const smsStore = useAdminSmsStore();
-    const { senderIDs, meta, loadingSmsData } = storeToRefs(smsStore);
+    const { senderIDs, meta, loadingSmsData, unauthorized } =
+      storeToRefs(smsStore);
     const { getSenderIDs } = useAdminSmsStore();
 
     //data variables
@@ -521,6 +524,9 @@ export default defineComponent({
       }
     );
 
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -549,6 +555,13 @@ export default defineComponent({
       senderIDs,
       loadingSmsData,
       meta,
+      unauthorized,
+
+      //output formatting
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

@@ -14,7 +14,6 @@ class PaymentService {
   }
 
   getCampaign(ref) {
-    console.log(ref)
     return CaretakerApiService.get(`/v1/campaigns/${ref}/donate`);
   }
 }

@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -161,7 +161,7 @@
               <!--begin::Input group-->
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
-                <label class="required fs-5 fw-semobold mb-2">iLanguage</label>
+                <label class="required fs-5 fw-semobold mb-2">Language</label>
                 <!--end::Label-->
 
                 <!--begin::Input-->
@@ -313,6 +313,7 @@ export default defineComponent({
       meta,
       loadingNotificationData,
       notificationTemplateOptions,
+      unauthorized,
     } = storeToRefs(notificationStore);
     const { getNotificationTemplates, getNotificationTemplateOptions } =
       useAdminNotificationStore();
@@ -582,6 +583,7 @@ export default defineComponent({
       notificationTemplates,
       loadingNotificationData,
       notificationTemplateOptions,
+      unauthorized,
     };
   },
 });

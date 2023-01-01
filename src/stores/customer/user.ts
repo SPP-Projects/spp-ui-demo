@@ -3,6 +3,7 @@ import UserService from "@/services/customer/UserService";
 import { getError } from "@/helpers/errors";
 import { useAuthStore } from "@/stores/auth";
 import type { iUser } from "@/models/user";
+import type { iCustomerPermissions } from "@/models/customer";
 
 export const useCustomerUserStore = defineStore("customerUserStore", {
   state: () => ({
@@ -14,7 +15,7 @@ export const useCustomerUserStore = defineStore("customerUserStore", {
     usersTotal: {},
 
     //customerPermissions
-    customerPermissions: {},
+    customerPermissions: {} as iCustomerPermissions,
 
     //shared
     loadingUserData: false,

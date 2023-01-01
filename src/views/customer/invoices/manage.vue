@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -61,7 +61,7 @@
         @on-sort="sortingChanged"
       >
         <template v-slot:created_at="{ row: data }">
-          <p class="text-muted">{{ data.created_at }}</p>
+          <p class="text-muted">{{ formatDateTime(data.created_at) }}</p>
         </template>
 
         <template v-slot:reference="{ row: data }">
@@ -83,7 +83,7 @@
           >
         </template>
         <template v-slot:total="{ row: data }">
-          {{ data.total }} {{ data.currency_code }}
+          {{ formatCurrencyAmount(data.total) }} {{ data.currency_code }}
         </template>
 
         <template v-slot:user_reference="{ row: data }">
@@ -114,6 +114,7 @@ import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "manage-invoices",
@@ -125,12 +126,12 @@ export default defineComponent({
   setup() {
     //store
     const invoiceStore = useCustomerInvoiceStore();
-    const { invoices, meta, loadingInvoiceData } = storeToRefs(invoiceStore);
+    const { invoices, meta, loadingInvoiceData, unauthorized } =
+      storeToRefs(invoiceStore);
     const { getAllInvoices } = useCustomerInvoiceStore();
 
     //data variables
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -236,7 +237,9 @@ export default defineComponent({
         }, searchRecords.value.kDebounceTimeoutMs);
       }
     );
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -253,6 +256,13 @@ export default defineComponent({
       //state
       invoices,
       loadingInvoiceData,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

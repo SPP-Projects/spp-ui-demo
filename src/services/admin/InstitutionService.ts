@@ -5,6 +5,7 @@ class InstitutionService {
    * Institutions
    */
   getInstitutions(options) {
+    console.log(options);
     return ApiService.get(
       `/v1/admin/institutions?page=${options.current_page}&page_size=${options.page_size}&search_text=${options.search_text}&sort_column=${options.sort.column}&sort_direction=${options.sort.direction}`
     );

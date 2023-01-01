@@ -1,9 +1,9 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
-  <PageLoader v-else-if="refData.loadingPage" />
+  <PermissionDenied v-if="unauthorized" />
+  <PageLoader v-else-if="loadingTransactionData" />
 
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-1 pt-6 mb-0">
       <div class="row">
@@ -102,7 +102,7 @@
         @on-sort="sortingChanged"
       >
         <template v-slot:created_at="{ row: data }">
-          {{ data.created_at }}
+          {{ formatDateTime(data.created_at) }}
         </template>
         <template v-slot:status_id="{ row: data }">
           <span v-if="data.status_id === 1" class="badge badge-light-primary"
@@ -134,7 +134,7 @@
           {{ data.type_code }}
         </template>
         <template v-slot:amount="{ row: data }">
-          {{ data.amount }}
+          {{ formatCurrencyAmount(data.amount) }}
         </template>
         <template v-slot:debit_account_institution_name="{ row: data }">
           {{ data.debit_account_institution.name }}
@@ -231,7 +231,7 @@
                     <tr>
                       <td class="text-muted">Amount</td>
                       <td class="text-gray-800">
-                        {{ transaction.amount }}
+                        {{ formatCurrencyAmount(transaction.amount) }}
                         {{ transaction.currency_code }}
                       </td>
                     </tr>
@@ -246,13 +246,13 @@
                     <tr>
                       <td class="text-muted">Created At</td>
                       <td class="text-gray-800">
-                        {{ transaction.created_at }}
+                        {{ formatDateTime(transaction.created_at) }}
                       </td>
                     </tr>
                     <tr>
                       <td class="text-muted">Last Updated At</td>
                       <td class="text-gray-800">
-                        {{ transaction.updated_at }}
+                        {{ formatDateTime(transaction.updated_at) }}
                       </td>
                     </tr>
                     <tr>
@@ -375,7 +375,7 @@
                     <tr v-if="transaction.charge.amount">
                       <td class="text-muted">Amount</td>
                       <td class="text-gray-800">
-                        {{ transaction.charge.amount }}
+                        {{ formatCurrencyAmount(transaction.charge.amount) }}
                       </td>
                     </tr>
                   </tbody>
@@ -404,6 +404,7 @@ import type { iTransaction } from "@/models/transaction";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "transactions-list",
@@ -416,15 +417,13 @@ export default defineComponent({
     //store
     const transactionStore = useCustomerTransactionStore();
     const accountStore = useCustomerAccountStore();
-    const { transactions, meta, loadingTransactionData } =
+    const { transactions, meta, loadingTransactionData, unauthorized } =
       storeToRefs(transactionStore);
     const { getTransactions } = useCustomerTransactionStore();
     const { getAccounts } = useCustomerAccountStore();
     const { accounts } = storeToRefs(accountStore);
 
-    const { formatDateTime } = sppay();
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -559,6 +558,10 @@ export default defineComponent({
       }
     );
 
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
+
     return {
       refData,
       searchRecords,
@@ -576,10 +579,16 @@ export default defineComponent({
       transactions,
       accounts,
       account,
-      formatDateTime,
 
       //state
       loadingTransactionData,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

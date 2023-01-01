@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -66,7 +66,7 @@
         @on-sort="sortingChanged"
       >
         <template v-slot:created_at="{ row: data }">
-          {{ data.created_at }}
+          {{ formatDateTime(data.created_at) }}
         </template>
         <template v-slot:status_id="{ row: data }">
           <span v-if="data.status_id === '1'" class="badge badge-primary"
@@ -303,6 +303,7 @@ import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "manage-transaction-batches",
@@ -315,14 +316,13 @@ export default defineComponent({
     //store
     const transactionBatchStore = useCustomerTransactionBatchStore();
 
-    const { transactionBatches, meta, loadingData } = storeToRefs(
+    const { transactionBatches, meta, loadingData, unauthorized } = storeToRefs(
       transactionBatchStore
     );
     const { getAllTransactionBatches } = useCustomerTransactionBatchStore();
 
     //data variables
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -450,7 +450,8 @@ export default defineComponent({
         .catch((error) => {
           if (error.response.status === 403) {
             // unauthorized.
-            refData.value.unauthorized = true;
+            //TODO
+            //    refData.value.unauthorized = true;
           }
 
           let response = error.response.data;
@@ -522,7 +523,8 @@ export default defineComponent({
             .catch((error) => {
               if (error.response.status === 403) {
                 // unauthorized.
-                refData.value.unauthorized = true;
+                //TODO
+                //    refData.value.unauthorized = true;
               }
 
               let response = error.response.data;
@@ -594,7 +596,9 @@ export default defineComponent({
         }, searchRecords.value.kDebounceTimeoutMs);
       }
     );
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -614,7 +618,6 @@ export default defineComponent({
       transactions,
       transaction,
       transaction_batch,
-
       isBusy,
 
       //functions
@@ -624,13 +627,22 @@ export default defineComponent({
       submitTransactionBatch,
       processTransactionBatch,
       handleFileUpload,
-      openUploadBatchModal,
+
       //modal
+      openUploadBatchModal,
       showConfirmTransactionBatchModal,
       formRules,
+
       //state
       transactionBatches,
       loadingData,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

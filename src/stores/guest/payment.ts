@@ -70,6 +70,7 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
             if (data.status !== "Error") {
               this.invoiceData = data.invoice;
               this.invoiceItems = data.invoice.items;
+              console.log(data.invoice);
             }
 
             resolve(data);

@@ -1,7 +1,7 @@
 <template>
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
       <div class="card-title">
@@ -240,14 +240,13 @@ export default defineComponent({
     //store
     const transactionBatchStore = useCustomerTransactionBatchStore();
 
-    const { transactionBatches, meta, loadingData } = storeToRefs(
+    const { transactionBatches, meta, loadingData, unauthorized } = storeToRefs(
       transactionBatchStore
     );
     const { getTransactionBatch } = useCustomerTransactionBatchStore();
 
     //data variables
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -411,6 +410,7 @@ export default defineComponent({
 
       //state
       loadingData,
+      unauthorized,
     };
   },
 });

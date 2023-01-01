@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -94,7 +94,7 @@
           >
         </template>
         <template v-slot:created_at="{ row: data }">
-          {{ data.created_at }}
+          {{ formatDateTime(data.created_at) }}
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -303,6 +303,7 @@ import type { iSmsReport } from "@/models/sms";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "sms-reports-list",
@@ -314,12 +315,12 @@ export default defineComponent({
   setup() {
     //store
     const smsStore = useCustomerSmsStore();
-    const { smsReports, meta, loadingData } = storeToRefs(smsStore);
+    const { smsReports, meta, loadingData, unauthorized } =
+      storeToRefs(smsStore);
     const { getSmsReports } = useCustomerSmsStore();
 
     //ref data
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -453,7 +454,9 @@ export default defineComponent({
         }, searchRecords.value.kDebounceTimeoutMs);
       }
     );
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -473,6 +476,13 @@ export default defineComponent({
       //state
       smsReports,
       loadingData,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

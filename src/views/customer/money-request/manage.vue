@@ -1,8 +1,8 @@
 <template>
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
   <!--begin::Card-->
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -89,7 +89,7 @@
         </template>
 
         <template v-slot:created_at="{ row: data }">
-          <p class="text-muted">{{ data.created_at }}</p>
+          <p class="text-muted">{{ formatDateTime(data.created_at) }}</p>
         </template>
 
         <template v-slot:reference="{ row: data }">
@@ -97,7 +97,7 @@
         </template>
 
         <template v-slot:amount="{ row: data }">
-          {{ data.amount }}
+          {{ formatCurrencyAmount(data.amount) }}
         </template>
 
         <template v-slot:description="{ row: data }">
@@ -321,6 +321,7 @@ import Message from "vue-m-message";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "manage-money-requests",
@@ -332,7 +333,7 @@ export default defineComponent({
   setup() {
     //store
     const moneyRequestStore = useCustomerMoneyRequestStore();
-    const { moneyRequests, meta, loadingMoneyRequestData } =
+    const { moneyRequests, meta, loadingMoneyRequestData, unauthorized } =
       storeToRefs(moneyRequestStore);
     const { getAllMoneyRequests } = useCustomerMoneyRequestStore();
 
@@ -342,7 +343,6 @@ export default defineComponent({
     const { getAccounts } = useCustomerAccountStore();
     //data variables
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -588,7 +588,9 @@ export default defineComponent({
     );
 
     const addMoneyRequestModalRef = ref<null | HTMLElement>(null);
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -617,6 +619,13 @@ export default defineComponent({
       loadingMoneyRequestData,
       loadingAccountData,
       accounts,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

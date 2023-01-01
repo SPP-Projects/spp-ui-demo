@@ -19,14 +19,8 @@
               </router-link>
             </div>
             <!--end::Logo-->
-            <!--begin::Title-->
-            <!--            <h1 class="fw-bolder text-gray-900 mb-5 text-center">-->
-            <!--              Make A Payment-->
-            <!--            </h1>-->
-
-            <!--            <div class="separator separator-dashed"></div>-->
-            <!--end::Title-->
           </div>
+
           <div class="w-lg-600px">
             <PageLoader v-if="loadingPage"></PageLoader>
             <div v-else class="col-md-12 mx-auto mt-5">
@@ -34,7 +28,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <h2 v-if="form.step === 'input'" class="text-center">
-                      Make A Payment
+                      Invoice Payment
                     </h2>
                     <h2 v-if="form.step === 'validated'" class="text-center">
                       Confirm Payment
@@ -521,8 +515,8 @@ export default defineComponent({
     //payment
     //guest payment store
     const paymentStore = useGuestPaymentStore();
-    const { loadingPaymentData } = storeToRefs(paymentStore);
-
+    const { loadingPaymentData, invoiceData } = storeToRefs(paymentStore);
+    const { getInvoice } = useGuestPaymentStore();
     //common store
     const generalStore = useGuestGeneralStore();
     const { loadingGeneralData } = storeToRefs(generalStore);
@@ -560,6 +554,8 @@ export default defineComponent({
     const instantiateForm = () => {
       request.value.collection_reference = route.params.reference;
       request.value.collection_type = route.params.collectiontype;
+      request.value.amount = invoiceData.value.total;
+      request.value.payee.email = invoiceData.value.bill_to_email;
       getInstitutions(); // Not async, so will run in background :)
     };
 
@@ -630,7 +626,6 @@ export default defineComponent({
 
       paymentStore
         .submitPayment(request.value)
-
         .then((response: any) => {
           confirmed.value = response.data;
 
@@ -674,7 +669,7 @@ export default defineComponent({
 
     onMounted(() => {
       loadingPage.value = true;
-
+      console.log(route.params.reference);
       LayoutService.emptyElementClassesAndAttributes(document.body);
 
       storeBody.addBodyClassname("bg-body");
@@ -682,6 +677,7 @@ export default defineComponent({
         qualifiedName: "style",
         value: `background-image: url("/media/auth/${bgImage}")`,
       });
+      //  getInvoice(route.params.reference);
       instantiateForm();
       loadingPage.value = false;
     });
@@ -706,6 +702,7 @@ export default defineComponent({
       //state
       loadingGeneralData,
       loadingPaymentData,
+      invoiceData,
     };
   },
 });

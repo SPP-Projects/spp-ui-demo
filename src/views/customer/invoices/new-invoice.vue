@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="d-flex flex-column flex-lg-row">
+  <div class="d-flex flex-column flex-lg-row" v-else>
     <!--begin::Content-->
     <div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">
       <!--begin::Card-->
@@ -552,6 +552,7 @@ import moment from "moment";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import { useRouter } from "vue-router";
+import useOutputFormat from "@/composables/useOutputFormat";
 interface invoiceItems {
   quantity: number;
   description: string;
@@ -564,10 +565,9 @@ export default defineComponent({
   setup() {
     //store
     const invoiceStore = useCustomerInvoiceStore();
-    const { loadingInvoiceData } = storeToRefs(invoiceStore);
+    const { loadingInvoiceData, unauthorized } = storeToRefs(invoiceStore);
     const router = useRouter();
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       formType: "add",
@@ -755,7 +755,9 @@ export default defineComponent({
     onMounted(() => {
       loadingPage.value = false;
     });
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       loadingPage,
 
@@ -769,11 +771,18 @@ export default defineComponent({
 
       //state
       loadingInvoiceData,
+      unauthorized,
 
       //
       formRules,
       formData,
       formAddMoneyRequestRef,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

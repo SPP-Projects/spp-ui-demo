@@ -18,6 +18,8 @@ export const useAuthStore = defineStore("auth", () => {
   const user = ref<CoreUser>({} as CoreUser);
   const isAuthenticated = ref(!!JwtService.getToken());
   const authenticatedUser = ref({ id: 0 } as iUser);
+  const authPermissions = ref([] as any);
+  const hasAuthorisedAccess = ref(false);
 
   const getJSONFromLocalStorage = (key) => {
     const value = window.localStorage.getItem(key);
@@ -53,7 +55,7 @@ export const useAuthStore = defineStore("auth", () => {
   //TODO - set user mode
   function setAdminMode(status) {
     //save auth user details in state
-    console.log("state", status);
+
     if (status) {
       localStorage.setItem("isAdminMode", "admin");
       isAdminMode.value = true;
@@ -79,7 +81,11 @@ export const useAuthStore = defineStore("auth", () => {
     //TODO - MOVE TO CENTRALISED LOCATIONS
     //save user id in local storage
     window.localStorage.setItem("userid", data.id);
-
+    // window.localStorage.setItem("userpermissions", data.permissions);
+    window.localStorage.setItem(
+      "userpermissions",
+      JSON.stringify(data.permissions)
+    );
     //save auth user details in state
     authenticatedUser.value = data;
   }
@@ -98,7 +104,6 @@ export const useAuthStore = defineStore("auth", () => {
   function login(credentials: CoreUser) {
     return ApiService.post("/v1/sanctum/token", credentials)
       .then(({ data }) => {
-        console.log(data);
         setAuth(data);
       })
       .catch(({ response }) => {
@@ -140,6 +145,10 @@ export const useAuthStore = defineStore("auth", () => {
           //setAuth(data);
           setAuthUser(data);
 
+          //TODO
+          //store user permissions in local storage
+          authPermissions.value = data.permissions;
+
           const userStore = useCustomerUserStore();
           userStore.getUser(data.id);
         })
@@ -164,9 +173,15 @@ export const useAuthStore = defineStore("auth", () => {
     forgotPassword,
     verifyAuth,
     authenticatedUser,
+    authPermissions,
+    hasAuthorisedAccess,
+
     //TODO
     isAdminMode,
     setAdminMode,
     getAdminMode,
+
+    //
+    setAuth,
   };
 });

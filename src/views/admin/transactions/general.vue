@@ -1,9 +1,9 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
 
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
 
     <div class="card-header border-0 pt-1">
@@ -90,7 +90,7 @@
           {{ data.type_code }}
         </template>
         <template v-slot:amount="{ row: data }">
-          {{ data.amount }}
+          {{ formatCurrencyAmount(data.amount) }}
         </template>
         <template v-slot:debit_account_institution_name="{ row: data }">
           {{ data.debit_account_institution.name }}
@@ -360,6 +360,7 @@ import type { iTransaction } from "@/models/transaction";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "admin-transactions-list",
@@ -371,11 +372,10 @@ export default defineComponent({
   setup() {
     //store
     const transactionStore = useAdminTransactionStore();
-    const { transactions, meta, loadingTransactionData } =
+    const { transactions, meta, loadingTransactionData, unauthorized } =
       storeToRefs(transactionStore);
     const { getTransactions } = useAdminTransactionStore();
 
-    const { formatDateTime } = sppay();
     const refData = ref({
       unauthorized: false,
       noDataMessage: ["No Data"],
@@ -496,6 +496,9 @@ export default defineComponent({
       }
     );
 
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       refData,
       searchRecords,
@@ -511,10 +514,15 @@ export default defineComponent({
       transaction,
       transactions,
 
-      formatDateTime,
-
       //state
       loadingTransactionData,
+      unauthorized,
+
+      //output formatting
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

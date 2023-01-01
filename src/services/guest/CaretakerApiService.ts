@@ -42,6 +42,7 @@ CaretakerApiService.interceptors.response.use(
 CaretakerApiService.interceptors.request.use(
   (config) => {
     const token = TokenService.getCaretakerAccessToken();
+
     if (token) {
       if (config.headers) {
         config.headers["Authorization"] = "Bearer " + token;

@@ -1,17 +1,10 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
 
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
-    <div class="card-header border-1 pt-6 mb-0">
-      <div class="row">
-        <div class="col-12">
-          <h4>View Transactions</h4>
-        </div>
-      </div>
-    </div>
     <div class="card-header border-0 pt-1">
       <!--begin::Card title-->
       <div class="card-title">
@@ -25,7 +18,6 @@
             v-model="table_options.search_text"
           />
         </div>
-        <span class="ml me-5"> ddd </span>
 
         <!--end::Search-->
       </div>
@@ -41,8 +33,6 @@
               {{ meta.total }}
             </span>
           </div>
-
-          <TransactionsSubMenu></TransactionsSubMenu>
         </div>
         <!--end::Group actions-->
       </div>
@@ -327,12 +317,10 @@ import type { iTransaction } from "@/models/transaction";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import PermissionDenied from "@/components/PermissionDenied.vue";
-import TransactionsSubMenu from "@/components/_sppay/admin/TransactionsSubMenu.vue";
 
 export default defineComponent({
   name: "transactions-list",
   components: {
-    TransactionsSubMenu,
     KTDatatable,
     PermissionDenied,
     PageLoader,
@@ -340,7 +328,7 @@ export default defineComponent({
   setup() {
     //store
     const transactionStore = useAdminTransactionStore();
-    const { transactionTypes, meta, loadingTransactionData } =
+    const { transactionTypes, meta, loadingTransactionData, unauthorized } =
       storeToRefs(transactionStore);
     const { getTransactionTypes } = useAdminTransactionStore();
 
@@ -457,6 +445,7 @@ export default defineComponent({
 
       //state
       loadingTransactionData,
+      unauthorized,
     };
   },
 });

@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
-  <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <PermissionDenied v-if="unauthorized" />
+  <PageLoader v-else-if="loadingInstitutionData" />
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -235,7 +235,7 @@ export default defineComponent({
   setup() {
     //store
     const institutionTypeStore = useAdminInstitutionStore();
-    const { institutionTypes, meta, loadingInstitutionData } =
+    const { institutionTypes, meta, loadingInstitutionData, unauthorized } =
       storeToRefs(institutionTypeStore);
     const { getInstitutionTypes } = useAdminInstitutionStore();
 
@@ -461,6 +461,7 @@ export default defineComponent({
       //state
       institutionTypes,
       loadingInstitutionData,
+      unauthorized,
     };
   },
 });

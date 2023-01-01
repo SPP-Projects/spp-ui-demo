@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -656,6 +656,7 @@ export default defineComponent({
       meta,
       loadingTransactionData,
       transactionChargeSettingOptions,
+      unauthorized,
     } = storeToRefs(transactionStore);
     const { getTransactionChargeSettings, getTransactionChargeSettingOptions } =
       useAdminTransactionStore();
@@ -971,6 +972,7 @@ export default defineComponent({
       transactionChargeSettings,
       loadingTransactionData,
       transactionChargeSettingOptions,
+      unauthorized,
     };
   },
 });

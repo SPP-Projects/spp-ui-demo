@@ -1,17 +1,12 @@
 import { useRoute } from "vue-router";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import moment from "moment";
 import dayjs from "dayjs";
 
 const sppay = () => {
   const route = useRoute();
-  // const store = useStore();
 
   const orderReference = ref(route.meta.reference);
-
-  //const user = computed(() => store.state.auth.user);
-
-  // const authorisedUser = computed(() => store.getters.authorisedUser);
 
   onMounted(() => {
     if (route.meta && route.meta.orderType) {

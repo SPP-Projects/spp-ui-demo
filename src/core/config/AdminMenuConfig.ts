@@ -30,34 +30,88 @@ const MainMenuConfig: Array<MenuItem> = [
   },
 
   {
-    heading: "Accounts & Transactions",
-    route: "/reports",
+    heading: "Admin Tools",
+    route: "/apps",
     pages: [
-      //transaction listing
+      /**
+       * Transactions
+       */
       {
-        heading: "Transactions",
-        route: "/admin/manage-transactions",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-cash-stack",
+        sectionTitle: "Transactions",
+        route: "/transactions",
+        svgIcon: "/media/icons/duotune/finance/fin006.svg",
+        fontIcon: "bi bi-stack",
+        sub: [
+          {
+            heading: "Manage",
+            route: "/admin/transactions/manage",
+          },
+          {
+            heading: "Types",
+            route: "/admin/transactions/types",
+          },
+          {
+            heading: "Account Type Accounts Mappings",
+            route: "/admin/transactions/mappings",
+          },
+        ],
       },
 
-      //account listing
+      /**
+       * Accounts
+       */
       {
-        heading: "Accounts",
-        route: "/admin/manage-accounts",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-postcard",
+        sectionTitle: "Accounts",
+        route: "/admin/accounts/",
+        svgIcon: "/media/icons/duotune/finance/fin006.svg",
+        fontIcon: "bi bi-wallet-fill",
+        sub: [
+          {
+            heading: "Manage",
+            route: "/admin/accounts/manage",
+          },
+          {
+            heading: "Types",
+            route: "/admin/accounts/types",
+          },
+          {
+            heading: "Groups",
+            route: "/admin/accounts/groups",
+          },
+          {
+            heading: "Limits",
+            route: "/admin/accounts/limits",
+          },
+        ],
       },
 
-      //customer listing
+      /**
+       * Customers
+       */
       {
-        heading: "Customers",
-        route: "/admin/manage-customers",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-person-video2",
+        sectionTitle: "Customers",
+        route: "/admin/customers",
+        svgIcon: "/media/icons/duotune/finance/fin006.svg",
+        fontIcon: "bi bi-people-fill",
+        sub: [
+          {
+            heading: "Manage",
+            route: "/admin/customers/manage",
+          },
+          {
+            heading: "Types",
+            route: "/admin/customers/types",
+          },
+          {
+            heading: "Groups",
+            route: "/admin/customers/groups",
+          },
+        ],
       },
 
-      //sms listing
+      /**
+       * SMS
+       */
       {
         sectionTitle: "SMS",
         route: "/admin/sms",
@@ -74,17 +128,34 @@ const MainMenuConfig: Array<MenuItem> = [
           },
         ],
       },
-    ],
-  },
 
-  {
-    heading: "Static Settings",
-    route: "/apps",
-    pages: [
-      //general settings
+      /**
+       * Institutions
+       */
+      {
+        sectionTitle: "Institutions",
+        route: "/institutions",
+        svgIcon: "/media/icons/duotune/finance/fin006.svg",
+        fontIcon: "bi bi-person-vcard-fill",
+        sub: [
+          {
+            heading: "Manage",
+            route: "/admin/institutions/manage",
+          },
+
+          {
+            heading: "Types",
+            route: "/admin/institutions/types",
+          },
+        ],
+      },
+
+      /**
+       * General Settings
+       */
       {
         sectionTitle: "General Settings",
-        route: "/general-settings",
+        route: "/admin/settings/main",
         svgIcon: "/media/icons/duotune/finance/fin006.svg",
         fontIcon: "bi bi-gear-wide-connected",
         sub: [
@@ -98,96 +169,42 @@ const MainMenuConfig: Array<MenuItem> = [
           },
           {
             heading: "Settings Types",
-            route: "/admin/settings/main/type",
+            route: "/admin/settings/main/types",
           },
         ],
       },
 
-      //accounts settings
-      {
-        sectionTitle: "Accounts",
-        route: "/admin/accounts/",
-        svgIcon: "/media/icons/duotune/finance/fin006.svg",
-        fontIcon: "bi bi-wallet-fill",
-        sub: [
-          {
-            heading: "Types",
-            route: "/admin/accounts/types",
-          },
-          {
-            heading: "Groups",
-            route: "/admin/accounts/groups",
-          },
-          {
-            heading: "Limits",
-            route: "/admin/accounts/limits",
-          },
-        ],
-      },
-
-      //customers settings
-      {
-        sectionTitle: "Customers",
-        route: "/customers",
-        svgIcon: "/media/icons/duotune/finance/fin006.svg",
-        fontIcon: "bi bi-people-fill",
-        sub: [
-          {
-            heading: "Types",
-            route: "/admin/customers/types",
-          },
-          {
-            heading: "Groups",
-            route: "/admin/customers/groups",
-          },
-        ],
-      },
-
-      //transactions settings
-      {
-        sectionTitle: "Transactions",
-        route: "/transactions",
-        svgIcon: "/media/icons/duotune/finance/fin006.svg",
-        fontIcon: "bi bi-stack",
-        sub: [
-          {
-            heading: "Types",
-            route: "/admin/transactions/types",
-          },
-          {
-            heading: "Account Type Accounts Mappings",
-            route: "/admin/transactions/mappings",
-          },
-        ],
-      },
-
-      //notification settings
+      /**
+       * Notification Settings
+       */
       {
         sectionTitle: "Notifications",
-        route: "/notifications",
+        route: "/admin/settings/notifications",
         svgIcon: "/media/icons/duotune/finance/fin006.svg",
         fontIcon: "bi bi-person-vcard-fill",
         sub: [
           {
-            heading: "Notification Settings",
-            route: "/admin/settings/notifications/general",
+            heading: "Manage",
+            route: "/admin/settings/notifications/manage",
           },
           {
-            heading: "Notification Activities",
+            heading: "Activities",
             route: "/admin/settings/notifications/activities",
           },
           {
-            heading: "Notification Activity Groups",
+            heading: "Activity Groups",
             route: "/admin/settings/notifications/groups",
           },
           {
-            heading: "Notification Templates",
+            heading: "Templates",
             route: "/admin/settings/notifications/templates",
           },
         ],
       },
 
-      //kyc settings
+      /**
+       * KYC Settings
+       */
       {
         sectionTitle: "KYC",
         route: "/kyc",
@@ -209,34 +226,48 @@ const MainMenuConfig: Array<MenuItem> = [
         ],
       },
 
-      //charges settings
+      /**
+       * Rates Settings
+       */
       {
-        heading: "Charges",
-        route: "/admin/settings/charges",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-credit-card-2-back-fill",
-      },
-      {
-        heading: "Commissions",
-        route: "/admin/settings/commissions",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-credit-card-2-back-fill",
+        sectionTitle: "Rates",
+        route: "/rates",
+        svgIcon: "/media/icons/duotune/finance/fin006.svg",
+        fontIcon: "bi bi-person-vcard-fill",
+        sub: [
+          {
+            heading: "Charges",
+            route: "/admin/settings/charges",
+          },
+          {
+            heading: "Commissions",
+            route: "/admin/settings/commissions",
+          },
+          {
+            heading: "Exchange Rates",
+            route: "/admin/settings/exchange-rates",
+          },
+        ],
       },
 
-      //payment maps settings
+      /**
+       * Payment Settings
+       */
       {
-        heading: "Payment Maps",
-        route: "/admin/settings/payment-maps",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-diagram-2-fill",
-      },
-
-      //exchange rates
-      {
-        heading: "Exchange Rates",
-        route: "/admin/settings/exchange-rates",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-diagram-2-fill",
+        sectionTitle: "Payment",
+        route: "/payment",
+        svgIcon: "/media/icons/duotune/finance/fin006.svg",
+        fontIcon: "bi bi-person-vcard-fill",
+        sub: [
+          {
+            heading: "Payment Methods",
+            route: "/admin/settings/payments/methods",
+          },
+          {
+            heading: "Payment Maps",
+            route: "/admin/settings/payment-maps",
+          },
+        ],
       },
 
       //languages
@@ -245,33 +276,6 @@ const MainMenuConfig: Array<MenuItem> = [
         route: "/admin/settings/languages",
         svgIcon: "/media/icons/duotune/general/gen014.svg",
         fontIcon: "bi bi-diagram-2-fill",
-      },
-
-      //payment methods
-      {
-        heading: "Payment Methods",
-        route: "/admin/settings/payments/methods",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-diagram-2-fill",
-      },
-
-      //institutions
-      {
-        sectionTitle: "Institutions",
-        route: "/institutions",
-        svgIcon: "/media/icons/duotune/finance/fin006.svg",
-        fontIcon: "bi bi-person-vcard-fill",
-        sub: [
-          {
-            heading: "Manage",
-            route: "/admin/institutions/manage",
-          },
-
-          {
-            heading: "Types",
-            route: "/admin/institutions/types",
-          },
-        ],
       },
     ],
   },

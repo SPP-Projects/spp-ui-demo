@@ -46,12 +46,10 @@ class ApiService {
     //TODO
     //progress-bar for api connections
     const progresses = [] as ProgressFinisher[];
-
     axios.interceptors.request.use((config) => {
       progresses.push(useProgress().start());
       return config;
     });
-
     axios.interceptors.response.use(
       (resp) => {
         progresses.pop()?.finish();
@@ -62,6 +60,7 @@ class ApiService {
         return Promise.reject(error);
       }
     );
+    //progress-bar for api connections
   }
 
   /**

@@ -26,6 +26,7 @@ export const useAdminInstitutionStore = defineStore("adminInstitutionStore", {
         InstitutionService.getInstitutions(options)
           .then(({ data }) => {
             this.institutions = data.data;
+            console.log(data.data);
             this.meta.total = data.total;
             this.meta.from = data.from;
             this.meta.to = data.to;
@@ -98,7 +99,7 @@ export const useAdminInstitutionStore = defineStore("adminInstitutionStore", {
 
     getInstitutionTypes(options) {
       return new Promise((resolve, reject) => {
-        //     commit("SET_LOADING", true);
+        this.loadingInstitutionData = true;
         InstitutionService.getInstitutionTypes(options)
           .then(({ data }) => {
             this.institutionTypes = data.data;
@@ -112,7 +113,9 @@ export const useAdminInstitutionStore = defineStore("adminInstitutionStore", {
             //    commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingInstitutionData = false;
+          });
       });
     },
     getInstitutionType(options) {
@@ -128,7 +131,9 @@ export const useAdminInstitutionStore = defineStore("adminInstitutionStore", {
             //    commit("SET_ERROR", getError(err));
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingInstitutionData = false;
+          });
       });
     },
     addInstitutionType(options) {
@@ -155,7 +160,9 @@ export const useAdminInstitutionStore = defineStore("adminInstitutionStore", {
           .catch((err) => {
             reject(err);
           })
-          .finally();
+          .finally(() => {
+            this.loadingInstitutionData = false;
+          });
       });
     },
   },

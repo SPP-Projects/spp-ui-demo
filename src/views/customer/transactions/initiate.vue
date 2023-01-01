@@ -2,7 +2,7 @@
   <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="loadingPage" />
   <!--begin::Card-->
-  <div class="card">
+  <div class="card" v-else>
     <div class="card-body">
       <h4 class="card-title"></h4>
       <p class="card-title-desc"></p>
@@ -795,6 +795,7 @@ import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import { hideModal } from "@/core/helpers/dom";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "manage-accounts",
@@ -803,7 +804,7 @@ export default defineComponent({
     //store
     const transactionStore = useCustomerTransactionStore();
 
-    const { loadingTransactionData, institutions } =
+    const { loadingTransactionData, institutions, unauthorized } =
       storeToRefs(transactionStore);
     const { getInstitutions } = useCustomerTransactionStore();
 
@@ -812,7 +813,6 @@ export default defineComponent({
     const { accounts } = storeToRefs(accountStore);
 
     //data variables
-    const unauthorized = ref(false);
     const loadingPage = ref(true);
     const loading = ref(false);
 
@@ -1098,7 +1098,9 @@ export default defineComponent({
       instantiateForm();
       loadingPage.value = false;
     });
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       unauthorized,
       params,
@@ -1120,6 +1122,12 @@ export default defineComponent({
       institutions,
       accounts,
       loadingTransactionData,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

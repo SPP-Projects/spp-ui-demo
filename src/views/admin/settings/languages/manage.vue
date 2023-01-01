@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -44,7 +44,7 @@
             <span class="svg-icon svg-icon-2">
               <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
             </span>
-            Add iLanguage
+            Add Language
           </button>
         </div>
         <!--end::Group actions-->
@@ -257,7 +257,8 @@ export default defineComponent({
   setup() {
     //store
     const languageStore = useAdminLanguageStore();
-    const { languages, meta, loadingLanguageData } = storeToRefs(languageStore);
+    const { languages, meta, loadingLanguageData, unauthorized } =
+      storeToRefs(languageStore);
     const { getLanguages } = useAdminLanguageStore();
 
     //data variables
@@ -496,6 +497,7 @@ export default defineComponent({
       //state
       languages,
       loadingLanguageData,
+      unauthorized,
     };
   },
 });

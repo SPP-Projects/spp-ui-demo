@@ -29,9 +29,9 @@ export const useAdminSmsStore = defineStore("adminSmsStore", {
           .catch((error) => {
             if (error.response.status === 403) {
               this.unauthorized = true;
+              this.loadingSmsData = false;
             }
 
-            this.loadingSmsData = false;
             this.error = getError(error);
             reject(error);
           })
@@ -56,6 +56,7 @@ export const useAdminSmsStore = defineStore("adminSmsStore", {
           .catch((error) => {
             if (error.response.status === 403) {
               this.unauthorized = true;
+              this.loadingSmsData = false;
             }
 
             this.loadingSmsData = false;

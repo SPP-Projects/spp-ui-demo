@@ -1,5 +1,6 @@
 import { CaretakerApiService } from "@/services/guest/CaretakerApiService";
-import TokenService from "@/services/TokenService";
+import JwtService from "@/core/services/JwtService";
+import { useAuthStore } from "@/stores/auth";
 
 class OnboardingService {
   getCustomerType() {
@@ -20,8 +21,11 @@ class OnboardingService {
         if (response.data) {
           //TODO - MOVE TO CENTRAL PLACE
           //set token for authenticated session
-          TokenService.setUserToken(response.data.token);
-          TokenService.saveToken(response.data.token);
+          //   TokenService.setUserToken(response.data.token);
+          //  TokenService.saveToken(response.data.token);
+          JwtService.saveToken(response.data.token);
+          const authStore = useAuthStore();
+          authStore.isAuthenticated = true;
         }
         //TODO - INITIATE USER AUTH DETAILS
         //AuthService.initAuthUser();

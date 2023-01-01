@@ -1,9 +1,9 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
 
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
 
     <div class="card-header border-0 pt-1">
@@ -110,7 +110,8 @@ export default defineComponent({
     //admin customer store
     const customerStore = useAdminCustomerStore();
     const { getCustomers } = useAdminCustomerStore();
-    const { customers, meta, loadingCustomerData } = storeToRefs(customerStore);
+    const { customers, meta, loadingCustomerData, unauthorized } =
+      storeToRefs(customerStore);
 
     const { formatDateTime } = sppay();
     const refData = ref({
@@ -250,6 +251,7 @@ export default defineComponent({
       //state
       loadingCustomerData,
       customers,
+      unauthorized,
     };
   },
 });

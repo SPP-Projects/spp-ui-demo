@@ -15,7 +15,6 @@ class InvoiceService {
   }
 
   updateInvoiceStatus(options, reference) {
-    console.log(reference);
     return ApiService.post(`/v1/invoices/${reference}`, options);
   }
 }

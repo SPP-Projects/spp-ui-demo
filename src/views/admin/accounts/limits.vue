@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -86,7 +86,7 @@
           {{ data.currency.code }}
         </template>
         <template v-slot:value="{ row: data }">
-          {{ data.value }}
+          {{ formatCurrencyAmount(data.value) }}
         </template>
         <template v-slot:account_no="{ row: data }">
           {{ data.account_no }}
@@ -319,6 +319,7 @@
               id="kt_modal_new_account_limit_submit"
               class="btn btn-primary btn-sm"
               :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              :disabled="refData.loadingAction"
             >
               <span v-if="!refData.loadingAction" class="indicator-label">
                 {{ accountLimit.action === "Add" ? "Add" : "Update" }}
@@ -354,6 +355,7 @@ import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "admin-accounts-limits",
@@ -365,8 +367,13 @@ export default defineComponent({
   setup() {
     //admin account limits store
     const accountStore = useAdminAccountStore();
-    const { accountLimits, meta, loadingAccountData, accountLimitOptions } =
-      storeToRefs(accountStore);
+    const {
+      accountLimits,
+      meta,
+      loadingAccountData,
+      accountLimitOptions,
+      unauthorized,
+    } = storeToRefs(accountStore);
     const { getAccountLimits, getAccountLimitOptions } = useAdminAccountStore();
 
     //data variables
@@ -629,6 +636,9 @@ export default defineComponent({
       }
     );
 
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -656,6 +666,13 @@ export default defineComponent({
       accountLimits,
       loadingAccountData,
       accountLimitOptions,
+      unauthorized,
+
+      //output formatting
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

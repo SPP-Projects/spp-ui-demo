@@ -1,8 +1,8 @@
 <template>
   <!--begin::Layout-->
-  <PermissionDenied v-if="refData.unauthorized" />
-  <PageLoader v-else-if="refData.loadingPage" />
-  <div class="d-flex flex-column flex-lg-row" v-if="!loadingInvoiceData">
+  <PermissionDenied v-if="unauthorized" />
+  <PageLoader v-else-if="loadingInvoiceData" />
+  <div class="d-flex flex-column flex-lg-row" v-else>
     <!--begin::Content-->
     <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
       <!--begin::Alert-->
@@ -194,7 +194,9 @@
                     <td class="text-end">{{ item.quantity }}</td>
                     <!--end::Price-->
                     <!--begin::Total-->
-                    <td class="text-end">{{ item.amount }}</td>
+                    <td class="text-end">
+                      {{ formatCurrencyAmount(item.amount) }}
+                    </td>
                     <!--end::Total-->
                   </tr>
 
@@ -202,25 +204,33 @@
                   <!--begin::Subtotal-->
                   <tr>
                     <td colspan="3" class="text-end">Subtotal</td>
-                    <td class="text-end">{{ invoiceDetails.sub_total }}</td>
+                    <td class="text-end">
+                      {{ formatCurrencyAmount(invoiceDetails.sub_total) }}
+                    </td>
                   </tr>
                   <!--end::Subtotal-->
                   <!--begin::Discount-->
                   <tr>
                     <td colspan="3" class="text-end">Discount</td>
-                    <td class="text-end">{{ invoiceDetails.discount }}</td>
+                    <td class="text-end">
+                      {{ formatCurrencyAmount(invoiceDetails.discount) }}
+                    </td>
                   </tr>
                   <!--end::Discount-->
                   <!--begin::VAT-->
                   <tr>
                     <td colspan="3" class="text-end">VAT (%)</td>
-                    <td class="text-end">{{ invoiceDetails.tax }}</td>
+                    <td class="text-end">
+                      {{ formatCurrencyAmount(invoiceDetails.tax) }}
+                    </td>
                   </tr>
                   <!--end::VAT-->
                   <!--begin::Shipping-->
                   <tr>
                     <td colspan="3" class="text-end">Shipping Rate</td>
-                    <td class="text-end">{{ invoiceDetails.shipping }}</td>
+                    <td class="text-end">
+                      {{ formatCurrencyAmount(invoiceDetails.shipping) }}
+                    </td>
                   </tr>
                   <!--end::Shipping-->
                   <!--begin::Grand total-->
@@ -229,7 +239,7 @@
                       Grand Total
                     </td>
                     <td class="text-dark fs-3 fw-bolder text-end">
-                      {{ invoiceDetails.total }}
+                      {{ formatCurrencyAmount(invoiceDetails.total) }}
                     </td>
                   </tr>
                   <!--end::Grand total-->
@@ -310,7 +320,7 @@
             </template>
 
             <template v-slot:created_at="{ row: data }">
-              {{ data.created_at }}
+              {{ formatDateTime(data.created_at) }}
             </template>
 
             <template v-slot:transaction_reference="{ row: data }">
@@ -319,7 +329,7 @@
 
             <template v-slot:amount="{ row: data }">
               {{ data.currency_code }}
-              {{ data.amount }}
+              {{ formatCurrencyAmount(data.amount) }}
             </template>
 
             <template v-slot:donor="{ row: data }">
@@ -389,13 +399,17 @@
               <!--begin::Row-->
               <tr class="">
                 <td class="text-gray-400">Total:</td>
-                <td class="text-gray-800">{{ invoiceDetails.total }}</td>
+                <td class="text-gray-800">
+                  {{ formatCurrencyAmount(invoiceDetails.total) }}
+                </td>
               </tr>
               <!--end::Row-->
               <!--begin::Row-->
               <tr class="">
                 <td class="text-gray-400">Balance Due:</td>
-                <td class="text-gray-800">{{ invoiceDetails.balance_due }}</td>
+                <td class="text-gray-800">
+                  {{ formatCurrencyAmount(invoiceDetails.balance_due) }}
+                </td>
               </tr>
               <!--end::Row-->
               <!--begin::Row-->
@@ -429,13 +443,17 @@
               <!--begin::Row-->
               <tr class="">
                 <td class="text-gray-400">Created at:</td>
-                <td class="text-gray-800">{{ invoiceDetails.created_at }}</td>
+                <td class="text-gray-800">
+                  {{ formatDateTime(invoiceDetails.created_at) }}
+                </td>
               </tr>
               <!--end::Row-->
               <!--begin::Row-->
               <tr class="">
                 <td class="text-gray-400">Updated at:</td>
-                <td class="text-gray-800">{{ invoiceDetails.updated_at }}</td>
+                <td class="text-gray-800">
+                  {{ formatDateTime(invoiceDetails.updated_at) }}
+                </td>
               </tr>
               <!--end::Row-->
             </table>
@@ -778,6 +796,7 @@ import Message from "vue-m-message";
 
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "invoice-details",
@@ -793,7 +812,7 @@ export default defineComponent({
       invoiceDetails,
       invoiceItems,
       invoicePayments,
-
+      unauthorized,
       loadingInvoiceData,
     } = storeToRefs(invoiceStore);
     const { getInvoiceByReference } = useCustomerInvoiceStore();
@@ -803,7 +822,6 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      unauthorized: false,
       noDataMessage: ["No Data"],
 
       //loading
@@ -960,6 +978,10 @@ export default defineComponent({
       await getInvoiceByReference(invoiceForm.value.reference);
       refData.value.loadingPage = false;
     });
+
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -981,6 +1003,13 @@ export default defineComponent({
 
       //state
       loadingInvoiceData,
+      unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

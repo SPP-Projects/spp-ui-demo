@@ -230,7 +230,7 @@
 
 ## 2022-12-16
 ### Added
-* `Admin/iLanguage`
+* `Admin/Language`
   * language state management
   * language service
   * view/edit languages
@@ -382,3 +382,33 @@
   * Batch transactions ui fixes
   * add transaction validation
 
+## 2022-12-25
+### Added
+* `UI Formating`
+  * Added custom date formatting
+  * Added custom number formatting
+
+## 2022-12-26
+### Added
+* `Authentication`
+  * Added Auto login on registration
+  * Added 403 error to admin pages
+
+## 2022-12-27
+### Fixed
+* `Guest / Payment`
+  * Invoice payment ui fixes
+  * payment typescript bug fixes
+
+
+## 2022-12-28
+### Fixed
+* `Admin`
+  * Sections/categories navbar refactoring
+
+## 2023-01-01
+### Fixed
+* `Admin/Customer`
+  * Typescript bug fixes
+  * Router refactoring
+  * 403 error fixes

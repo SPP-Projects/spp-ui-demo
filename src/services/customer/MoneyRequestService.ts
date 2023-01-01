@@ -15,12 +15,10 @@ class MoneyRequestService {
   }
 
   updateMoneyRequest(options, reference) {
-    console.log(reference);
     return ApiService.post(`/v1/money-requests/${reference}`, options);
   }
 
   payMoneyRequest(options, reference) {
-    console.log(reference);
     return ApiService.post(`/v1/money-requests/${reference}/pay`, options);
   }
 }

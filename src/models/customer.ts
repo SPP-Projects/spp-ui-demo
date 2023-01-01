@@ -107,11 +107,11 @@ export interface CustomerKycRequirementOption {
 }
 
 export interface iCustomerPermissionList {
-  customer_permissions: CustomerPermissions;
-  admin_permissions: AdminPermissions;
+  customer_permissions: iCustomerPermissions;
+  admin_permissions: iAdminPermissions;
   enabled_permissions?: Array<number>;
 }
-export interface CustomerPermissions {
+export interface iCustomerPermissions {
   Authentication: Array<PermissionDetail>;
   Transactions: Array<PermissionDetail>;
   Customers: Array<PermissionDetail>;
@@ -125,7 +125,7 @@ export interface CustomerPermissions {
   "Money Requests": Array<PermissionDetail>;
 }
 
-export interface AdminPermissions {
+export interface iAdminPermissions {
   Authentication: Array<PermissionDetail>;
   Transactions: Array<PermissionDetail>;
   Account: Array<PermissionDetail>;

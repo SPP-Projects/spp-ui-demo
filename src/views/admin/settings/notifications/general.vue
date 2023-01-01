@@ -1,8 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="refData.unauthorized" />
+  <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
-  <div class="card">
+  <div class="card" v-else>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
@@ -369,6 +369,7 @@ export default defineComponent({
       meta,
       loadingNotificationData,
       notificationOptions,
+      unauthorized,
     } = storeToRefs(notificationStore);
     const { getNotifications, getNotificationOptions } =
       useAdminNotificationStore();
@@ -659,6 +660,7 @@ export default defineComponent({
       notifications,
       loadingNotificationData,
       notificationOptions,
+      unauthorized,
     };
   },
 });

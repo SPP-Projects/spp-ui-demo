@@ -79,6 +79,7 @@ export const useGuestOnboardingStore = defineStore("guestOnboardingStore", {
         this.loadingOnboardingData = true;
         OnboardingService.registerCustomer(data)
           .then((response) => {
+            console.log(response);
             this.newCustomer = response.data;
             resolve(response);
           })
