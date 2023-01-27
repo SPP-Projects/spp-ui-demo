@@ -68,10 +68,6 @@
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
-
         <template v-slot:name="{ row: data }">
           <div class="d-flex align-items-center">
             <!--begin:: Avatar -->
@@ -163,9 +159,9 @@
           ref="formAddUpdateUserRef"
         >
           <!--begin::Modal header-->
-          <div class="modal-header" id="kt_modal_new_payment_map_header">
+          <div class="modal-header" id="kt_modal_new_user_header">
             <!--begin::Modal title-->
-            <h2>{{ user.action }} Customer Details</h2>
+            <h2>{{ user.action }} User Details</h2>
             <!--end::Modal title-->
 
             <!--begin::Close-->
@@ -190,7 +186,7 @@
               data-kt-scroll="true"
               data-kt-scroll-activate="{default: false, lg: true}"
               data-kt-scroll-max-height="auto"
-              data-kt-scroll-dependencies="#kt_modal_new_payment_map_header"
+              data-kt-scroll-dependencies="#kt_modal_new_user_header"
               data-kt-scroll-wrappers="#kt_modal_new_new_payment_scroll"
               data-kt-scroll-offset="300px"
             >
@@ -263,16 +259,16 @@
                 <!--begin::Col-->
                 <div class="col-md-6 fv-row">
                   <label class="required fs-6 fw-semobold mb-2">Status</label>
-
-                  <el-select v-model="user.status_id" placeholder="Select">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                      :disabled="refData.loadingAction"
-                    />
-                  </el-select>
+                  <el-form-item prop="status_id">
+                    <el-select v-model="user.status_id" placeholder="Select">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        :disabled="refData.loadingAction"
+                      /> </el-select
+                  ></el-form-item>
                 </div>
                 <!--end::Col-->
               </div>
@@ -399,16 +395,11 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
-
       loadingAction: false,
     });
 
     const tableHeader = ref([
-      { columnLabel: "id", columnName: "ID", sortEnabled: true },
       { columnLabel: "name", columnName: "Name", sortEnabled: true },
       { columnLabel: "status_id", columnName: "Status", sortEnabled: false },
       { columnLabel: "phone", columnName: "Phone", sortEnabled: true },
@@ -460,6 +451,7 @@ export default defineComponent({
           required: true,
           message: "Email is required",
           trigger: "change",
+          type: "email",
         },
       ],
       status_id: [
@@ -522,10 +514,13 @@ export default defineComponent({
 
                   // update user records
                   getUsers(table_options.value);
+
+                  hideModal(AddUpdateUserModalRef.value);
                 })
                 .catch((error) => {
                   // get errors from state
                   const response = error.response.data;
+                  console.log(error.message);
 
                   if (response.errors) {
                     const errors = response.errors;
@@ -548,10 +543,21 @@ export default defineComponent({
                       duration: 5000,
                       zIndex: 99999,
                     });
+                  } else if (error.message) {
+                    Message({
+                      message: error.message,
+                      //TBC
+                      position: "bottom-right",
+                      type: "error",
+                      duration: 5000,
+                      zIndex: 99999,
+                    });
                   }
 
                   // update loading status
                   refData.value.loadingAction = false;
+
+                  hideModal(AddUpdateUserModalRef.value);
                 })
                 .finally(() => (refData.value.loadingAction = false));
               break;
@@ -613,7 +619,6 @@ export default defineComponent({
                 .finally(() => (refData.value.loadingAction = false));
               break;
             default:
-            //do nothing.
           }
         } else {
           return false;
@@ -651,6 +656,8 @@ export default defineComponent({
         user.value.action = action;
 
         checkedRows.value = response.enabled_permissions;
+
+        console.log(response.enabled_permissions);
       });
     };
 

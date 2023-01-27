@@ -748,7 +748,7 @@
               </router-link>
             </div>
             <div class="col-12 mb-3 text-right">
-              <router-link to="/transactions/initiate">
+              <a href="/transactions/initiate">
                 <button class="btn btn-success w-100">
                   <svg
                     v-if="loading"
@@ -774,7 +774,7 @@
                   </svg>
                   <span v-else> Another Transaction</span>
                 </button>
-              </router-link>
+              </a>
             </div>
           </div>
         </div>
@@ -841,16 +841,6 @@ export default defineComponent({
 
     const confirmed = ref({} as any);
 
-    const instantiatePage = async () => {
-      await getMyAccounts({
-        account: "",
-        current_page: 1,
-        page_size: 1000, // Get all accounts TODO :: Optimize
-        search_text: "",
-        sort: { column: "", direction: "" },
-      });
-    };
-
     const instantiateForm = () => {
       if (form.value.transaction_type === "payment") {
         // set up credit account using default account
@@ -885,64 +875,7 @@ export default defineComponent({
       getInstitutions({ type_id: 3 }); // Not async, so will run in background :)
     };
 
-    const getMyAccounts = async (table_options) => {
-      // await store
-      //   .dispatch("account/getAccounts", table_options)
-      //   .then((response) => {
-      //     // accounts = res;
-      //     form.value.my_accounts = response.data;
-      //   })
-      //   .finally(() => {
-      //     console.log(1);
-      //   });
-    };
-
-    // Validate Transaction
-    // const validateTransaction = () => {
-    //   loading.value = true;
-    //
-    //   transactionStore
-    //     .validateTransaction(request.value)
-    //     .then((response: iValidatedTransaction) => {
-    //       validated.value = response;
-    //       form.value.step = "validated";
-    //
-    //       Message({
-    //         message: "Validation successful, please confirm details.",
-    //         position: "bottom-right",
-    //         type: "success",
-    //         duration: 5000,
-    //         zIndex: 99999,
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       // get errors from state
-    //       loading.value = false;
-    //       const response = error.response.data;
-    //
-    //       if (response.errors) {
-    //         const errors = response.errors;
-    //         for (const key in errors) {
-    //           Message({
-    //             message: errors[key][0],
-    //             position: "bottom-right",
-    //             type: "error",
-    //             duration: 5000,
-    //             zIndex: 99999,
-    //           });
-    //         }
-    //       } else if (response.error) {
-    //         Message({
-    //           message: response.error,
-    //           position: "bottom-right",
-    //           type: "error",
-    //           duration: 5000,
-    //           zIndex: 99999,
-    //         });
-    //       }
-    //     })
-    //     .finally(() => (loading.value = false));
-    // };
+    // const getMyAccounts = async (table_options) => {};
 
     const validateTransaction = () => {
       if (!paymentValidationRef.value) {
@@ -1007,8 +940,8 @@ export default defineComponent({
       console.log(request);
       transactionStore
         .submitTransaction(request.value)
-        .then((response) => {
-          confirmed.value = response;
+        .then((response: any) => {
+          confirmed.value = response.data;
           form.value.step = "confirmed";
           Message({
             message: "Transaction submitted successfully.",
@@ -1085,6 +1018,7 @@ export default defineComponent({
     });
 
     onMounted(async () => {
+      loadingPage.value = true;
       await getInstitutions({ type_id: 3 });
       await getAccounts({
         account: "",
@@ -1093,8 +1027,6 @@ export default defineComponent({
         search_text: "",
         sort: { column: "", direction: "" },
       });
-      await instantiatePage();
-
       instantiateForm();
       loadingPage.value = false;
     });

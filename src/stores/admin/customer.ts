@@ -27,6 +27,7 @@ export const useAdminCustomerStore = defineStore("adminCustomerStore", {
 
     //shared
     loadingCustomerData: false,
+    loadingCustomerInfo: false,
     error: null,
     unauthorized: false,
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
@@ -64,7 +65,7 @@ export const useAdminCustomerStore = defineStore("adminCustomerStore", {
     },
     getCustomer(id) {
       return new Promise((resolve, reject) => {
-        this.loadingCustomerData = true;
+        this.loadingCustomerInfo = true;
         CustomerService.getSingleCustomer(id)
           .then((response) => {
             this.customer = response.data;
@@ -75,19 +76,19 @@ export const useAdminCustomerStore = defineStore("adminCustomerStore", {
             if (error.response.status === 403) {
               this.unauthorized = true;
             }
-
-            this.loadingCustomerData = false;
+            this.customer = null;
+            this.loadingCustomerInfo = false;
             this.error = getError(error);
             reject(error);
           })
           .finally(() => {
-            this.loadingCustomerData = false;
+            this.loadingCustomerInfo = false;
           });
       });
     },
     updateCustomer(payload) {
       return new Promise((resolve, reject) => {
-        this.loadingCustomerData = true;
+        this.loadingCustomerInfo = true;
         CustomerService.updateCustomer(payload)
           .then(({ data }) => {
             this.loadingCustomerData = false;
@@ -98,12 +99,12 @@ export const useAdminCustomerStore = defineStore("adminCustomerStore", {
               this.unauthorized = true;
             }
 
-            this.loadingCustomerData = false;
+            this.loadingCustomerInfo = false;
             this.error = getError(error);
             reject(error);
           })
           .finally(() => {
-            this.loadingCustomerData = false;
+            this.loadingCustomerInfo = false;
           });
       });
     },

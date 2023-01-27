@@ -68,30 +68,13 @@
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
-
         <template v-slot:name="{ row: data }">
           <div class="d-flex align-items-center">
-            <!--begin:: Avatar -->
-            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-              <div class="symbol-label" v-if="data.avatar">
-                <img :src="data.avatar" class="w-100" :alt="data.name" />
-              </div>
-
-              <div class="symbol-label fs-3 bg-light-danger text-danger" v-else>
-                {{ data.name.charAt(0) }}
-              </div>
-            </div>
-            <!--end::Avatar-->
             <!--begin::Customer details-->
             <div class="d-flex flex-column">
-              <a
-                href="#"
-                class="text-gray-900 text-hover-primary mb-1 fw-bold"
-                >{{ data.name }}</a
-              >
+              <span class="text-gray-900 text-hover-primary mb-1 fw-bold">{{
+                data.name
+              }}</span>
               <span>{{ data.email }}</span>
             </div>
             <!--begin::Customer details-->
@@ -117,7 +100,7 @@
         </template>
 
         <template v-slot:last_login_at="{ row: data }">
-          {{ data.last_login_at }}
+          {{ formatDateTime(data.last_login_at) }}
         </template>
 
         <template v-slot:last_login_ip="{ row: data }">
@@ -363,6 +346,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -390,7 +374,6 @@ export default defineComponent({
     });
 
     const tableHeader = ref([
-      { columnLabel: "id", columnName: "ID", sortEnabled: true },
       { columnLabel: "name", columnName: "Name", sortEnabled: true },
       { columnLabel: "status_id", columnName: "Status", sortEnabled: false },
       { columnLabel: "phone", columnName: "Phone", sortEnabled: true },
@@ -418,14 +401,7 @@ export default defineComponent({
       sort: { column: "", direction: "" },
     } as any);
     const action = ref("");
-    // const user = ref<iUser>({
-    //   id: 0,
-    //   action: "Add",
-    //   name: "",
-    //   email: "",
-    //   phone: "",
-    //   enabled_permissions: [],
-    // });
+
     const user = ref({} as iUser);
     const formAddUpdateUserRef = ref<null | HTMLFormElement>(null);
     const AddUpdateUserModalRef = ref<null | HTMLElement>(null);
@@ -617,7 +593,6 @@ export default defineComponent({
     onMounted(() => {
       refData.value.loadingPage = true;
       table_options.value.customer_id = route.params.id;
-
       getCustomerUsers(table_options.value);
       refData.value.loadingPage = false;
     });
@@ -637,7 +612,9 @@ export default defineComponent({
         }, searchRecords.value.kDebounceTimeoutMs);
       }
     );
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -669,6 +646,11 @@ export default defineComponent({
 
       //
       checkedRows,
+
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

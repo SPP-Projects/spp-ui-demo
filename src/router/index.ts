@@ -14,7 +14,7 @@ import { storeToRefs } from "pinia";
 // @ts-ignore
 const routes: Array<RouteRecordRaw> = [
   /**
-   * Customer Mode
+   * Customer App
    */
   // @ts-ignore
   {
@@ -51,6 +51,15 @@ const routes: Array<RouteRecordRaw> = [
         path: "/transactions",
         name: "manage-transactions",
         component: () => import("@/views/customer/transactions/manage.vue"),
+        meta: {
+          pageTitle: "Transactions",
+          breadcrumbs: ["Manage Transactions"],
+        },
+      },
+      {
+        path: "/transactions/:reference",
+        name: "view-transactions",
+        component: () => import("@/views/customer/transactions/view.vue"),
         meta: {
           pageTitle: "Transactions",
           breadcrumbs: ["Manage Transactions"],
@@ -266,11 +275,35 @@ const routes: Array<RouteRecordRaw> = [
           },
         ],
       },
+
+      //onboarding
+      {
+        path: "/spchart",
+        name: "spchart-1",
+        component: function () {
+          return import("@/views/_dev/spchart/manage.vue");
+        },
+        meta: {
+          pageTitle: "Manage Your Details",
+          breadcrumbs: ["Onboarding", "Manage Your Details"],
+        },
+      },
+      {
+        path: "/spchart2",
+        name: "chart2",
+        component: function () {
+          return import("@/views/_dev/spchart/chart-two.vue");
+        },
+        meta: {
+          pageTitle: "Manage Your Details",
+          breadcrumbs: ["Onboarding", "Manage Your Details"],
+        },
+      },
     ],
   },
 
   /**
-   * Admin Mode
+   * Admin App
    */
   // @ts-ignore
   {
@@ -425,43 +458,116 @@ const routes: Array<RouteRecordRaw> = [
       },
 
       // customer
+
       {
-        path: "/admin/customers/view/:id",
-        name: "admin-manage-customer",
-        component: () => import("@/views/admin/customers/customer/index.vue"),
-        meta: {
-          pageTitle: "View Customer",
-          breadcrumbs: ["Manage Customers"],
-        },
-      },
-      {
-        path: "/admin/customers/view/:id/kyc",
-        name: "admin-manage-customer-kyc",
-        component: () => import("@/views/admin/customers/customer/kyc.vue"),
-        meta: {
-          pageTitle: "Customer KYC",
-          breadcrumbs: ["Manage Customers"],
-        },
-      },
-      {
-        path: "/admin/customers/view/:id/permissions",
-        name: "admin-manage-customer-permissions",
+        path: "/admin/customers/view/",
+        name: "account-test",
         component: () =>
-          import("@/views/admin/customers/customer/permissions.vue"),
+          import("@/views/admin/customers/customer/customer-navbar.vue"),
         meta: {
-          pageTitle: "Customer Permissions",
-          breadcrumbs: ["Manage Customers"],
+          breadcrumbs: ["Crafted", "Account"],
         },
+        children: [
+          {
+            path: "/admin/customers/view/:id",
+            name: "admin-manage-customer",
+            component: () =>
+              import("@/views/admin/customers/customer/index.vue"),
+            meta: {
+              pageTitle: "View Customer",
+              breadcrumbs: ["Manage Customers"],
+            },
+          },
+          {
+            path: "/admin/customers/view/:id/kyc",
+            name: "admin-manage-customer-kyc",
+            component: () => import("@/views/admin/customers/customer/kyc.vue"),
+            meta: {
+              pageTitle: "Customer KYC",
+              breadcrumbs: ["Customers", "Manage Customers"],
+            },
+          },
+          {
+            path: "/admin/customers/view/:id/permissions",
+            name: "admin-manage-customer-permissions",
+            component: () =>
+              import("@/views/admin/customers/customer/permissions.vue"),
+            meta: {
+              pageTitle: "Customer Permissions",
+              breadcrumbs: ["Manage Customers"],
+            },
+          },
+          {
+            path: "/admin/customers/view/:id/users",
+            name: "admin-manage-customer-users",
+            component: () =>
+              import("@/views/admin/customers/customer/users.vue"),
+            meta: {
+              pageTitle: "Customer User List",
+              breadcrumbs: ["Manage Customers"],
+            },
+          },
+          // {
+          //   path: "overview",
+          //   name: "account-overview",
+          //   component: () => import("@/views/crafted/account/Overview.vue"),
+          //   meta: {
+          //     pageTitle: "Overview",
+          //   },
+          // },
+          // {
+          //   path: "settings",
+          //   name: "account-settings",
+          //   component: () => import("@/views/crafted/account/Settings.vue"),
+          //   meta: {
+          //     pageTitle: "Settings",
+          //   },
+          // },
+        ],
       },
-      {
-        path: "/admin/customers/view/:id/users",
-        name: "admin-manage-customer-users",
-        component: () => import("@/views/admin/customers/customer/users.vue"),
-        meta: {
-          pageTitle: "Customer User List",
-          breadcrumbs: ["Manage Customers"],
-        },
-      },
+
+      /*
+
+                 {
+            path: "/admin/customers/view/:id",
+            name: "admin-manage-customer",
+            component: () =>
+              import("@/views/admin/customers/customer/index.vue"),
+            meta: {
+              pageTitle: "View Customer",
+              breadcrumbs: ["Manage Customers"],
+            },
+          },
+          {
+            path: "/admin/customers/view/:id/kyc",
+            name: "admin-manage-customer-kyc",
+            component: () => import("@/views/admin/customers/customer/kyc.vue"),
+            meta: {
+              pageTitle: "Customer KYC",
+              breadcrumbs: ["Manage Customers"],
+            },
+          },
+          {
+            path: "/admin/customers/view/:id/permissions",
+            name: "admin-manage-customer-permissions",
+            component: () =>
+              import("@/views/admin/customers/customer/permissions.vue"),
+            meta: {
+              pageTitle: "Customer Permissions",
+              breadcrumbs: ["Manage Customers"],
+            },
+          },
+          {
+            path: "/admin/customers/view/:id/users",
+            name: "admin-manage-customer-users",
+            component: () =>
+              import("@/views/admin/customers/customer/users.vue"),
+            meta: {
+              pageTitle: "Customer User List",
+              breadcrumbs: ["Manage Customers"],
+            },
+          },
+         */
 
       /**
        * Admin SMS
@@ -791,6 +897,7 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
 
+      //dev
       {
         path: "/validation",
         name: "sp-manage-validation",
@@ -805,7 +912,9 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
 
-  //guestMode
+  /**
+   * Guest App
+   */
   // @ts-ignore
   {
     path: "/",
@@ -845,48 +954,9 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
 
-  //guest payment
-  {
-    path: "/public",
-    component: () => import("@/layouts/PayLayout.vue"),
-    children: [
-      //test 1
-      // {
-      //   path: "/test1",
-      //   name: "public-test1",
-      //   component: function () {
-      //     return import("@/views/_dev/test1/index.vue");
-      //   },
-      //   meta: {
-      //     pageTitle: "SP Pay",
-      //   },
-      // },
-      // {
-      //   path: "/test1/a",
-      //   name: "public-test1a",
-      //   component: function () {
-      //     return import("@/views/_dev/test1/a.vue");
-      //   },
-      //   meta: {
-      //     pageTitle: "SP Pay",
-      //   },
-      // },
-      //test 2
-      // {
-      //   path: "/test2",
-      //   name: "public-test2",
-      //   component: function () {
-      //     return import("@/views/_dev/test2/index.vue");
-      //   },
-      //   meta: {
-      //     pageTitle: "SP Pay",
-      //   },
-      // },
-      //public
-    ],
-  },
-
-  //sharedRoutes
+  /**
+   * Public Routes
+   */
   {
     path: "/",
     component: () => import("@/layouts/SystemLayout.vue"),
@@ -932,6 +1002,24 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/donations/:reference",
+        name: "donations",
+        component: () => import("@/views/donations/index.vue"),
+        meta: {
+          pageTitle: "Donations Page",
+        },
+      },
+    ],
+  },
+
+  /**
+   * Error Routes
+   */
+  {
+    path: "/",
+    component: () => import("@/layouts/SystemLayout.vue"),
+    children: [
+      {
         // the 403 route, when none of the above matches
         path: "/403",
         name: "403",
@@ -972,9 +1060,6 @@ const routes: Array<RouteRecordRaw> = [
       },
     },
   },
-
-  //error
-
   {
     path: "/:pathMatch(.*)*",
     redirect: "/404",

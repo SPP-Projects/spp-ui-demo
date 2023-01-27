@@ -176,6 +176,31 @@
               <!--begin::Input group-->
               <div class="d-flex flex-column mb-5 fv-row">
                 <!--begin::Label-->
+                <label class="required fs-5 fw-semobold mb-2">Customer</label>
+                <!--end::Label-->
+
+                <!--begin::Input-->
+                <el-form-item prop="customer_id">
+                  <el-select
+                    v-model="senderID.customer_id"
+                    placeholder="Select"
+                  >
+                    <el-option
+                      v-for="item in customers"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                      :disabled="refData.loadingAction"
+                    />
+                  </el-select>
+                </el-form-item>
+                <!--end::Input-->
+              </div>
+              <!--end::Input group-->
+
+              <!--begin::Input group-->
+              <div class="d-flex flex-column mb-5 fv-row">
+                <!--begin::Label-->
                 <label class="d-flex align-items-center fs-5 fw-semobold mb-2">
                   <span class="required">Sender ID</span>
                 </label>
@@ -276,6 +301,7 @@ import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import sppData from "@/helpers/data";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { useAdminCustomerStore } from "@/stores/admin/customer";
 
 export default defineComponent({
   name: "admin-manage-sender-ids",
@@ -290,6 +316,11 @@ export default defineComponent({
     const { senderIDs, meta, loadingSmsData, unauthorized } =
       storeToRefs(smsStore);
     const { getSenderIDs } = useAdminSmsStore();
+
+    //admin customer store
+    const customerStore = useAdminCustomerStore();
+    const { getCustomers } = useAdminCustomerStore();
+    const { customers, loadingCustomerData } = storeToRefs(customerStore);
 
     //data variables
     const refData = ref({
@@ -351,6 +382,7 @@ export default defineComponent({
       action: "Add",
       name: "",
       status_id: "",
+      customer_id: "",
     } as any);
 
     const formSenderIdRef = ref<null | HTMLFormElement>(null);
@@ -367,6 +399,13 @@ export default defineComponent({
         {
           required: true,
           message: "Status is required",
+          trigger: "change",
+        },
+      ],
+      customer_id: [
+        {
+          required: true,
+          message: "Customer is required",
           trigger: "change",
         },
       ],
@@ -491,11 +530,18 @@ export default defineComponent({
 
     //modal
     const showSenderIdModal = (action, data) => {
+      getCustomers({
+        current_page: 1,
+        page_size: 100,
+        search_text: "",
+        sort: { column: "", direction: "" },
+      });
       if (action === "Add") {
         senderID.value.name = "";
       } else {
         senderID.value.name = data.text;
         senderID.value.status_id = data.status_id;
+        senderID.value.customer_id = data.customer_id;
         senderID.value.id = data.id;
       }
 
@@ -562,6 +608,10 @@ export default defineComponent({
       formatDateTime,
       formatTime,
       formatDate,
+
+      //
+      customers,
+      loadingCustomerData,
     };
   },
 });

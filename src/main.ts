@@ -47,7 +47,6 @@ app.config.globalProperties.$filters = {
     }
   },
 };
-
 //TODO
 //progressbar
 import { Vue3ProgressPlugin } from "@marcoschulte/vue3-progress";

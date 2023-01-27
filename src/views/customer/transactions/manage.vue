@@ -124,17 +124,20 @@
             >Cancelled</span
           >
         </template>
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
+
         <template v-slot:reference="{ row: data }">
-          {{ data.reference }}
+          <router-link :to="'/transactions/' + data.reference">
+            {{ data.reference }}</router-link
+          >
         </template>
         <template v-slot:type_code="{ row: data }">
           {{ data.type_code }}
         </template>
         <template v-slot:amount="{ row: data }">
-          {{ formatCurrencyAmount(data.amount) }}
+          <span class="fw-bold"
+            >{{ data.currency.symbol
+            }}{{ formatCurrencyAmount(data.amount) }}</span
+          >
         </template>
         <template v-slot:debit_account_institution_name="{ row: data }">
           {{ data.debit_account_institution.name }}
@@ -319,7 +322,7 @@
                 <span
                   class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
                 >
-                  Debit Account
+                  Credit Account
                 </span>
               </div>
               <div class="flex-equal table-responsive">
@@ -439,7 +442,7 @@ export default defineComponent({
         sortEnabled: true,
       },
       { columnLabel: "status_id", columnName: "Status", sortEnabled: false },
-      { columnLabel: "id", columnName: "ID", sortEnabled: true },
+
       {
         columnLabel: "reference",
         columnName: "Reference",

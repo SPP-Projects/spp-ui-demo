@@ -31,14 +31,20 @@
           <!--end::Title-->
 
           <!--begin::Toolbar-->
-          <div class="card-toolbar">
-            <a href="/transactions" class="btn btn-sm btn-light">More </a>
+          <div class="card-toolbar" v-if="transactions.length > 0">
+            <router-link to="/transactions" class="btn btn-sm btn-light"
+              >More
+            </router-link>
           </div>
           <!--end::Toolbar-->
         </div>
         <!--end::Header-->
         <PageLoader v-if="loadingTransactionData"></PageLoader>
         <!--begin::Body-->
+
+        <div v-else-if="transactions.length === 0">
+          <div class="card-body pt-6"><span>No Transactions</span></div>
+        </div>
         <div class="card-body pt-6" v-else>
           <div class="table-responsive">
             <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
@@ -62,11 +68,12 @@
                     <td>
                       <div class="d-flex align-items-center">
                         <div class="d-flex justify-content-start flex-column">
-                          <a
-                            href="#"
-                            class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6"
-                            >{{ transaction.reference }}</a
+                          <router-link
+                            :to="'/transactions/' + transaction.reference"
                           >
+                            {{ transaction.reference }}</router-link
+                          >
+
                           <span
                             class="text-gray-400 fw-semibold d-block fs-7"
                             >{{ transaction.type_code }}</span
@@ -75,31 +82,9 @@
                       </div>
                     </td>
 
-                    <td class="text-end pe-0">
-                      <span
-                        v-if="!transaction"
-                        class="badge badge-light-success fs-base"
-                      >
-                        <span
-                          class="svg-icon svg-icon-5 svg-icon-success ms-n1"
-                        >
-                          <inline-svg
-                            src="/media/icons/duotune/arrows/arr066.svg"
-                          />
-                        </span>
-
-                        {{ transaction.currency.code }}
-                        {{ formatCurrencyAmount(transaction.amount) }}
-                      </span>
-                      <span v-else class="badge badge-light-danger fs-base">
-                        <span class="svg-icon svg-icon-5 svg-icon-danger ms-n1">
-                          <inline-svg
-                            src="/media/icons/duotune/arrows/arr065.svg"
-                          />
-                        </span>
-                        {{ transaction.currency.code }}
-                        {{ formatCurrencyAmount(transaction.amount) }}
-                      </span>
+                    <td class="text-end pe-0 fw-bold">
+                      {{ transaction.currency.symbol
+                      }}{{ formatCurrencyAmount(transaction.amount) }}
                     </td>
 
                     <td class="text-end pe-0">

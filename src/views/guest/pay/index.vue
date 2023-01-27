@@ -288,10 +288,7 @@ export default defineComponent({
                     });
                   } else {
                     router.push(
-                      "/pay/payment/" +
-                        request.value.collection_reference +
-                        "/" +
-                        request.value.collection_type
+                      "/donations/" + request.value.collection_reference
                     );
                   }
                 })

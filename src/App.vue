@@ -71,7 +71,6 @@ export default defineComponent({
 //progressbar
 $vue3-progress-bar-color: #e8065d;
 @import "@marcoschulte/vue3-progress/dist";
-//@import "@marcoschulte/vue3-progress/dist/index.css";
 //progressbar
 
 #app {

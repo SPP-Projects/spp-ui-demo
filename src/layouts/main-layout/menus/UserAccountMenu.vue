@@ -19,9 +19,6 @@
         <div class="d-flex flex-column">
           <div class="fw-bold d-flex align-items-center fs-5">
             {{ authenticatedUser.name }}
-            <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
-              >TODO</span
-            >
           </div>
           <a href="#" class="fw-semobold text-muted text-hover-primary fs-7">
             {{ authenticatedUser.email }}</a
@@ -44,17 +41,17 @@
     </div>
     <!--end::Menu item-->
 
-    <!--begin::Menu separator-->
-    <div class="separator my-2"></div>
-    <!--end::Menu separator-->
-
     <!--begin::Menu item-->
     <div class="menu-item px-5 my-1">
-      <router-link to="/" class="menu-link px-5">
-        Account Settings
+      <router-link to="/profile/permissions" class="menu-link px-5">
+        Permissions
       </router-link>
     </div>
     <!--end::Menu item-->
+
+    <!--begin::Menu separator-->
+    <div class="separator my-2"></div>
+    <!--end::Menu separator-->
 
     <!--begin::Menu item-->
     <div class="menu-item px-5">

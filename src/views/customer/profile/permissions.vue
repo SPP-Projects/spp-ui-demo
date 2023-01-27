@@ -1,5 +1,6 @@
 <template>
   <!--begin::details View-->
+
   <div class="card card-flush">
     <!--begin::Card header-->
     <div class="card-header mt-6">
@@ -11,52 +12,13 @@
       <!--begin::Card toolbar-->
       <div class="card-toolbar">
         <!--begin::Button-->
-        <button type="button" class="btn btn-light-primary">
-          <!--begin::Svg Icon | path: icons/duotune/general/gen035.svg-->
-          <span class="svg-icon svg-icon-3">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                opacity="0.3"
-                x="2"
-                y="2"
-                width="20"
-                height="20"
-                rx="5"
-                fill="currentColor"
-              />
-              <rect
-                x="10.8891"
-                y="17.8033"
-                width="12"
-                height="2"
-                rx="1"
-                transform="rotate(-90 10.8891 17.8033)"
-                fill="currentColor"
-              />
-              <rect
-                x="6.01041"
-                y="10.9247"
-                width="12"
-                height="2"
-                rx="1"
-                fill="currentColor"
-              />
-            </svg>
-          </span>
-          <!--end::Svg Icon-->
-          Update Permissions
-        </button>
+
         <!--end::Button-->
       </div>
       <!--end::Card toolbar-->
     </div>
     <!--end::Card header-->
+
     <!--begin::Card body-->
     <div class="card-body pt-0">
       <!--begin::Table-->
@@ -71,7 +33,7 @@
             <th class="min-w-125px">Name</th>
             <th class="min-w-250px">Assigned to</th>
 
-            <th class="text-end min-w-100px">Actions</th>
+            <th class="text-end min-w-100px"></th>
           </tr>
           <!--end::Table row-->
         </thead>
@@ -102,14 +64,17 @@
                     v-model="authenticatedUserDetails.enabled_permissions"
                     disabled
                   />
-                  <span class="form-check-label fw-semobold me-md-1">
+                  <span
+                    class="form-check-label fw-semobold me-md-1"
+                    style="color: #0a0a0a"
+                  >
                     <b>Can</b> {{ permission.name }}
                   </span>
                 </div>
               </template>
             </td>
 
-            <td class="text-end">...</td>
+            <td class="text-end"></td>
             <!--end::Action=-->
           </tr>
         </tbody>
@@ -123,19 +88,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { useCustomerUserStore } from "@/stores/customer/user";
 import { storeToRefs } from "pinia";
 import type { iUser } from "@/models/user";
-
+import accessPermissions from "@/helpers/permissions";
+import { useAuthStore } from "@/stores/auth";
+import DataLoader from "@/components/DataLoader.vue";
 export default defineComponent({
   name: "user-permissions",
-  components: {},
+  components: { DataLoader },
   setup() {
     //store
     const userStore = useCustomerUserStore();
-    const { authenticatedUserDetails, loadingUserData } =
-      storeToRefs(userStore);
+    const {
+      authenticatedUserDetails,
+      loadingUserData,
+      loadingAuthenticatedUser,
+    } = storeToRefs(userStore);
 
     //data variables
     const data = ref({
@@ -155,6 +125,8 @@ export default defineComponent({
       data,
       authenticatedUserDetails,
       loadingUserData,
+      accessPermissions,
+      loadingAuthenticatedUser,
     };
   },
 });

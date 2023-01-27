@@ -56,10 +56,6 @@
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
-
         <template v-slot:from="{ row: data }">
           {{ data.from }}
         </template>
@@ -230,7 +226,7 @@
                   <div class="d-flex">
                     <div class="text-end">
                       <div class="fs-5 text-dark">
-                        {{ sms.created_at }}
+                        {{ formatDateTime(sms.created_at) }}
                       </div>
                     </div>
                   </div>
@@ -331,12 +327,6 @@ export default defineComponent({
     const reports = ref([]);
     const sms = ref<iSmsReport | any>({});
     const tableHeader = ref([
-      {
-        columnLabel: "id",
-        columnName: "ID",
-        sortEnabled: true,
-        columnWidth: 75,
-      },
       {
         columnLabel: "from",
         columnName: "Sender",

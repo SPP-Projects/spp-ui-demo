@@ -98,6 +98,7 @@ import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import DataLoader from "@/components/DataLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -128,11 +129,6 @@ export default defineComponent({
     const customerPermissionList = ref<iCustomerPermissionList>();
 
     const checkedRows = ref<Array<number>>([]);
-    const getCustomer = () => {
-      customerStore.getCustomer(route.params.id).then((response: any) => {
-        customer.value = response;
-      });
-    };
 
     const getCustomerPermissions = () => {
       refData.value.loadingData = true;
@@ -180,10 +176,12 @@ export default defineComponent({
     onMounted(() => {
       refData.value.loadingPage = true;
       getCustomerPermissions();
-      getCustomer();
       refData.value.loadingPage = false;
     });
 
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -197,6 +195,11 @@ export default defineComponent({
       customer,
       //
       checkedRows,
+
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

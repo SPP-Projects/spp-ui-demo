@@ -4,93 +4,146 @@
   <PageLoader v-else-if="refData.loadingPage" />
   <div class="d-flex flex-column flex-xl-row" v-else>
     <!--begin::Sidebar-->
-    <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
-      <!--begin::Card-->
-      <div class="card mb-5 mb-xl-8">
-        <!--begin::Card body-->
-        <div class="card-body pt-15">
-          <!--begin::Summary-->
-          <div class="d-flex flex-center flex-column mb-5" v-if="!loadingData">
-            <!--           TODO - Campaign Image-->
-
-            <!--begin::Avatar-->
-            <!--            <div class="symbol symbol-100px symbol-circle mb-7">-->
-            <!--              {{ campaignDetails.image }} - <img src="/" alt="image" />-->
-            <!--            </div>-->
-            <!--end::Avatar-->
-
-            <span class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">
-              {{ campaignDetails.title }}
-            </span>
-
-            <div class="fs-5 fw-semobold text-muted mb-6">
-              {{ campaignDetails.description }}
-            </div>
-
-            <div class="fs-5 fw-semobold text-muted mb-6">
-              Image - Todo - {{ campaignDetails.image }}
-            </div>
-
-            <div class="d-flex flex-wrap flex-center">
-              <div
-                class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3"
-              >
-                <div class="fs-4 fw-bold text-gray-700">
-                  <span class="w-75px">
-                    {{ campaignDetails.currency_code }}
+    <div class="flex-column flex-lg-row-auto w-100 w-xl-450px mb-10">
+      <!--begin::Referral program-->
+      <div class="card mb-5 mb-xl-10">
+        <!--begin::Body-->
+        <div class="card-body py-10">
+          <h1 class="mb-2 text-danger">{{ campaignDetails.title }}</h1>
+          <div class="separator separator-dashed my-3"></div>
+          <!--begin::Stats-->
+          <div class="row">
+            <!--begin::Col-->
+            <div class="col">
+              <div class="card card-dashed flex-center min-w-175px my-3 p-6">
+                <span class="fs-4 fw-semibold text-info pb-1 px-2">Goal</span>
+                <span class="fs-1 fw-bold d-flex justify-content-center">
+                  {{ campaignDetails.currency_code }}
+                  <span
+                    data-kt-countup="true"
+                    data-kt-countup-value="63,240.00"
+                  >
                     {{ formatCurrencyAmount(campaignDetails.goal) }}</span
-                  >
-                </div>
-                <div class="fw-semobold text-muted">Goal</div>
+                  ></span
+                >
               </div>
-
-              <div
-                class="border border-gray-300 border-dashed rounded py-3 px-3 mx-4 mb-3"
-              >
-                <div class="fs-4 fw-bold text-gray-700">
-                  <span class="w-50px">
-                    {{ campaignDetails.currency_code }}
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col">
+              <div class="card card-dashed flex-center min-w-175px my-3 p-6">
+                <span class="fs-4 fw-semibold text-success pb-1 px-2"
+                  >Donated</span
+                >
+                <span class="fs-1 fw-bold d-flex justify-content-center">
+                  {{ campaignDetails.currency_code }}
+                  <span data-kt-countup="true" data-kt-countup-value="8,530.00">
                     {{ formatCurrencyAmount(campaignDetails.donated) }}</span
-                  >
-                </div>
-                <div class="fw-semobold text-muted">Donated</div>
+                  ></span
+                >
               </div>
-
-              <div
-                class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3"
-              >
-                <div class="fs-4 fw-bold text-gray-700">
-                  <span class="w-50px">
-                    {{ campaignDetails.currency_code }}
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col">
+              <div class="card card-dashed flex-center min-w-175px my-3 p-6">
+                <span class="fs-4 fw-semibold text-danger pb-1 px-2"
+                  >Amount Left</span
+                >
+                <span class="fs-1 fw-bold d-flex justify-content-center">
+                  {{ campaignDetails.currency_code }}
+                  <span data-kt-countup="true" data-kt-countup-value="2,600">
                     {{
                       formatCurrencyAmount(campaignDetails.amount_to_goal)
                     }}</span
-                  >
-                </div>
-                <div class="fw-semobold text-muted">Amt Left</div>
+                  ></span
+                >
               </div>
             </div>
-          </div>
-          <!--end::Summary-->
-
-          <!--begin::Details toggle-->
-          <div class="d-flex flex-stack fs-4 py-3">
-            <div
-              class="fw-bold rotate collapsible"
-              data-bs-toggle="collapse"
-              href="#kt_campaign_view_details"
-              role="button"
-              aria-expanded="false"
-              aria-controls="kt_campaign_view_details"
-            >
-              Details
-              <span class="ms-2 rotate-180">
-                <span class="svg-icon svg-icon-3">
-                  <inline-svg src="/media/icons/duotune/arrows/arr072.svg" />
-                </span>
-              </span>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col">
+              <div class="card card-dashed flex-center min-w-175px my-3 p-6">
+                <span class="fs-4 fw-semibold text-primary pb-1 px-2"
+                  >Attempts</span
+                >
+                <span
+                  class="fs-1 fw-bold d-flex justify-content-center"
+                  v-if="campaignDetails.donations"
+                >
+                  <span data-kt-countup="true" data-kt-countup-value="">{{
+                    campaignDetails.donations.total
+                  }}</span></span
+                >
+              </div>
             </div>
+            <!--end::Col-->
+          </div>
+          <!--end::Stats-->
 
+          <!--begin::Notice-->
+          <div
+            class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 mt-4"
+          >
+            <!--begin::Icon-->
+            <!--begin::Svg Icon | path: icons/duotune/finance/fin001.svg-->
+            <span class="svg-icon svg-icon-2tx svg-icon-primary me-4">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 19.725V18.725C20 18.125 19.6 17.725 19 17.725H5C4.4 17.725 4 18.125 4 18.725V19.725H3C2.4 19.725 2 20.125 2 20.725V21.725H22V20.725C22 20.125 21.6 19.725 21 19.725H20Z"
+                  fill="currentColor"
+                />
+                <path
+                  opacity="0.3"
+                  d="M22 6.725V7.725C22 8.325 21.6 8.725 21 8.725H18C18.6 8.725 19 9.125 19 9.725C19 10.325 18.6 10.725 18 10.725V15.725C18.6 15.725 19 16.125 19 16.725V17.725H15V16.725C15 16.125 15.4 15.725 16 15.725V10.725C15.4 10.725 15 10.325 15 9.725C15 9.125 15.4 8.725 16 8.725H13C13.6 8.725 14 9.125 14 9.725C14 10.325 13.6 10.725 13 10.725V15.725C13.6 15.725 14 16.125 14 16.725V17.725H10V16.725C10 16.125 10.4 15.725 11 15.725V10.725C10.4 10.725 10 10.325 10 9.725C10 9.125 10.4 8.725 11 8.725H8C8.6 8.725 9 9.125 9 9.725C9 10.325 8.6 10.725 8 10.725V15.725C8.6 15.725 9 16.125 9 16.725V17.725H5V16.725C5 16.125 5.4 15.725 6 15.725V10.725C5.4 10.725 5 10.325 5 9.725C5 9.125 5.4 8.725 6 8.725H3C2.4 8.725 2 8.325 2 7.725V6.725L11 2.225C11.6 1.925 12.4 1.925 13.1 2.225L22 6.725ZM12 3.725C11.2 3.725 10.5 4.425 10.5 5.225C10.5 6.025 11.2 6.725 12 6.725C12.8 6.725 13.5 6.025 13.5 5.225C13.5 4.425 12.8 3.725 12 3.725Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <!--end::Svg Icon-->
+            <!--end::Icon-->
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+              <!--begin::Content-->
+              <div class="mb-3 mb-md-0 fw-semibold">
+                <div class="fs-6 text-gray-700 pe-7">
+                  Withdraw money to settlement account
+                </div>
+              </div>
+              <!--end::Content-->
+              <!--begin::Action-->
+              <a
+                href="#"
+                class="btn btn-primary px-6 align-self-center text-nowrap"
+                >Withdraw</a
+              >
+              <!--end::Action-->
+            </div>
+            <!--end::Wrapper-->
+          </div>
+          <!--end::Notice-->
+        </div>
+        <!--end::Body-->
+      </div>
+      <!--end::Referral program-->
+
+      <!--begin::Card-->
+      <div class="card card-flush pt-3 mb-5 mb-xl-5">
+        <!--begin::Card header-->
+        <div class="card-header">
+          <!--begin::Card title-->
+          <div class="card-title">
+            <h2 class="fw-bold">Campaign Details</h2>
+          </div>
+          <!--begin::Card title-->
+          <!--begin::Card toolbar-->
+          <div class="card-toolbar">
             <span
               data-bs-toggle="tooltip"
               data-bs-trigger="hover"
@@ -108,38 +161,88 @@
               </a>
             </span>
           </div>
-          <!--end::Details toggle-->
+          <!--end::Card toolbar-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-3">
+          <!--begin::Section-->
+          <div class="mb-1">
+            <!--begin::Details-->
+            <div class="d-flex flex-wrap py-5">
+              <!--begin::Row-->
+              <div class="me-5">
+                <!--begin::Details-->
+                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400 min-w-175px w-175px">Status:</td>
+                    <td class="text-gray-800 min-w-200px">
+                      {{ campaignDetails.status_id }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
 
-          <div class="separator separator-dashed my-3"></div>
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400 min-w-175px w-175px">
+                      Reference #:
+                    </td>
+                    <td class="text-gray-800 min-w-200px">
+                      {{ campaignDetails.reference }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
 
-          <!--begin::Details content-->
-          <div
-            id="kt_campaign_view_details"
-            class="collapse show"
-            v-if="campaignDetails"
-          >
-            <div class="py-5 fs-6">
-              <div class="badge badge-light-info d-inline">
-                Status - {{ campaignDetails.status_id }}
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Title</td>
+                    <td class="text-gray-800">{{ campaignDetails.title }}</td>
+                  </tr>
+                  <!--end::Row-->
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400" colspan="2">
+                      Description:
+
+                      <div class="text-gray-800">
+                        {{ campaignDetails.description }}
+                      </div>
+                    </td>
+                    <!--                    <td class="text-gray-800">-->
+                    <!--                      {{ campaignDetails.description }}-->
+                    <!--                    </td>-->
+                  </tr>
+                  <!--end::Row-->
+
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Goal:</td>
+                    <td class="text-gray-800">{{ campaignDetails.goal }}</td>
+                  </tr>
+                  <!--end::Row-->
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Youtube:</td>
+                    <td class="text-gray-800">
+                      {{ campaignDetails.youtube_url }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-gray-400">Image:</td>
+                    <td class="text-gray-800">{{ campaignDetails.image }}</td>
+                  </tr>
+                  <!--end::Row-->
+                </table>
+                <!--end::Details-->
               </div>
-
-              <div class="fw-bold mt-5">Youtube URL</div>
-              <div class="text-gray-600">
-                {{ campaignDetails.youtube_url }}
-              </div>
-
-              <div class="fw-bold mt-5">Total Donation Attempts</div>
-              <div class="text-gray-600" v-if="campaignDetails.donations">
-                {{ campaignDetails.donations.total }}
-              </div>
-
-              <div class="fw-bold mt-5">Total Successful Donations</div>
-              <div class="text-gray-600">
-                {{ donations.length }}
-              </div>
+              <!--end::Row-->
             </div>
+            <!--end::Row-->
           </div>
-          <!--end::Details content-->
+          <!--end::Section-->
+
+          <div class="separator separator-dashed mb-1"></div>
         </div>
         <!--end::Card body-->
       </div>
@@ -149,6 +252,61 @@
 
     <!--begin::Content-->
     <div class="flex-lg-row-fluid ms-lg-15">
+      <!--begin::Referral program-->
+      <div class="card mb-5 mb-xl-10">
+        <!--begin::Body-->
+        <div class="card-body py-10">
+          <h2 class="mb-2">Share Campaign</h2>
+          <!--begin::Overview-->
+          <div class="row mb-2">
+            <!--begin::Col-->
+            <div class="col-xl-4 mb-15 mb-xl-0 pe-5">
+              <p class="fs-6 fw-semibold text-gray-600 py-4 m-0">
+                Share on social media
+              </p>
+
+              <button
+                type="button"
+                class="btn btn-light btn-active-primary fw-bold flex-shrink-0"
+                data-bs-toggle="modal"
+                data-bs-target="#kt_modal_new_target"
+              >
+                Send Via Email
+              </button>
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-xl-8">
+              <p class="fs-6 fw-semibold text-gray-600 py-4 m-0">
+                Share link with friends
+              </p>
+              <div class="d-flex">
+                <input
+                  type="text"
+                  class="form-control form-control-solid me-3 flex-grow-1"
+                  name="search"
+                  :value="`${siteUrl}/donations/${campaignDetails.reference}`"
+                  ref="inputRef"
+                  id="kt_share_earn_link_input"
+                />
+                <button
+                  class="btn btn-light btn-active-light-primary fw-bold flex-shrink-0"
+                  ref="copyButtonRef"
+                  id="kt_share_earn_link_copy_button"
+                  data-clipboard-target="#kt_share_earn_link_input"
+                >
+                  Copy Link
+                </button>
+              </div>
+            </div>
+            <!--end::Col-->
+          </div>
+          <!--end::Overview-->
+        </div>
+        <!--end::Body-->
+      </div>
+      <!--end::Referral program-->
+
       <div class="card pt-4">
         <!--begin::Card header-->
         <div class="card-header border-0">
@@ -327,7 +485,7 @@
                     <tr>
                       <td class="text-muted">Amount</td>
                       <td class="text-gray-800">
-                        {{ donation.transaction.amount }}
+                        {{ formatCurrencyAmount(donation.transaction.amount) }}
                         {{ donation.transaction.currency_code }}
                       </td>
                     </tr>
@@ -346,13 +504,13 @@
                     <tr>
                       <td class="text-muted">Created At</td>
                       <td class="text-gray-800">
-                        {{ donation.transaction.created_at }}
+                        {{ formatDateTime(donation.transaction.created_at) }}
                       </td>
                     </tr>
                     <tr>
                       <td class="text-muted">Last Updated At</td>
                       <td class="text-gray-800">
-                        {{ donation.transaction.updated_at }}
+                        {{ formatDateTime(donation.transaction.updated_at) }}
                       </td>
                     </tr>
                   </tbody>
@@ -494,7 +652,7 @@
             @submit.prevent="processCampaignAction()"
             class="form"
             :model="campaign"
-            :rules="rules"
+            :rules="campaignFormRules"
             ref="formAddUpdateCampaignRef"
           >
             <!--begin::Heading-->
@@ -634,6 +792,133 @@
   </div>
   <!-- Update Campaign Modal-->
 
+  <!--begin::Modal - New Target-->
+  <div
+    class="modal fade"
+    id="kt_modal_new_target"
+    ref="newTargetModalRef"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+      <!--begin::Modal content-->
+      <div class="modal-content rounded">
+        <!--begin::Modal header-->
+        <div class="modal-header pb-0 border-0 justify-content-end">
+          <!--begin::Close-->
+          <div
+            class="btn btn-sm btn-icon btn-active-color-primary"
+            data-bs-dismiss="modal"
+          >
+            <span class="svg-icon svg-icon-1">
+              <inline-svg src="/media/icons/duotune/arrows/arr061.svg" />
+            </span>
+          </div>
+          <!--end::Close-->
+        </div>
+        <!--begin::Modal header-->
+
+        <!--begin::Modal body-->
+        <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+          <!--begin:Form-->
+          <el-form
+            id="kt_modal_new_target_form"
+            @submit.prevent="submit()"
+            :model="emailCampaign"
+            :rules="emailFormRules"
+            ref="formRef"
+            class="form"
+          >
+            <!--begin::Heading-->
+            <div class="mb-13 text-center">
+              <!--begin::Title-->
+              <h1 class="mb-3">Share Campaign Via Email</h1>
+              <!--end::Title-->
+            </div>
+            <!--end::Heading-->
+
+            <!--begin::Input group-->
+            <div class="d-flex flex-column mb-8 fv-row">
+              <!--begin::Label-->
+              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                <span class="required">Email</span>
+                <i
+                  class="fas fa-exclamation-circle ms-2 fs-7"
+                  title="Specify email"
+                ></i>
+              </label>
+              <!--end::Label-->
+
+              <el-form-item prop="targetTitle">
+                <el-input
+                  v-model="emailCampaign.email"
+                  placeholder="Enter Email"
+                  name="targetTitle"
+                ></el-input>
+              </el-form-item>
+            </div>
+            <!--end::Input group-->
+
+            <!--begin::Input group-->
+            <div class="d-flex flex-column mb-8">
+              <label class="fs-6 fw-semobold mb-2">Message</label>
+
+              <el-form-item prop="targetDetails">
+                <el-input
+                  v-model="emailCampaign.description"
+                  type="textarea"
+                  rows="3"
+                  name="targetDetails"
+                  placeholder="Type Message"
+                />
+              </el-form-item>
+            </div>
+            <!--end::Input group-->
+
+            <!--begin::Actions-->
+            <div class="text-center">
+              <button
+                type="reset"
+                id="kt_modal_new_target_cancel"
+                class="btn btn-light me-3"
+              >
+                Cancel
+              </button>
+
+              <!--begin::Button-->
+              <button
+                :data-kt-indicator="loading ? 'on' : null"
+                class="btn btn-lg btn-primary"
+                type="submit"
+              >
+                <span v-if="!loading" class="indicator-label">
+                  Send Email
+                  <span class="svg-icon svg-icon-3 ms-2 me-0">
+                    <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+                  </span>
+                </span>
+                <span v-if="loading" class="indicator-progress">
+                  Please wait...
+                  <span
+                    class="spinner-border spinner-border-sm align-middle ms-2"
+                  ></span>
+                </span>
+              </button>
+              <!--end::Button-->
+            </div>
+            <!--end::Actions-->
+          </el-form>
+          <!--end:Form-->
+        </div>
+        <!--end::Modal body-->
+      </div>
+      <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+  </div>
+  <!--end::Modal - New Target-->
+
   <!--end::Layout-->
 </template>
 
@@ -651,7 +936,13 @@ import { useCustomerCampaignStore } from "@/stores/customer/campaign";
 import { storeToRefs } from "pinia";
 import type { iCampaignDonation } from "@/models/campaign";
 import useOutputFormat from "@/composables/useOutputFormat";
+import ClipboardJS from "clipboard";
+import Swal from "sweetalert2";
 
+interface NewAddressData {
+  email: string;
+  description: string;
+}
 export default defineComponent({
   name: "campaign-payments",
   components: {
@@ -803,7 +1094,7 @@ export default defineComponent({
       payload.value.batch_file = $event.target.files[0];
     };
 
-    const rules = ref({
+    const campaignFormRules = ref({
       title: [
         {
           required: true,
@@ -894,6 +1185,9 @@ export default defineComponent({
       });
     };
 
+    const copyButtonRef = ref<null | HTMLElement>(null);
+    const inputRef = ref<null | HTMLElement>(null);
+
     onMounted(async () => {
       refData.value.loadingPage = true;
       table_options.value.reference = Array.isArray(route.params.reference)
@@ -901,6 +1195,34 @@ export default defineComponent({
         : route.params.reference;
       await getCampaign(table_options.value);
       refData.value.loadingPage = false;
+
+      // const clipboard = new ClipboardJS(copyButtonRef.value);
+      const clipboard = new ClipboardJS("#kt_share_earn_link_copy_button");
+
+      console.log(clipboard);
+
+      clipboard.on("success", function (e) {
+        const buttonCaption = copyButtonRef.value?.innerHTML;
+        //Add bgcolor
+        inputRef.value?.classList.add("bg-success");
+        inputRef.value?.classList.add("text-inverse-success");
+
+        if (copyButtonRef.value) {
+          copyButtonRef.value.innerHTML = "Copied!";
+        }
+
+        setTimeout(function () {
+          if (copyButtonRef.value && buttonCaption) {
+            copyButtonRef.value.innerHTML = buttonCaption;
+          }
+
+          // Remove bgcolor
+          inputRef.value?.classList.remove("bg-success");
+          inputRef.value?.classList.remove("text-inverse-success");
+        }, 3000); // 3seconds
+
+        e.clearSelection();
+      });
     });
     watch(
       () => table_options.value.search_text,
@@ -920,6 +1242,76 @@ export default defineComponent({
     //output formatting
     let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
       useOutputFormat();
+
+    const siteUrl = import.meta.env.VITE_APP_API_URL;
+
+    //new
+    const formRef = ref<null | HTMLFormElement>(null);
+    const newTargetModalRef = ref<null | HTMLElement>(null);
+    const loading = ref<boolean>(false);
+
+    const emailCampaign = ref<NewAddressData>({
+      email: "mike@sppaygh.com",
+      description: "this is a test campaign",
+    });
+
+    const emailFormRules = ref({
+      email: [
+        {
+          required: true,
+          message: "Please input email",
+          trigger: "blur",
+        },
+      ],
+      description: [
+        {
+          required: true,
+          message: "Please enter message",
+          trigger: "change",
+        },
+      ],
+    });
+
+    const submit = () => {
+      if (!formRef.value) {
+        return;
+      }
+
+      formRef.value.validate((valid: boolean) => {
+        if (valid) {
+          loading.value = true;
+
+          setTimeout(() => {
+            loading.value = false;
+
+            Swal.fire({
+              text: "Form has been successfully submitted!",
+              icon: "success",
+              buttonsStyling: false,
+              confirmButtonText: "Ok, got it!",
+              heightAuto: false,
+              customClass: {
+                confirmButton: "btn btn-primary",
+              },
+            }).then(() => {
+              hideModal(newTargetModalRef.value);
+            });
+          }, 2000);
+        } else {
+          Swal.fire({
+            text: "Sorry, looks like there are some errors detected, please try again.",
+            icon: "error",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            heightAuto: false,
+            customClass: {
+              confirmButton: "btn btn-primary",
+            },
+          });
+          return false;
+        }
+      });
+    };
 
     return {
       //variables
@@ -945,7 +1337,7 @@ export default defineComponent({
       showEditCampaignModal,
       handleFileUpload,
       processCampaignAction,
-      rules,
+      campaignFormRules,
       formAddUpdateCampaignRef,
       updateCampaignModalRef,
 
@@ -959,7 +1351,41 @@ export default defineComponent({
       formatDateTime,
       formatTime,
       formatDate,
+
+      //copy
+      copyButtonRef,
+      inputRef,
+
+      //url
+      siteUrl,
+
+      //new
+
+      emailCampaign,
+      submit,
+      loading,
+      formRef,
+      emailFormRules,
+      newTargetModalRef,
     };
   },
 });
 </script>
+
+<style lang="scss">
+.el-select {
+  width: 100%;
+}
+
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 100%;
+}
+</style>
+
+<style lang="scss">
+.override-styles {
+  z-index: 99999 !important;
+  pointer-events: initial;
+}
+</style>

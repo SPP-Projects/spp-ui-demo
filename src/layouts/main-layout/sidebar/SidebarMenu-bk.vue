@@ -14,16 +14,17 @@
       data-kt-scroll-save-state="true"
     >
       <!--begin::Menu-->
+
       <div
         id="#kt_app_sidebar_menu"
         class="menu menu-column menu-rounded menu-sub-indention px-3"
         data-kt-menu="true"
-        v-if="authPermissions"
+        v-if="!loadingPermissions"
       >
-        <!-- Admin Menu-->
         <template v-if="isAdminMode">
           <template v-for="(item, i) in AdminMenuConfig" :key="i">
             <div v-if="item.heading" class="menu-item pt-5">
+              <!-- TODO-->
               <div class="menu-content">
                 <span class="menu-heading fw-bold text-uppercase fs-7">
                   {{ translate(item.heading) }}
@@ -61,6 +62,7 @@
                   </router-link>
                 </div>
               </template>
+
               <div
                 v-if="menuItem.sectionTitle && menuItem.route"
                 :class="{ show: hasActiveChildren(menuItem.route) }"
@@ -68,16 +70,7 @@
                 data-kt-menu-sub="accordion"
                 data-kt-menu-trigger="click"
               >
-                <!-- section title-->
-                <span
-                  class="menu-link"
-                  v-if="
-                    getMenuPermissions(
-                      authPermissions,
-                      getSubMenuPermissions(menuItem.sub)
-                    )
-                  "
-                >
+                <span class="menu-link">
                   <span
                     v-if="menuItem.svgIcon || menuItem.fontIcon"
                     class="menu-icon"
@@ -94,45 +87,38 @@
                       <inline-svg :src="menuItem.svgIcon" />
                     </span>
                   </span>
-
                   <span class="menu-title">{{
                     translate(menuItem.sectionTitle)
                   }}</span>
-
                   <span class="menu-arrow"></span>
                 </span>
-                <!-- section title-->
 
-                <!-- section links-->
                 <div
                   :class="{ show: hasActiveChildren(menuItem.route) }"
                   class="menu-sub menu-sub-accordion"
                 >
                   <template v-for="(item2, k) in menuItem.sub" :key="k">
                     <div v-if="item2.heading" class="menu-item">
-                      <!--show if has menu item permission-->
-
-                      <template
-                        v-if="
-                          authPermissions &&
-                          authPermissions.includes(item2.menuPermission[0])
-                        "
+                      <!--                      <div-->
+                      <!--                        v-if="item2.menuPermission"-->
+                      <!--                        style="background-color: white"-->
+                      <!--                      >-->
+                      <!--                        {{ item2.menuPermission }}-->
+                      <!--                        {{ authPermissions.includes(item2.menuPermission[0]) }}-->
+                      <!--                      </div>-->
+                      <router-link
+                        v-if="item2.route"
+                        class="menu-link"
+                        active-class="active"
+                        :to="item2.route"
                       >
-                        <router-link
-                          v-if="item2.route"
-                          class="menu-link"
-                          active-class="active"
-                          :to="item2.route"
-                        >
-                          <span class="menu-bullet">
-                            <span class="bullet bullet-dot"></span>
-                          </span>
-                          <span class="menu-title">{{
-                            translate(item2.heading)
-                          }}</span>
-                        </router-link>
-                      </template>
-                      <!--show if has menu item permission-->
+                        <span class="menu-bullet">
+                          <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title"
+                          >{{ translate(item2.heading) }}
+                        </span>
+                      </router-link>
                     </div>
                     <div
                       v-if="item2.sectionTitle && item2.route"
@@ -175,14 +161,11 @@
                     </div>
                   </template>
                 </div>
-                <!-- section links-->
               </div>
             </template>
           </template></template
         >
-        <!-- Admin Menu-->
 
-        <!-- User Menu-->
         <template v-else>
           <template v-for="(item, i) in MainMenuConfig" :key="i">
             <div v-if="item.heading" class="menu-item pt-5">
@@ -190,7 +173,6 @@
               <div
                 class="menu-content"
                 v-if="
-                  getSubMenuPermissions(item.pages) &&
                   getMenuPermissions(
                     authPermissions,
                     getSubMenuPermissions(item.pages)
@@ -335,38 +317,32 @@
             </template>
           </template>
         </template>
-        <!-- User Menu-->
 
-        <!-- User Help-->
-        <template v-if="!isAdminMode">
-          <div class="menu-item pt-5">
-            <!--begin:Menu content-->
-            <div class="menu-content">
-              <span class="menu-heading fw-bold text-uppercase fs-7">Help</span>
-            </div>
-            <!--end:Menu content-->
+        <div class="menu-item pt-5" v-if="!isAdminMode">
+          <!--begin:Menu content-->
+          <div class="menu-content">
+            <span class="menu-heading fw-bold text-uppercase fs-7">Help</span>
           </div>
-          <div class="menu-item">
-            <!--begin:Menu link-->
-            <router-link class="menu-link" to="/documentation">
-              <span class="menu-icon">
-                <i
-                  v-if="sidebarMenuIcons === 'font'"
-                  class="bi bi-box fs-3"
-                ></i>
-                <span
-                  v-else-if="sidebarMenuIcons === 'svg'"
-                  class="svg-icon svg-icon-2"
-                >
-                  <inline-svg src="/media/icons/duotune/abstract/abs027.svg" />
-                </span>
+          <!--end:Menu content-->
+        </div>
+        <!--begin:Menu item-->
+        <div class="menu-item" v-if="!isAdminMode">
+          <!--begin:Menu link-->
+          <router-link class="menu-link" to="/documentation">
+            <span class="menu-icon">
+              <i v-if="sidebarMenuIcons === 'font'" class="bi bi-box fs-3"></i>
+              <span
+                v-else-if="sidebarMenuIcons === 'svg'"
+                class="svg-icon svg-icon-2"
+              >
+                <inline-svg src="/media/icons/duotune/abstract/abs027.svg" />
               </span>
-              <span class="menu-title">Documentation</span>
-            </router-link>
-            <!--end:Menu link-->
-          </div>
-        </template>
-        <!-- User Help-->
+            </span>
+            <span class="menu-title">Documentation</span>
+          </router-link>
+          <!--end:Menu link-->
+        </div>
+        <!--end:Menu item-->
       </div>
       <!--end::Menu-->
     </div>
@@ -388,7 +364,7 @@ import { storeToRefs } from "pinia";
 export default defineComponent({
   name: "sidebar-menu",
   components: {},
-  setup() {
+  setup: function () {
     const { t, te } = useI18n();
     const route = useRoute();
     const scrollElRef = ref<null | HTMLElement>(null);
@@ -410,19 +386,8 @@ export default defineComponent({
     const hasActiveChildren = (match: string) => {
       return route.path.indexOf(match) !== -1;
     };
-
-    const authStore = useAuthStore();
-    const { isAdminMode, authPermissions, loadingPermissions } =
-      storeToRefs(authStore);
-
-    const getMenuPermissions = (userPermissionsArray, availablePagesArray) => {
-      return userPermissionsArray.some((item) =>
-        availablePagesArray.includes(item)
-      );
-    };
-
-    const getSubMenuPermissions = (val) => {
-      return val.reduce(
+    const getSubMenuPermissions = (states) => {
+      return states.reduce(
         (accumulator, currentValue) => [
           ...accumulator,
           ...currentValue.menuPermission,
@@ -431,22 +396,33 @@ export default defineComponent({
       );
     };
 
+    const authStore = useAuthStore();
+    const { isAdminMode, authPermissions, loadingPermissions } =
+      storeToRefs(authStore);
+
+    const getMenuPermissions = (arr1, arr2) => {
+      // arr1 = ["a", "b", "x", "z"];
+      // arr2 = ["k", "x", "c"];
+
+      return arr1.some((item) => arr2.includes(item));
+    };
     return {
       hasActiveChildren,
-      translate,
-
       MainMenuConfig,
       AdminMenuConfig,
       sidebarMenuIcons,
-
+      translate,
+      //TODO
       //admin mode
       isAdminMode,
 
-      //menu permissions
+      //TODO
+      //permissions
       authPermissions,
-      loadingPermissions,
-      getMenuPermissions,
+
       getSubMenuPermissions,
+      getMenuPermissions,
+      loadingPermissions,
     };
   },
 });

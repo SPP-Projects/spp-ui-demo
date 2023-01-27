@@ -17,10 +17,13 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-column">
           <!--begin::Title-->
-          <h4 class="mb-1 text-dark">Alert!</h4>
+          <h4 class="mb-1 text-dark"></h4>
           <!--end::Title-->
           <!--begin::Content-->
-          <span>Invoice was cancelled on {{ invoiceDetails.updated_at }}.</span>
+          <span
+            >Invoice was cancelled on
+            {{ formatDateTime(invoiceDetails.updated_at) }}.</span
+          >
           <!--end::Content-->
         </div>
         <!--end::Wrapper-->
@@ -63,7 +66,9 @@
           <!--begin::Section-->
           <div class="mb-10">
             <!--begin::Title-->
-            <h5 class="mb-4">Issue Date: {{ invoiceDetails.created_at }}</h5>
+            <h5 class="mb-4">
+              Issue Date: {{ formatDate(invoiceDetails.created_at) }}
+            </h5>
             <!--end::Title-->
             <!--begin::Details-->
             <div class="d-flex flex-wrap py-5">

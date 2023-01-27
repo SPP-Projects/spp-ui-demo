@@ -15,7 +15,7 @@ export default function useOutputFormat() {
 
   const formatCurrencyAmount = (amount) => {
     return parseFloat(amount)
-      .toFixed(2)
+      .toFixed(1)
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };

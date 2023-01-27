@@ -34,7 +34,7 @@
         </li>
         <li class="menu-item">
           <a href="https://sppaygh.com" target="_blank" class="menu-link px-2"
-            >Purchase</a
+            >Terms & Conditions</a
           >
         </li>
       </ul>

@@ -10,7 +10,7 @@ export const useCustomerTransactionStore = defineStore(
     state: () => ({
       transactions: [] as iTransaction[],
       meta: { total: 0, from: 0, to: 0, last_page: 0 },
-      transaction: {},
+      transaction: {} as iTransaction,
       accountTransactions: [],
       loadingTransactionData: false,
 
@@ -70,7 +70,8 @@ export const useCustomerTransactionStore = defineStore(
           this.loadingTransactionData = true;
           TransactionService.getTransactionByReference(id)
             .then((response) => {
-              this.transaction = response.data.data;
+              console.log(response.data);
+              this.transaction = response.data;
               resolve(response);
             })
             .catch((error) => {

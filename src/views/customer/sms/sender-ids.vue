@@ -65,10 +65,6 @@
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
-
         <template v-slot:text="{ row: data }">
           <p class="text-gray-800 fw-bold">{{ data.text }}</p>
         </template>
@@ -266,12 +262,6 @@ export default defineComponent({
     });
 
     const tableHeader = ref([
-      {
-        columnName: "id",
-        columnLabel: "id",
-        sortEnabled: true,
-        columnWidth: "50",
-      },
       {
         columnName: "Sender ID",
         columnLabel: "text",

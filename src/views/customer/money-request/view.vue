@@ -18,12 +18,12 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-column">
           <!--begin::Title-->
-          <h4 class="mb-1 text-dark">Alert!</h4>
+          <h4 class="mb-1 text-dark"></h4>
           <!--end::Title-->
           <!--begin::Content-->
           <span
             >The request was cancelled on
-            {{ moneyRequestDetails.status.updated_at }}.</span
+            {{ formatDateTime(moneyRequestDetails.status.updated_at) }}.</span
           >
           <!--end::Content-->
         </div>

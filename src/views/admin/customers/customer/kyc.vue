@@ -34,7 +34,7 @@
       <el-tabs
         tab-position="left"
         class="kyc-tabs"
-        @tab-click="handleClick"
+        @tab-click="handleTabClick"
         model-value="Identity & Profile"
       >
         <el-tab-pane
@@ -146,6 +146,7 @@ import type { TabsPaneContext } from "element-plus";
 import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -155,7 +156,8 @@ export default defineComponent({
     //store
     const customerStore = useAdminCustomerStore();
 
-    //data variables
+    const route = useRoute();
+
     const refData = ref({
       unauthorized: false,
       noDataMessage: ["No Data"],
@@ -170,7 +172,7 @@ export default defineComponent({
       kyc: {} as any,
       request: {},
     });
-    const route = useRoute();
+
     const getKycDetails = async (): Promise<void> => {
       refData.value.loadingData = true;
 
@@ -196,14 +198,7 @@ export default defineComponent({
         });
     };
 
-    onMounted(() => {
-      refData.value.loadingPage = true;
-      getKycDetails();
-    });
-
-    const activeName = ref("first");
-    const handleClick = (tab: TabsPaneContext) => {
-      console.log(tab);
+    const handleTabClick = (tab: TabsPaneContext) => {
       initiateSection(Number(tab.index));
     };
 
@@ -232,6 +227,7 @@ export default defineComponent({
     const handleFileUpload = (event) => {
       refData.value.request[event.target.id] = event.target.files[0];
     };
+
     const processKYCUpdate = () => {
       refData.value.loadingForm = true;
 
@@ -245,7 +241,7 @@ export default defineComponent({
       }
       //append customer id
       kycFormData.append("customer_id", route.params.id[0]);
-      console.log("here");
+
       customerStore
         .updateCustomerKYC(kycFormData)
         .then(() => {
@@ -287,14 +283,26 @@ export default defineComponent({
           refData.value.loadingForm = false;
         });
     };
+
+    onMounted(() => {
+      refData.value.loadingPage = true;
+      getKycDetails();
+    });
+
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       refData,
-      handleClick,
-      activeName,
+      handleTabClick,
       setUpActiveTab,
       getKycDetails,
       processKYCUpdate,
       handleFileUpload,
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

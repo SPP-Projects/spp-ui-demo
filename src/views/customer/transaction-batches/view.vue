@@ -87,9 +87,7 @@
         <template v-slot:errors="{ row: data }">
           {{ data.errors }}
         </template>
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
+
         <template v-slot:row_number="{ row: data }">
           {{ data.row_number }} {{ data }}
         </template>
@@ -258,7 +256,6 @@ export default defineComponent({
     //variables
 
     const tableHeader = ref([
-      { columnLabel: "id", columnName: "ID", sortEnabledable: false },
       {
         columnLabel: "row_number",
         columnName: "File Row Number",

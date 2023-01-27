@@ -167,7 +167,10 @@ export default defineComponent({
           authStore.setAdminMode(currentUserMode.value);
 
           // Go to dashboard
-          router.push({ name: "dashboard" });
+          //router.push({ name: "dashboard" });
+          //TODO - fix bug with hidden menu inks
+
+          window.location.href = "/";
         } else if (result.isDenied) {
           Swal.fire("Switching cancelled", "", "error");
 

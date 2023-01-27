@@ -20,7 +20,7 @@ export const useAuthStore = defineStore("auth", () => {
   const authenticatedUser = ref({ id: 0 } as iUser);
   const authPermissions = ref([] as any);
   const hasAuthorisedAccess = ref(false);
-
+  const loadingPermissions = ref(false);
   const getJSONFromLocalStorage = (key) => {
     const value = window.localStorage.getItem(key);
 
@@ -32,11 +32,7 @@ export const useAuthStore = defineStore("auth", () => {
     ) {
       return false;
     } else {
-      if (value === "admin") {
-        return true;
-      } else {
-        return false;
-      }
+      return value === "admin";
     }
   };
   //TODO - set user mode
@@ -67,11 +63,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   function getAdminMode() {
     if (localStorage.getItem("isAdminMode")) {
-      if (localStorage.getItem("isAdminMode") === "admin") {
-        return true;
-      } else {
-        return false;
-      }
+      return localStorage.getItem("isAdminMode") === "admin";
     } else {
       return false;
     }
@@ -99,6 +91,16 @@ export const useAuthStore = defineStore("auth", () => {
     user.value = {} as CoreUser;
     errors.value = [];
     JwtService.destroyToken();
+
+    //TODO
+    //DESTROY SPPAY VARIABLES
+    authenticatedUser.value = { id: 0 } as iUser;
+    isAdminMode.value = false;
+    authPermissions.value = null;
+    window.localStorage.removeItem("userpermissions");
+    window.localStorage.removeItem("userid");
+    window.localStorage.removeItem("isAdminMode");
+    // Reset all stores
   }
 
   function login(credentials: CoreUser) {
@@ -138,13 +140,14 @@ export const useAuthStore = defineStore("auth", () => {
 
   function verifyAuth() {
     if (JwtService.getToken()) {
+      loadingPermissions.value = true;
       ApiService.setHeader();
       ApiService.get("/v1/user?with_permissions=true&with_customer=true")
         .then(({ data }) => {
           //TODO  -move to centralised location
           //setAuth(data);
           setAuthUser(data);
-
+          console.log(data);
           //TODO
           //store user permissions in local storage
           authPermissions.value = data.permissions;
@@ -156,6 +159,9 @@ export const useAuthStore = defineStore("auth", () => {
           //TODO
           setError(response.data.errors);
           //purgeAuth();
+        })
+        .finally(() => {
+          loadingPermissions.value = false;
         });
     } else {
       //TODO
@@ -182,6 +188,6 @@ export const useAuthStore = defineStore("auth", () => {
     getAdminMode,
 
     //
-    setAuth,
+    loadingPermissions,
   };
 });

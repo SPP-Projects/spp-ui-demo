@@ -6,6 +6,7 @@ export interface MenuItem {
   svgIcon?: string;
   fontIcon?: string;
   sub?: Array<MenuItem>;
+  menuPermission?: Array<string>;
 }
 
 const MainMenuConfig: Array<MenuItem> = [
@@ -17,6 +18,7 @@ const MainMenuConfig: Array<MenuItem> = [
         route: "/dashboard",
         svgIcon: "/media/icons/duotune/art/art002.svg",
         fontIcon: "bi bi-house-gear-fill",
+        menuPermission: ["view settings"],
       },
 
       //logout
@@ -25,6 +27,7 @@ const MainMenuConfig: Array<MenuItem> = [
         route: "/logout",
         svgIcon: "/media/icons/duotune/general/gen014.svg",
         fontIcon: "bi bi-box-arrow-in-left",
+        menuPermission: ["view settings"],
       },
     ],
   },
@@ -45,14 +48,17 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "Manage",
             route: "/admin/transactions/manage",
+            menuPermission: ["view transactions"],
           },
           {
             heading: "Types",
             route: "/admin/transactions/types",
+            menuPermission: ["view transactions"],
           },
           {
             heading: "Account Type Accounts Mappings",
             route: "/admin/transactions/mappings",
+            menuPermission: ["view transactions"],
           },
         ],
       },
@@ -69,18 +75,22 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "Manage",
             route: "/admin/accounts/manage",
+            menuPermission: ["view accounts and balances"],
           },
           {
             heading: "Types",
             route: "/admin/accounts/types",
+            menuPermission: ["view account types"],
           },
           {
             heading: "Groups",
             route: "/admin/accounts/groups",
+            menuPermission: ["view account groups"],
           },
           {
             heading: "Limits",
             route: "/admin/accounts/limits",
+            menuPermission: ["view account limits"],
           },
         ],
       },
@@ -97,14 +107,17 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "Manage",
             route: "/admin/customers/manage",
+            menuPermission: ["view customers"],
           },
           {
             heading: "Types",
             route: "/admin/customers/types",
+            menuPermission: ["view customer types"],
           },
           {
             heading: "Groups",
             route: "/admin/customers/groups",
+            menuPermission: ["view customer groups"],
           },
         ],
       },
@@ -121,10 +134,12 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "Sender IDs",
             route: "/admin/sms/sender-ids",
+            menuPermission: ["view sms sender IDs"],
           },
           {
             heading: "Reports",
             route: "/admin/sms/reports",
+            menuPermission: ["view sms reports"],
           },
         ],
       },
@@ -141,11 +156,13 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "Manage",
             route: "/admin/institutions/manage",
+            menuPermission: ["view settings"],
           },
 
           {
             heading: "Types",
             route: "/admin/institutions/types",
+            menuPermission: ["view settings"],
           },
         ],
       },
@@ -162,14 +179,22 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "General Settings",
             route: "/admin/settings/main/general",
+            menuPermission: ["view settings"],
           },
           {
             heading: "Settings Groups",
             route: "/admin/settings/main/groups",
+            menuPermission: ["view setting groups"],
           },
           {
             heading: "Settings Types",
             route: "/admin/settings/main/types",
+            menuPermission: ["view setting types"],
+          },
+          {
+            heading: "Languages",
+            route: "/admin/settings/languages",
+            menuPermission: ["view languages"],
           },
         ],
       },
@@ -186,18 +211,22 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "Manage",
             route: "/admin/settings/notifications/manage",
+            menuPermission: ["view notification settings"],
           },
           {
             heading: "Activities",
             route: "/admin/settings/notifications/activities",
+            menuPermission: ["view notification activities"],
           },
           {
             heading: "Activity Groups",
             route: "/admin/settings/notifications/groups",
+            menuPermission: ["view notification settings"],
           },
           {
             heading: "Templates",
             route: "/admin/settings/notifications/templates",
+            menuPermission: ["view notification templates"],
           },
         ],
       },
@@ -214,14 +243,17 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "General KYC Settings",
             route: "/admin/settings/kyc/general",
+            menuPermission: ["view general KYC settings"],
           },
           {
             heading: "Account Specific Settings",
             route: "/admin/settings/kyc/accounts",
+            menuPermission: ["view account specific KYC settings"],
           },
           {
             heading: "Customer Specific Settings",
             route: "/admin/settings/kyc/customers",
+            menuPermission: ["view customer specific KYC settings"],
           },
         ],
       },
@@ -238,14 +270,17 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "Charges",
             route: "/admin/settings/charges",
+            menuPermission: ["view charge settings"],
           },
           {
             heading: "Commissions",
             route: "/admin/settings/commissions",
+            menuPermission: ["view charge settings"],
           },
           {
             heading: "Exchange Rates",
             route: "/admin/settings/exchange-rates",
+            menuPermission: ["view charge settings"],
           },
         ],
       },
@@ -262,20 +297,14 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             heading: "Payment Methods",
             route: "/admin/settings/payments/methods",
+            menuPermission: ["view payment maps"],
           },
           {
             heading: "Payment Maps",
             route: "/admin/settings/payment-maps",
+            menuPermission: ["view payment maps"],
           },
         ],
-      },
-
-      //languages
-      {
-        heading: "Languages",
-        route: "/admin/settings/languages",
-        svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-diagram-2-fill",
       },
     ],
   },

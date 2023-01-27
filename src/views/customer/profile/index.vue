@@ -8,12 +8,6 @@
         <h3 class="fw-bold m-0">Profile Details</h3>
       </div>
       <!--end::Card title-->
-
-      <!--begin::Action-->
-      <router-link to="/" class="btn btn-primary align-self-center"
-        >Edit Profile</router-link
-      >
-      <!--end::Action-->
     </div>
     <!--begin::Card header-->
 

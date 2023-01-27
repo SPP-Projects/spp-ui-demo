@@ -65,10 +65,6 @@
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
-        </template>
-
         <template v-slot:status_id="{ row: data }">
           <span
             v-if="data.status_id === '1'"
@@ -209,6 +205,8 @@
                   v-model="campaign.description"
                   placeholder="Enter description"
                   name="description"
+                  type="textarea"
+                  rows="3"
                 ></el-input>
               </el-form-item>
             </div>
@@ -350,7 +348,7 @@ export default defineComponent({
         columnName: "status",
         sortEnabled: true,
       },
-      { columnLabel: "id", columnName: "ID", sortEnabled: true },
+
       {
         columnLabel: "reference",
         columnName: "reference",

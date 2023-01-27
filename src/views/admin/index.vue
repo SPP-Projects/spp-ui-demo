@@ -95,13 +95,16 @@ export default defineComponent({
     });
 
     onMounted(async () => {
-      await getTransactions(table_options.value);
-      await getAccounts({
-        current_page: 1,
-        page_size: 10, // Add view more at the bottom to link to accounts
-        search_text: "",
-        sort: { column: "is_default", direction: "DESC" },
-      });
+      // await getTransactions(table_options.value);
+      //  await getAccounts({
+      //    current_page: 1,
+      //    page_size: 10, // Add view more at the bottom to link to accounts
+      //    search_text: "",
+      //    sort: { column: "is_default", direction: "DESC" },
+      //  });
+
+      loadingTransactionData.value = false;
+      loadingAccountData.value = false;
     });
 
     return {

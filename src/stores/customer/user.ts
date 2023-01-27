@@ -19,6 +19,7 @@ export const useCustomerUserStore = defineStore("customerUserStore", {
 
     //shared
     loadingUserData: false,
+    loadingAuthenticatedUser: false,
     error: null,
     meta: { total: 0, from: 0, to: 0, last_page: 0 },
     unauthorized: false,
@@ -56,6 +57,7 @@ export const useCustomerUserStore = defineStore("customerUserStore", {
     getUser(id) {
       return new Promise((resolve, reject) => {
         this.loadingUserData = true;
+        this.loadingAuthenticatedUser = true;
         UserService.getUser(id)
           .then(({ data }) => {
             this.user = data;
@@ -65,6 +67,7 @@ export const useCustomerUserStore = defineStore("customerUserStore", {
             const authStore = useAuthStore();
             if (id === authStore.authenticatedUser.id) {
               this.authenticatedUserDetails = data;
+              this.loadingAuthenticatedUser = false;
             }
 
             resolve(data);

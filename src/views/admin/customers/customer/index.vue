@@ -1,135 +1,165 @@
 <template>
-  <!--begin::Layout-->
+  <!--begin::details View-->
 
-  <div class="d-flex flex-column flex-xl-row">
-    <!--begin::Sidebar-->
-
-    <!--end::Sidebar-->
-
-    <!--begin::Content-->
-    <div class="flex-lg-row-fluid ms-lg-15">
-      <!--begin:::Tabs-->
-      <ul
-        class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semobold mb-8"
-      >
-        <!--begin:::Tab item-->
-        <li
-          class="nav-item"
-          v-for="(_, tab) in tabs"
-          :key="tab"
-          :class="['tab-button nav-item', { active: currentTab === tab }]"
-          @click="currentTab = tab"
-        >
-          <a class="nav-link text-active-primary pb-4">{{ tab }}</a>
-        </li>
-        <!--end:::Tab item-->
-
-        <!--begin:::Tab item-->
-        <li class="nav-item ms-auto">
-          <!--begin::Action menu-->
-          <a
-            href="#"
-            class="btn btn-primary ps-7"
-            data-kt-menu-trigger="click"
-            data-kt-menu-attach="parent"
-            data-kt-menu-placement="bottom-end"
-          >
-            Actions
-            <span class="svg-icon svg-icon-2 me-0">
-              <inline-svg src="/media/icons/duotune/arrows/arr072.svg" />
-            </span>
-          </a>
-          <Dropdown3></Dropdown3>
-          <!--end::Menu-->
-        </li>
-        <!--end:::Tab item-->
-      </ul>
-      <!--end:::Tabs-->
-
-      <!--begin:::Tab content-->
-      <div class="tab-contentl" id="myTabContentl">
-        <!--begin:::Tab pane-->
-
-        <component
-          :is="tabs[currentTab]"
-          class="tab-pane fade show tab"
-        ></component>
-
-        <!--end:::Tab pane-->
+  <DataLoader v-if="loadingCustomerInfo"></DataLoader>
+  <div class="card mb-5 mb-xl-10" id="kt_profile_details_view" v-else>
+    <!--begin::Card header-->
+    <div class="card-header cursor-pointer">
+      <!--begin::Card title-->
+      <div class="card-title m-0">
+        <h3 class="fw-bold m-0">Customer Information</h3>
       </div>
-      <!--end:::Tab content-->
+      <!--end::Card title-->
     </div>
-    <!--end::Content-->
+    <!--begin::Card header-->
+
+    <!--begin::Card body-->
+    <div class="card-body p-9">
+      <!--begin::Row-->
+      <div class="row mb-7">
+        <!--begin::Label-->
+        <label class="col-lg-4 fw-semobold text-muted">Name</label>
+        <!--end::Label-->
+
+        <!--begin::Col-->
+        <div class="col-lg-8">
+          <span class="fw-bold fs-6 text-dark">{{ customer.name }}</span>
+        </div>
+        <!--end::Col-->
+      </div>
+      <!--end::Row-->
+
+      <!--begin::Input group-->
+      <div class="row mb-7">
+        <!--begin::Label-->
+        <label class="col-lg-4 fw-semobold text-muted"> Phone </label>
+        <!--end::Label-->
+
+        <!--begin::Col-->
+        <div class="col-lg-8 d-flex align-items-center">
+          <span class="fw-bold fs-6 me-2">{{ customer.phone }}</span>
+        </div>
+        <!--end::Col-->
+      </div>
+      <!--end::Input group-->
+
+      <!--begin::Input group-->
+      <div class="row mb-7">
+        <!--begin::Label-->
+        <label class="col-lg-4 fw-semobold text-muted"> country </label>
+        <!--end::Label-->
+
+        <!--begin::Col-->
+        <div class="col-lg-8 d-flex align-items-center" v-if="customer.country">
+          <span class="fw-bold fs-6 me-2">{{ customer.country.name }}</span>
+        </div>
+        <!--end::Col-->
+      </div>
+      <!--end::Input group-->
+      <!--begin::Input group-->
+      <div class="row mb-7">
+        <!--begin::Label-->
+        <label class="col-lg-4 fw-semobold text-muted">Created At</label>
+        <!--begin::Label-->
+
+        <!--begin::Label-->
+        <div class="col-lg-8">
+          <span class="fw-semobold fs-6">{{
+            formatDateTime(customer.created_at)
+          }}</span>
+        </div>
+        <!--begin::Label-->
+      </div>
+
+      <div class="row mb-7">
+        <!--begin::Label-->
+        <label class="col-lg-4 fw-semobold text-muted"> Last updated </label>
+        <!--begin::Label-->
+
+        <!--begin::Label-->
+        <div class="col-lg-8">
+          <span class="fw-semobold fs-6">{{
+            formatDateTime(customer.updated_at)
+          }}</span>
+        </div>
+        <!--begin::Label-->
+      </div>
+      <!--end::Input group-->
+
+      <hr class="mb-10 pt-2" />
+      <h3 class="mb-7">Categorization</h3>
+      <div class="row mb-7" v-if="customer">
+        <!--begin::Label-->
+        <label class="col-lg-4 fw-semobold text-muted">Customer Group</label>
+        <!--begin::Label-->
+
+        <!--begin::Label-->
+        <div class="col-lg-8" v-if="customer.group">
+          <span class="fw-semobold fs-6">{{ customer.group.name }}</span>
+        </div>
+        <!--begin::Label-->
+      </div>
+      <div class="row mb-7">
+        <!--begin::Label-->
+        <label class="col-lg-4 fw-semobold text-muted">Customer Type</label>
+        <!--begin::Label-->
+
+        <!--begin::Label-->
+        <div class="col-lg-8" v-if="customer.type">
+          <span class="fw-semobold fs-6">{{ customer.type.name }}</span>
+        </div>
+        <!--begin::Label-->
+      </div>
+    </div>
+    <!--end::Card body-->
   </div>
-  <!--end::Layout-->
+  <!--end::details View-->
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-
-import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
-import Permissions from "@/views/admin/customers/customer/permissions.vue";
-import Users from "@/views/admin/customers/customer/users.vue";
-import Kyc from "@/views/admin/customers/customer/kyc.vue";
-import Overview from "@/views/admin/customers/customer/general.vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { useCustomerUserStore } from "@/stores/customer/user";
+import { storeToRefs } from "pinia";
+import { useAdminCustomerStore } from "@/stores/admin/customer";
+import { useRoute } from "vue-router";
+import DataLoader from "@/components/DataLoader.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
-  name: "customer-details",
-  components: {
-    Dropdown3,
-    Overview,
-
-    Permissions,
-    Users,
-  },
+  inheritAttrs: false,
+  name: "admin-customers-overview",
+  components: { DataLoader },
   setup() {
-    const overviewTab = () => {
-      console.log("Test");
+    //store
+    const customerStore = useAdminCustomerStore();
+    const { customer, loadingCustomerInfo } = storeToRefs(customerStore);
+
+    //ref
+    const refData = ref({
+      unauthorized: false,
+      noDataMessage: ["No Data"],
+
+      //loading
+      loadingPage: true,
+      loadingAction: false,
+    });
+
+    onMounted(() => {
+      refData.value.loadingPage = true;
+      refData.value.loadingPage = false;
+    });
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
+    return {
+      refData,
+      customer,
+      loadingCustomerInfo,
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
-
-    const currentTab = ref("Overview");
-
-    const tabs = {
-      Overview,
-      Permissions,
-      Users,
-      Kyc,
-    };
-
-    return { overviewTab, currentTab, tabs };
   },
 });
 </script>
-<style>
-.demo {
-  font-family: sans-serif;
-  border: 1px solid #eee;
-  border-radius: 2px;
-  padding: 20px 30px;
-  margin-top: 1em;
-  margin-bottom: 40px;
-  user-select: none;
-  overflow-x: auto;
-}
-
-.tab-button {
-  padding: 6px 10px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  background: #f0f0f0;
-  margin-bottom: -1px;
-  margin-right: -1px;
-}
-.tab-button:hover {
-  background: #e0e0e0;
-}
-.tab-button.active {
-  background: #e0e0e0;
-}
-.tab {
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-</style>

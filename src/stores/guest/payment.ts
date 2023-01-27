@@ -3,6 +3,7 @@ import PaymentService from "@/services/guest/PaymentService";
 import { getError } from "@/helpers/errors";
 
 import type { iInvoice, iInvoiceItem } from "@/models/invoice";
+import type { iCampaign } from "@/models/campaign";
 
 export const useGuestPaymentStore = defineStore("guestPaymentStore", {
   state: () => ({
@@ -18,7 +19,8 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
     invoiceItems: [] as iInvoiceItem[],
 
     //campaigin
-    campaignData: {},
+    campaignData: {} as iCampaign,
+
     //shared
     loadingPaymentData: false,
   }),
