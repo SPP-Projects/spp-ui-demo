@@ -277,28 +277,28 @@ const routes: Array<RouteRecordRaw> = [
       },
 
       //onboarding
-      {
-        path: "/spchart",
-        name: "spchart-1",
-        component: function () {
-          return import("@/views/_dev/spchart/manage.vue");
-        },
-        meta: {
-          pageTitle: "Manage Your Details",
-          breadcrumbs: ["Onboarding", "Manage Your Details"],
-        },
-      },
-      {
-        path: "/spchart2",
-        name: "chart2",
-        component: function () {
-          return import("@/views/_dev/spchart/chart-two.vue");
-        },
-        meta: {
-          pageTitle: "Manage Your Details",
-          breadcrumbs: ["Onboarding", "Manage Your Details"],
-        },
-      },
+      // {
+      //   path: "/spchart",
+      //   name: "spchart-1",
+      //   component: function () {
+      //     return import("@/views/_dev/spchart/manage.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Your Details",
+      //     breadcrumbs: ["Onboarding", "Manage Your Details"],
+      //   },
+      // },
+      // {
+      //   path: "/spchart2",
+      //   name: "chart2",
+      //   component: function () {
+      //     return import("@/views/_dev/spchart/chart-two.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Your Details",
+      //     breadcrumbs: ["Onboarding", "Manage Your Details"],
+      //   },
+      // },
     ],
   },
 
@@ -898,17 +898,17 @@ const routes: Array<RouteRecordRaw> = [
       },
 
       //dev
-      {
-        path: "/validation",
-        name: "sp-manage-validation",
-        component: function () {
-          return import("@/views/_dev/validation/validate-form.vue");
-        },
-        meta: {
-          pageTitle: "Manage Todo",
-          breadcrumbs: ["Manage Todo"],
-        },
-      },
+      // {
+      //   path: "/validation",
+      //   name: "sp-manage-validation",
+      //   component: function () {
+      //     return import("@/views/_dev/validation/validate-form.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Todo",
+      //     breadcrumbs: ["Manage Todo"],
+      //   },
+      // },
     ],
   },
 
