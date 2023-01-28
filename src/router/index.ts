@@ -909,6 +909,19 @@ const routes: Array<RouteRecordRaw> = [
       //     breadcrumbs: ["Manage Todo"],
       //   },
       // },
+
+      //otp
+      // {
+      //   path: "/otp",
+      //   name: "sp-manage-otp",
+      //   component: function () {
+      //     return import("@/views/_dev/otp/OtpTest.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Todo",
+      //     breadcrumbs: ["Manage Todo"],
+      //   },
+      // },
     ],
   },
 
@@ -1007,6 +1020,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/donations/index.vue"),
         meta: {
           pageTitle: "Donations Page",
+        },
+      },
+      {
+        path: "/donations/process/:reference",
+        name: "guest-donations-process",
+        component: () => import("@/views/donations/process.vue"),
+        meta: {
+          pageTitle: "Process Donation",
         },
       },
     ],

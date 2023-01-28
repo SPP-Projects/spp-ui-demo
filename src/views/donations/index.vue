@@ -39,6 +39,7 @@
               <!--end::layer-->
             </div>
             <!--end::Overlay-->
+
             <!--begin::Heading-->
             <div class="position-absolute text-white mb-8 ms-10 bottom-0">
               <!--begin::Title-->
@@ -48,7 +49,7 @@
               <!--end::Title-->
               <!--begin::Text-->
               <div class="fs-5 fw-semibold">
-                Let’s contribute to make world a better place
+                <!--                Let’s contribute to make world a better place-->
               </div>
               <!--end::Text-->
             </div>
@@ -103,17 +104,14 @@
                                   class="card card-dashed flex-center min-w-150px my-3 p-6"
                                 >
                                   <span
-                                    class="fs-2 fw-semibold text-info pb-1 px-2"
+                                    class="fs-4 fw-semibold text-info pb-1 px-2"
                                     >Goal</span
                                   >
                                   <span
-                                    class="fs-2 fw-bold d-flex justify-content-center"
+                                    class="fs-4 fw-bold d-flex justify-content-center"
                                   >
                                     <!--                                    {{ campaignData.currency_code }}-->
-                                    <span
-                                      data-kt-countup="true"
-                                      data-kt-countup-value="63,240.00"
-                                    >
+                                    <span data-kt-countup="true">
                                       {{
                                         formatCurrencyAmount(campaignData.goal)
                                       }}</span
@@ -132,12 +130,9 @@
                                     >Amt Raised</span
                                   >
                                   <span
-                                    class="fs-2 fw-bold d-flex justify-content-center"
+                                    class="fs-4 fw-bold d-flex justify-content-center"
                                   >
-                                    <span
-                                      data-kt-countup="true"
-                                      data-kt-countup-value="8,530.00"
-                                    >
+                                    <span data-kt-countup="true">
                                       {{
                                         formatCurrencyAmount(
                                           campaignData.donated
@@ -158,13 +153,9 @@
                                     >Amt Left</span
                                   >
                                   <span
-                                    class="fs-2 fw-bold d-flex justify-content-center"
+                                    class="fs-4 fw-bold d-flex justify-content-center"
                                   >
-                                    <!--                                    {{ campaignData.currency_code }}-->
-                                    <span
-                                      data-kt-countup="true"
-                                      data-kt-countup-value="2,600"
-                                    >
+                                    <span data-kt-countup="true">
                                       {{
                                         formatCurrencyAmount(
                                           campaignData.amount_to_goal
@@ -249,59 +240,36 @@
                       <div class="card-bodyS">
                         <div class="row">
                           <div class="col-md-12">
-                            <h2
-                              v-if="form.step === 'validated'"
-                              class="text-center"
-                            >
-                              Confirm Payment
-                            </h2>
-                            <h2
-                              v-if="form.step === 'initiated'"
-                              class="text-center"
-                            >
-                              Approve Payment
-                            </h2>
-                            <h2
-                              v-if="form.step === 'confirmed'"
-                              class="text-center"
-                            >
-                              Payment Submitted
-                            </h2>
                             <div class="separator separator-dashed mb-5"></div>
-                          </div>
-                        </div>
 
-                        <div class="row">
-                          <!--begin::Form-->
-                          <form class="">
-                            <!--begin:: Input-->
-                            <div
-                              v-if="form.step === 'input'"
-                              class="current"
-                              data-kt-stepper-element="content"
+                            <VForm
+                              id="kt_modal_create_api_key_form"
+                              class="form"
+                              @submit="submit"
+                              :validation-schema="validationSchema"
                             >
-                              <div class="w-100">
-                                <!--begin::Input group-->
-                                <div class="mb-10 fv-row">
-                                  <!--begin::Label-->
-                                  <label class="form-label mb-3"
-                                    >Payment Method</label
-                                  >
-                                  <!--end::Label-->
+                              <!--begin::Payment Method-->
+                              <div class="d-flex flex-column mb-7 fv-row">
+                                <!--begin::Label-->
+                                <label
+                                  class="required fs-6 fw-semobold form-label mb-2"
+                                  >Payment Method</label
+                                >
+                                <!--end::Label-->
 
-                                  <!--begin::Input-->
-                                  <div>
+                                <!--begin::Row-->
+                                <div class="row fv-row">
+                                  <!--begin::Col-->
+                                  <div class="col-12">
                                     <Field
-                                      name="institution_id"
-                                      class="form-select form-select-solid select2-hidden-accessible"
-                                      placeholder="Month"
-                                      as="select"
                                       v-model="request.payee.account.code"
-                                      :disabled="loading"
+                                      name="paymentMethod"
+                                      class="form-select form-select-solid"
+                                      data-control="select2"
+                                      data-hide-search="true"
+                                      as="select"
                                     >
-                                      <option value="">
-                                        Select Payment Method
-                                      </option>
+                                      <option></option>
                                       <option
                                         v-for="institution in form.debit_institutions"
                                         :key="institution.code"
@@ -310,413 +278,137 @@
                                         {{ institution.name }}
                                       </option>
                                     </Field>
-                                    <ErrorMessage
-                                      class="fv-plugins-message-container invalid-feedback"
-                                      name="institution_id"
-                                    />
-                                  </div>
-
-                                  <!--end::Input-->
-                                </div>
-                                <div class="mb-10 fv-row">
-                                  <!--begin::Label-->
-                                  <label class="form-label mb-3"
-                                    >Debit Account Number</label
-                                  >
-                                  <!--end::Label-->
-
-                                  <!--begin::Input-->
-                                  <input
-                                    type="text"
-                                    class="form-control form-control-lg form-control-solid"
-                                    v-model="request.payee.account.number"
-                                    placeholder="Enter Account Number to Initiate Payment From E.g. 027XXXXXXX"
-                                  />
-                                  <ErrorMessage
-                                    name="accountName"
-                                    class="fv-plugins-message-container invalid-feedback"
-                                  ></ErrorMessage>
-                                  <!--end::Input-->
-                                </div>
-                                <div class="mb-10 fv-row">
-                                  <!--begin::Label-->
-                                  <label class="form-label mb-3">Amount</label>
-                                  <!--end::Label-->
-
-                                  <!--begin::Input-->
-                                  <input
-                                    type="text"
-                                    class="form-control form-control-lg form-control-solid"
-                                    v-model="request.amount"
-                                    placeholder="Enter Amount"
-                                  />
-                                  <ErrorMessage
-                                    name="accountName"
-                                    class="fv-plugins-message-container invalid-feedback"
-                                  ></ErrorMessage>
-                                  <!--end::Input-->
-                                </div>
-                                <div class="mb-10 fv-row">
-                                  <!--begin::Label-->
-                                  <label class="form-label mb-3">Email</label>
-                                  <!--end::Label-->
-
-                                  <!--begin::Input-->
-                                  <input
-                                    type="text"
-                                    class="form-control form-control-lg form-control-solid"
-                                    v-model="request.payee.email"
-                                    placeholder="Enter Email"
-                                  />
-
-                                  <ErrorMessage
-                                    name="accountName"
-                                    class="fv-plugins-message-container invalid-feedback"
-                                  ></ErrorMessage>
-                                  <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-                              </div>
-                            </div>
-                            <!--begin:: Input-->
-
-                            <!--begin::Validated-->
-                            <div
-                              v-if="form.step === 'validated'"
-                              class="current"
-                              data-kt-stepper-element="content"
-                            >
-                              <div class="w-100">
-                                <!--begin::Heading-->
-                                <div class="pb-10 pb-lg-15">
-                                  <!--begin::Title-->
-                                  <h2 class="fw-bold text-dark">
-                                    Validation - OTP
-                                  </h2>
-                                  <!--end::Title-->
-
-                                  <!--begin::Notice-->
-                                  <div class="text-gray-400 fw-semobold fs-6">
-                                    {{ validated.message }}
-                                  </div>
-                                  <!--end::Notice-->
-                                </div>
-                                <!--end::Heading-->
-
-                                <div class="w-100">
-                                  <!--begin::Input group-->
-                                  <div class="d-flex flex-column mb-7 fv-row">
-                                    <!--begin::Label-->
-                                    <label
-                                      class="d-flex align-items-center fs-6 fw-semobold form-label mb-2"
-                                    >
-                                      <span class="required">OTP</span>
-                                      <i
-                                        class="fas fa-exclamation-circle ms-2 fs-7"
-                                        title="Enter OTP"
-                                      ></i>
-                                    </label>
-                                    <!--end::Label-->
-
-                                    <Field
-                                      type="text"
-                                      class="form-control form-control-solid"
-                                      placeholder="Enter OTP - you will receive this on your phone"
-                                      name="nameOnCard"
-                                      v-model="request.otp.pin"
-                                      :disabled="loading"
-                                    />
-                                    <ErrorMessage
-                                      class="fv-plugins-message-container invalid-feedback"
-                                      name="otpError"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <!--begin::Validated-->
-
-                            <!--begin::Confirmed-->
-                            <div
-                              v-if="form.step === 'confirmed'"
-                              class="current"
-                              data-kt-stepper-element="content"
-                            >
-                              <div class="">
-                                <!--begin::Body-->
-                                <div class="">
-                                  <!--begin::Alert-->
-                                  <div
-                                    class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6"
-                                  >
-                                    <!--begin::Icon-->
-                                    <span
-                                      class="svg-icon svg-icon-2tx svg-icon-warning me-4"
-                                    >
-                                      <inline-svg
-                                        src="/media/icons/duotune/general/gen044.svg"
-                                      />
-                                    </span>
-                                    <!--end::Icon-->
-                                    <!--begin::Wrapper-->
-                                    <div class="d-flex flex-stack flex-grow-1">
-                                      <!--begin::Content-->
-                                      <div class="fw-semobold">
-                                        <div class="fs-6 text-gray-600">
-                                          {{ confirmed.message }}
-                                        </div>
+                                    <div class="fv-plugins-message-container">
+                                      <div class="fv-help-block">
+                                        <ErrorMessage name="paymentMethod" />
                                       </div>
-                                      <!--end::Content-->
                                     </div>
-                                    <!--end::Wrapper-->
                                   </div>
-                                  <!--end::Alert-->
-
-                                  <br />
-
-                                  <div class="col-md-12">
-                                    Status:
-                                    <span
-                                      v-if="confirmed.transaction.status === 1"
-                                      class="badge badge-primary"
-                                      >Created</span
-                                    >
-                                    <span
-                                      v-if="confirmed.transaction.status === 2"
-                                      class="badge badge-info"
-                                      >Submitted</span
-                                    >
-                                    <span
-                                      v-if="confirmed.status === 3"
-                                      class="badge badge-warning"
-                                      >Processing</span
-                                    >
-                                    <span
-                                      v-if="confirmed.status === 4"
-                                      class="badge badge-success"
-                                      >Success</span
-                                    >
-                                    <span
-                                      v-if="confirmed.transaction.status === 5"
-                                      class="badge badge-danger"
-                                      >Error</span
-                                    >
-                                    <span
-                                      v-if="confirmed.transaction.status === 6"
-                                      class="badge badge-danger"
-                                      >Cancelled</span
-                                    >
-                                  </div>
-                                  <div class="col-md-12">
-                                    Reference:
-                                    <b>{{ confirmed.transaction.reference }}</b>
-                                  </div>
-                                  <div v-if="confirmed.email" class="col-md-12">
-                                    External Reference:
-                                    <b>{{ confirmed.email }}</b>
-                                  </div>
-                                  <div class="col-md-12">
-                                    Send Amount:
-                                    <b
-                                      >{{ confirmed.transaction.currency }}
-                                      {{ confirmed.transaction.amount }}</b
-                                    >
-                                  </div>
-                                  <div class="col-md-12">
-                                    From:
-                                    <b
-                                      >{{
-                                        confirmed.transaction.debit_account_no
-                                      }}
-                                      {{
-                                        confirmed.transaction.debit_account_name
-                                      }}</b
-                                    >
-                                  </div>
-                                  <div
-                                    v-if="confirmed.credit_account_name"
-                                    class="col-md-12"
-                                  >
-                                    Recipient Name:
-                                    <b>{{ confirmed.credit_account_name }}</b>
-                                  </div>
-                                  <div
-                                    v-if="confirmed.charge"
-                                    class="col-md-12"
-                                  >
-                                    Charge: <b>{{ confirmed.charge.amount }}</b>
-                                  </div>
-                                  <div v-if="confirmed.tax" class="col-md-12">
-                                    Taxable Amount:
-                                    <b>{{ validated.taxable_amount }}</b>
-                                  </div>
-                                  <div v-if="confirmed.tax" class="col-md-12">
-                                    Tax: <b>{{ confirmed.tax.amount }}</b>
-                                  </div>
-
-                                  <hr />
+                                  <!--end::Col-->
                                 </div>
-                                <!--end::Body-->
+                                <!--end::Row-->
                               </div>
-                            </div>
-                            <!--begin::Confirmed-->
-                          </form>
-                          <!--end::Form-->
-                          <div v-if="form.step === 'input'" class="col-md-12">
-                            <div class="row">
-                              <div class="col-12 mb-3 text-right">
+                              <!--begin::Payment Method-->
+
+                              <!--begin::Phone Number-->
+                              <div class="d-flex flex-column mb-7 fv-row">
+                                <!--begin::Label-->
+                                <label
+                                  class="d-flex align-items-center fs-6 fw-semobold form-label mb-2"
+                                >
+                                  <span class="required">Phone Number</span>
+                                  <i
+                                    class="fas fa-exclamation-circle ms-2 fs-7"
+                                    data-bs-toggle="tooltip"
+                                    title="Specify a card holder's name"
+                                  ></i>
+                                </label>
+                                <!--end::Label-->
+
+                                <Field
+                                  type="text"
+                                  class="form-control form-control-solid"
+                                  placeholder=""
+                                  name="phoneNumber"
+                                  v-model="request.payee.account.number"
+                                />
+                                <div class="fv-plugins-message-container">
+                                  <div class="fv-help-block">
+                                    <ErrorMessage name="phoneNumber" />
+                                  </div>
+                                </div>
+                              </div>
+                              <!--end::Phone Number-->
+
+                              <!--begin::Payment Amount-->
+                              <div class="d-flex flex-column mb-7 fv-row">
+                                <!--begin::Label-->
+                                <label
+                                  class="d-flex align-items-center fs-6 fw-semobold form-label mb-2"
+                                >
+                                  <span class="required">Amount</span>
+                                  <i
+                                    class="fas fa-exclamation-circle ms-2 fs-7"
+                                    data-bs-toggle="tooltip"
+                                    title="Specify amount"
+                                  ></i>
+                                </label>
+                                <!--end::Label-->
+
+                                <Field
+                                  type="number"
+                                  class="form-control form-control-solid"
+                                  placeholder=""
+                                  name="paymentAmount"
+                                  v-model="request.amount"
+                                />
+                                <div class="fv-plugins-message-container">
+                                  <div class="fv-help-block">
+                                    <ErrorMessage name="paymentAmount" />
+                                  </div>
+                                </div>
+                              </div>
+                              <!--begin::Payment Amount-->
+
+                              <!--begin::Payment Email-->
+                              <div class="d-flex flex-column mb-7 fv-row">
+                                <!--begin::Label-->
+                                <label
+                                  class="d-flex align-items-center fs-6 fw-semobold form-label mb-2"
+                                >
+                                  <span class="required">Email</span>
+                                  <i
+                                    class="fas fa-exclamation-circle ms-2 fs-7"
+                                    data-bs-toggle="tooltip"
+                                    title="Specify your email"
+                                  ></i>
+                                </label>
+                                <!--end::Label-->
+
+                                <Field
+                                  type="text"
+                                  class="form-control form-control-solid"
+                                  placeholder=""
+                                  name="paymentEmail"
+                                  v-model="request.payee.email"
+                                />
+                                <div class="fv-plugins-message-container">
+                                  <div class="fv-help-block">
+                                    <ErrorMessage name="paymentEmail" />
+                                  </div>
+                                </div>
+                              </div>
+                              <!--begin::Payment Email-->
+
+                              <!--begin::Actions-->
+                              <div class="text-center pt-5">
                                 <button
+                                  type="reset"
+                                  id="kt_modal_new_card_cancel"
+                                  class="btn btn-light me-3"
+                                >
+                                  Discard
+                                </button>
+
+                                <button
+                                  ref="submitButtonRef"
+                                  type="submit"
+                                  id="kt_modal_new_card_submit"
                                   class="btn btn-success"
-                                  type="submit"
-                                  @click.prevent="validatePayment()"
-                                  :disabled="loading"
                                 >
-                                  <svg
-                                    v-if="loading"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="feather feather-loader spin ml-2"
-                                  >
-                                    <line x1="12" y1="2" x2="12" y2="6"></line>
-                                    <line
-                                      x1="12"
-                                      y1="18"
-                                      x2="12"
-                                      y2="22"
-                                    ></line>
-                                    <line
-                                      x1="4.93"
-                                      y1="4.93"
-                                      x2="7.76"
-                                      y2="7.76"
-                                    ></line>
-                                    <line
-                                      x1="16.24"
-                                      y1="16.24"
-                                      x2="19.07"
-                                      y2="19.07"
-                                    ></line>
-                                    <line x1="2" y1="12" x2="6" y2="12"></line>
-                                    <line
-                                      x1="18"
-                                      y1="12"
-                                      x2="22"
-                                      y2="12"
-                                    ></line>
-                                    <line
-                                      x1="4.93"
-                                      y1="19.07"
-                                      x2="7.76"
-                                      y2="16.24"
-                                    ></line>
-                                    <line
-                                      x1="16.24"
-                                      y1="7.76"
-                                      x2="19.07"
-                                      y2="4.93"
-                                    ></line>
-                                  </svg>
-                                  <span v-else>Donate Now</span>
+                                  <span class="indicator-label">
+                                    Donate Now!
+                                  </span>
+                                  <span class="indicator-progress">
+                                    Please wait...
+                                    <span
+                                      class="spinner-border spinner-border-sm align-middle ms-2"
+                                    ></span>
+                                  </span>
                                 </button>
                               </div>
-                            </div>
-                          </div>
-                          <div
-                            v-if="form.step === 'validated'"
-                            class="col-md-12"
-                            style="font-size: 14px"
-                          >
-                            <!--TODO-->
-                            <!--                  <div class="col-md-12">-->
-                            <!--                    <h5>Amount</h5>-->
-                            <!--                    <div class="col-md-12">Send Amount: <b>{{ validated.debit_currency }} {{ validated.debit_amount | formatAmount }}</b></div>-->
-                            <!--                    <div class="col-md-12">Charge: <b>{{ validated.charge_amount | formatAmount }}</b></div>-->
-                            <!--                    <div class="col-md-12 mb-2">Account to Charge: <b>{{ validated.charge_account }}</b></div>-->
-                            <!--                    <div class="col-md-12">Taxable Amount: <b>{{ validated.taxable_amount | formatAmount }}</b></div>-->
-                            <!--                    <div class="col-md-12">Tax: <b>{{ validated.tax_amount | formatAmount }}</b></div>-->
-                            <!--                    <div class="col-md-12">Account to Tax: <b>{{ validated.tax_account }}</b></div>-->
-                            <!--                  </div>-->
-                            <hr />
-                            <div class="row">
-                              <div class="col-12 mb-3 text-right">
-                                <button
-                                  class="btn btn-warning me-5"
-                                  type="submit"
-                                  @click.prevent="form.step = 'input'"
-                                  :disabled="loading"
-                                >
-                                  <i class="mdi mdi-content-save"></i> Edit
-                                  Details
-                                </button>
-                                <button
-                                  class="btn btn-success"
-                                  type="submit"
-                                  @click.prevent="confirmPayment()"
-                                  :disabled="loading"
-                                >
-                                  <svg
-                                    v-if="loading"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="feather feather-loader spin ml-2"
-                                  >
-                                    <line x1="12" y1="2" x2="12" y2="6"></line>
-                                    <line
-                                      x1="12"
-                                      y1="18"
-                                      x2="12"
-                                      y2="22"
-                                    ></line>
-                                    <line
-                                      x1="4.93"
-                                      y1="4.93"
-                                      x2="7.76"
-                                      y2="7.76"
-                                    ></line>
-                                    <line
-                                      x1="16.24"
-                                      y1="16.24"
-                                      x2="19.07"
-                                      y2="19.07"
-                                    ></line>
-                                    <line x1="2" y1="12" x2="6" y2="12"></line>
-                                    <line
-                                      x1="18"
-                                      y1="12"
-                                      x2="22"
-                                      y2="12"
-                                    ></line>
-                                    <line
-                                      x1="4.93"
-                                      y1="19.07"
-                                      x2="7.76"
-                                      y2="16.24"
-                                    ></line>
-                                    <line
-                                      x1="16.24"
-                                      y1="7.76"
-                                      x2="19.07"
-                                      y2="4.93"
-                                    ></line>
-                                  </svg>
-                                  <span v-else> Initiate Payment</span>
-                                </button>
-                              </div>
-                            </div>
+                              <!--end::Actions-->
+                            </VForm>
                           </div>
                         </div>
                       </div>
@@ -830,21 +522,23 @@ import { useBodyStore } from "@/stores/body";
 import { useThemeStore } from "@/stores/theme";
 import LayoutService from "@/core/services/LayoutService";
 import { getIllustrationsPath } from "@/core/helpers/assets";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useGuestPaymentStore } from "@/stores/guest/payment";
 
 import PageLoader from "@/components/PageLoader.vue";
 import Message from "vue-m-message";
-import { Field, ErrorMessage } from "vee-validate";
+import { Field, ErrorMessage, Form as VForm } from "vee-validate";
 import { storeToRefs } from "pinia";
 import { useGuestGeneralStore } from "@/stores/guest/general";
 import DataLoader from "@/components/DataLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import * as Yup from "yup";
 
 export default defineComponent({
   name: "guest-donations",
-  components: { DataLoader, PageLoader, Field, ErrorMessage },
+  components: { DataLoader, PageLoader, Field, ErrorMessage, VForm },
   setup() {
+    //theme
     const storeBody = useBodyStore();
     const storeTheme = useThemeStore();
     const themeMode = computed(() => {
@@ -852,19 +546,18 @@ export default defineComponent({
     });
     const bgImage = themeMode.value !== "dark" ? "bg5.png" : "bg1-dark.jpg";
 
-    const loadingPage = ref(true);
-
-    //payment
     //guest payment store
     const paymentStore = useGuestPaymentStore();
     const { loadingPaymentData, campaignData } = storeToRefs(paymentStore);
     const { getCampaign } = useGuestPaymentStore();
+
     //common store
     const generalStore = useGuestGeneralStore();
-    const { loadingGeneralData } = storeToRefs(generalStore);
+
     const route = useRoute();
 
-    const loadingData = ref(false);
+    const loadingPage = ref(true);
+
     const loading = ref(false);
 
     const form = ref({
@@ -875,6 +568,7 @@ export default defineComponent({
     const request = ref({
       collection_type: "campaign" as any,
       collection_reference: "" as any,
+
       amount: 0,
       payee: {
         email: "",
@@ -889,10 +583,6 @@ export default defineComponent({
       },
     });
 
-    const validated = ref({} as any);
-
-    const confirmed = ref({} as any);
-
     const instantiateForm = () => {
       request.value.collection_reference = route.params.reference;
       request.value.collection_type = "campaign";
@@ -900,152 +590,127 @@ export default defineComponent({
     };
 
     const getInstitutions = () => {
-      generalStore.getInstitutions({ type_id: 3 }).then((response) => {
-        form.value.debit_institutions = response;
+      generalStore.getInstitutions({ type_id: 3 }).then((response: any) => {
+        //  form.value.debit_institutions = response;
         //TODO
         //   sort institutions to debit and credit institutions
-        // data.value.form.debit_institutions =
-        //   data.value.form.credit_institutions.filter(function (
-        //     institution: any
-        //   ) {
-        //     return institution.type_id === "3"; // Get only mobile money institutions
-        //   });d
+        form.value.debit_institutions = response.filter(function (
+          institution: any
+        ) {
+          return institution.type_id === "3"; // Get only mobile money institutions
+        });
       });
     };
 
-    const validatePayment = () => {
-      JSON.stringify(request);
-      console.log("request", 1);
-      loading.value = true;
-      paymentStore
-        .validatePayment(request.value)
-
-        .then((response: any) => {
-          validated.value = response.data;
-          request.value.otp.id = response.data.otp_id;
-          form.value.step = "validated";
-          console.log(response);
-          Message({
-            message: "Validation successful, please confirm details.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
-        })
-        .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
-        })
-        .finally(() => (loading.value = false));
-    };
-
-    const confirmPayment = () => {
-      loading.value = true;
-
-      paymentStore
-        .submitPayment(request.value)
-        .then((response: any) => {
-          confirmed.value = response.data;
-
-          form.value.step = "confirmed";
-
-          Message({
-            message: "Payment submitted successfully.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
-        })
-        .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
-        })
-        .finally(() => (loading.value = false));
-    };
+    const router = useRouter();
 
     let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
       useOutputFormat();
 
+    const submitButtonRef = ref<null | HTMLButtonElement>(null);
+
+    const validationSchema = Yup.object().shape({
+      paymentMethod: Yup.string().required().label("Payment Method"),
+      phoneNumber: Yup.string().required().label("Phone Number"),
+      paymentAmount: Yup.number().required().label("Payment Amount"),
+      paymentEmail: Yup.string().email().required().label("Email"),
+    });
+
+    const submit = () => {
+      if (!submitButtonRef.value) {
+        return;
+      }
+
+      //Disable button
+      submitButtonRef.value.disabled = true;
+      // Activate indicator
+      submitButtonRef.value.setAttribute("data-kt-indicator", "on");
+
+      loading.value = true;
+      paymentStore
+        .validatePayment(request.value)
+        .then(() => {
+          router.push(
+            "/donations/process/" + request.value.collection_reference
+          );
+          Message({
+            message: "Payment submitted successfully, please confirm details.",
+            position: "bottom-right",
+            type: "success",
+            duration: 5000,
+            zIndex: 99999,
+          });
+        })
+        .catch((error) => {
+          // get errors from state
+          const response = error.response.data;
+
+          if (response.errors) {
+            const errors = response.errors;
+            for (const key in errors) {
+              Message({
+                message: errors[key][0],
+                position: "bottom-right",
+                type: "error",
+                duration: 5000,
+                zIndex: 99999,
+              });
+            }
+          } else if (response.error) {
+            Message({
+              message: response.error,
+              position: "bottom-right",
+              type: "error",
+              duration: 5000,
+              zIndex: 99999,
+            });
+          } else {
+            Message({
+              message: "Error occured - please try again",
+              position: "bottom-right",
+              type: "error",
+              duration: 5000,
+              zIndex: 99999,
+            });
+          }
+
+          submitButtonRef.value.disabled = false;
+
+          submitButtonRef.value?.removeAttribute("data-kt-indicator");
+        })
+        .finally(() => (loading.value = false));
+    };
     onMounted(() => {
       loadingPage.value = true;
 
+      //theme
       LayoutService.emptyElementClassesAndAttributes(document.body);
-
       storeBody.addBodyClassname("bg-body");
       storeBody.addBodyAttribute({
         qualifiedName: "style",
         value: `background-image: url("/media/auth/${bgImage}")`,
       });
 
+      //campaign
       getCampaign(route.params.reference);
       instantiateForm();
 
       loadingPage.value = false;
     });
+
     return {
       //page
       getIllustrationsPath,
       bgImage,
       loadingPage,
 
-      //form
-      validatePayment,
-      confirmPayment,
       instantiateForm,
 
-      loadingData,
       loading,
       form,
       request,
-      validated,
-      confirmed,
 
       //state
-      loadingGeneralData,
       loadingPaymentData,
       campaignData,
 
@@ -1054,6 +719,11 @@ export default defineComponent({
       formatDateTime,
       formatTime,
       formatDate,
+
+      //new
+      validationSchema,
+      submit,
+      submitButtonRef,
     };
   },
 });

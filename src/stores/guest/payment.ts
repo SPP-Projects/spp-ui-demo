@@ -12,6 +12,7 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
     paymentInfo: {},
     validatedPayment: null,
     submittedPayment: [],
+    submittedOtpResponse: [],
 
     //invoice
     invoiceInfo: {},
@@ -23,6 +24,8 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
 
     //shared
     loadingPaymentData: false,
+    loadingValidatedData: false,
+    loadingOtpResponse: false,
   }),
   actions: {
     submitPayment(payload) {
@@ -34,12 +37,33 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
             resolve(response);
           })
           .catch((error) => {
+            console.log("errrorrrrrrrrrrrrrrrrrrr");
             this.loadingData = false;
             this.error = getError(error);
             reject(error);
           })
           .finally(() => {
+            console.log("final");
             this.loadingData = false;
+          });
+      });
+    },
+
+    submitPaystackOtp(payload) {
+      return new Promise((resolve, reject) => {
+        this.loadingOtpResponse = true;
+        PaymentService.submitPaystackOtp(payload)
+          .then((response) => {
+            this.submittedOtpResponse = response.data;
+            resolve(response);
+          })
+          .catch((error) => {
+            this.loadingOtpResponse = false;
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingOtpResponse = false;
           });
       });
     },
@@ -54,11 +78,13 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
             resolve(response);
           })
           .catch((error) => {
+            console.log("errrrrrrrrrrrrrrrrorrr");
             this.loadingData = false;
             this.error = getError(error);
             reject(error);
           })
           .finally(() => {
+            console.log("finally");
             this.loadingData = false;
           });
       });

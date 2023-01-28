@@ -701,6 +701,8 @@
                   v-model="campaign.description"
                   placeholder="Enter description"
                   name="description"
+                  type="textarea"
+                  rows="3"
                 ></el-input>
               </el-form-item>
             </div>

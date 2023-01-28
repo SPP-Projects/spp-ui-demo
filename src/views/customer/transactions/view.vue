@@ -9,6 +9,7 @@
       class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0"
       v-if="transaction"
     >
+      {{ transaction }}
       <!--begin::Card-->
       <div class="card card-flush pt-3 mb-5 mb-xl-10">
         <!--begin::Card header-->
