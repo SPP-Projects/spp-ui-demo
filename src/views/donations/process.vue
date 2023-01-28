@@ -96,6 +96,7 @@
                       class="w-lg-500px p-10"
                       v-if="validatedPayment.message === 'OTP Required'"
                     >
+                      {{ validatedPayment }}
                       <!--begin::Form-->
                       <el-form
                         class="form w-100 mb-13"
@@ -509,7 +510,6 @@ export default defineComponent({
     });
 
     const request = ref({
-      collection_type: "campaign" as any,
       transaction_reference: "" as any,
       otp: "",
     });
@@ -529,8 +529,15 @@ export default defineComponent({
         if (valid) {
           loading.value = true;
 
+          let payload = {
+            otp: request.value.otp,
+            transaction_reference:
+              validatedPayment.value.transaction.original.reference,
+          };
+
+          console.log("payload ", payload);
           paymentStore
-            .submitPaystackOtp(request.value)
+            .submitPaystackOtp(payload)
             .then((response: any) => {
               confirmed.value = response.data;
 
@@ -593,8 +600,11 @@ export default defineComponent({
         qualifiedName: "style",
         value: `background-image: url("/media/auth/${bgImage}")`,
       });
-      request.value.transaction_reference = route.params.reference;
+      request.value.transaction_reference =
+        validatedPayment.value.transaction.original.reference;
       getCampaign(route.params.reference);
+      console.log(validatedPayment.value.transaction.original.reference);
+      console.log(1);
 
       loadingPage.value = false;
     });

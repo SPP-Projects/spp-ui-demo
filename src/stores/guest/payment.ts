@@ -50,6 +50,7 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
     },
 
     submitPaystackOtp(payload) {
+      console.log(payload);
       return new Promise((resolve, reject) => {
         this.loadingOtpResponse = true;
         PaymentService.submitPaystackOtp(payload)

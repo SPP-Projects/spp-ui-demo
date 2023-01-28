@@ -10,7 +10,9 @@ class PaymentService {
   }
 
   submitPaystackOtp(payload) {
-    return CaretakerApiService.post(`v1/transaction/submit-otp`, payload);
+    console.log(payload);
+
+    return CaretakerApiService.post(`/v1/transaction/submit-otp`, payload);
 
     // return CaretakerApiService.post(
     //     `v1/transaction/submit-otp?otp=${payload.otp}&transaction_reference=${payload.transaction_reference}`,
