@@ -56,6 +56,24 @@
         :itemsPerPage="5"
         :loading="loadingData"
       >
+        <template v-slot:row_number="{ row: data }">
+          {{ data.row_number }}
+        </template>
+        <template v-slot:transaction_reference="{ row: data }">
+          <span v-if="data.transaction">
+            <router-link :to="`/transactions/${data.transaction.reference}`">
+              {{ data.transaction.reference }} <br />
+
+              <span class="fs-6 text-muted">
+                {{ data.transaction.currency_code }}
+                {{ formatCurrencyAmount(data.transaction.amount) }}
+              </span>
+            </router-link>
+          </span>
+
+          <span v-else> {{ data.transaction }}</span>
+        </template>
+
         <template v-slot:status="{ row: data }">
           <span v-if="data.status === 'Created'" class="badge badge-primary"
             >Created</span
@@ -76,27 +94,30 @@
           <span v-if="data.status === 'Submitted'" class="badge badge-success"
             >Submitted</span
           >
+
+          <span class="fs-6 fw-bold text-danger">
+            <br />
+            {{ data.errors }}
+          </span>
         </template>
 
         <template v-slot:debit_account_no="{ row: data }">
+          {{ data.debit_account_institution_code }}
+          <br />
           {{ data.debit_account_no }}
         </template>
         <template v-slot:credit_account_no="{ row: data }">
+          {{ data.debit_account_institution_code }} <br />
           {{ data.credit_account_no }}
-        </template>
-        <template v-slot:errors="{ row: data }">
-          {{ data.errors }}
-        </template>
-
-        <template v-slot:row_number="{ row: data }">
-          {{ data.row_number }} {{ data }}
         </template>
 
         <template v-slot:actions="{ row: data }">
           <button
             v-if="data.transaction"
             size="sm"
-            class="info"
+            class="info btn btn-info btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#kt_modal_view_transaction"
             @click.prevent="viewTransactionModal(data.transaction)"
           >
             View Transaction</button
@@ -134,78 +155,192 @@
 
         <!--begin::Modal body-->
         <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
-          <div v-if="transaction.id" class="modal-text">
-            Transaction Details: {{ transaction.id }} -
-            {{ transaction.reference }}
+          <div data-kt-stepper-element="content">
+            <!--begin::Wrapper-->
+            <div class="w-100" v-if="transaction.id">
+              <!--begin::Heading-->
+              <div class="pb-12">
+                <!--begin::Title-->
+                <h1 class="fw-bold text-dark">
+                  Transaction Details: {{ transaction.id }} -
+                  {{ transaction.reference }}
+                </h1>
+                <!--end::Title-->
+              </div>
+              <!--end::Heading-->
+            </div>
+            <!--end::Wrapper-->
+          </div>
+          <div v-if="transaction.id">
+            <!--  General Info -->
+            <div
+              class="py-2 border-bottom border-bottom-dashed border-gray-300"
+            >
+              <div class="ms">
+                <span
+                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
+                >
+                  General
+                </span>
+              </div>
+              <div class="flex-equal table-responsive">
+                <table class="table table-flush fw-semobold gy-1">
+                  <tbody>
+                    <tr>
+                      <td class="text-muted">Amount</td>
+                      <td class="text-gray-800">
+                        {{ formatCurrencyAmount(transaction.amount) }}
+                        {{ transaction.currency_code }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Type Name</td>
+                      <td class="text-gray-800">
+                        {{ transaction.type }} /
+                        {{ transaction.type_code }}
+                      </td>
+                    </tr>
 
-            <h6 class="mb-42 mt-2">General</h6>
-            <div>
-              <div>
-                Currency: <b>{{ transaction.currency_code }}</b>
-              </div>
-              <div>
-                Amount: <b>{{ transaction.amount }}</b>
-              </div>
-              <div>
-                Type Code: <b>{{ transaction.type_code }}</b>
-              </div>
-              <div>
-                Type Name: <b>{{ transaction.type.name }}</b>
-              </div>
-              <div>
-                Status: <b>{{ transaction.status_message }}</b>
-              </div>
-              <div>
-                Created At: <b>{{ transaction.created_at }}</b>
-              </div>
-              <div>
-                Last Updated At:
-                <b>{{ transaction.updated_at }}</b>
+                    <tr>
+                      <td class="text-muted">Created At</td>
+                      <td class="text-gray-800">
+                        {{ formatDateTime(transaction.created_at) }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Last Updated At</td>
+                      <td class="text-gray-800">
+                        {{ formatDateTime(transaction.updated_at) }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Status message</td>
+                      <td class="text-gray-800">
+                        {{ transaction.status_message }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <h6 class="mb-42 mt-3">Debit Account</h6>
-            <div>
-              <div>
-                Institution ID:
-                <b>{{ transaction.debit_account_institution.id }}</b>
+            <!--  General Info -->
+
+            <!--  Debit Info -->
+            <div
+              class="py-2 border-bottom border-bottom-dashed border-gray-300"
+            >
+              <div class="ms">
+                <span
+                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
+                >
+                  Debit Account
+                </span>
               </div>
-              <div>
-                Institution Name:
-                <b>{{ transaction.debit_account_institution.name }}</b>
-              </div>
-              <div>
-                Account No: <b>{{ transaction.debit_account_no }}</b>
-              </div>
-              <div>
-                Account Name: <b>{{ transaction.debit_account_name }}</b>
-              </div>
-              <div>
-                Debit Status:
-                <b>{{ transaction.debit_status_message }}</b>
+              <div class="flex-equal table-responsive">
+                <table class="table table-flush fw-semobold gy-1">
+                  <tbody>
+                    <tr>
+                      <td class="text-muted">Institution</td>
+                      <td class="text-gray-800">
+                        {{ transaction.debit_account_institution }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Account No</td>
+                      <td class="text-gray-800">
+                        {{ transaction.debit_account_no }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Account Name</td>
+                      <td class="text-gray-800">
+                        {{ transaction.debit_account_name }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Debit Status</td>
+                      <td class="text-gray-800">
+                        {{ transaction.debit_status_message }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <h6 class="mb-42 mt-3">Credit Account</h6>
-            <div>
-              <div>
-                Institution ID:
-                <b>{{ transaction.credit_account_institution.id }}</b>
+            <!--  Debit Info -->
+
+            <!--  Credit Info -->
+            <div
+              class="py-2 border-bottom border-bottom-dashed border-gray-300"
+            >
+              <div class="ms">
+                <span
+                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
+                >
+                  Credit Account
+                </span>
               </div>
-              <div>
-                Institution Name:
-                <b>{{ transaction.credit_account_institution.name }}</b>
-              </div>
-              <div>
-                Account No: <b>{{ transaction.credit_account_no }}</b>
-              </div>
-              <div>
-                Account Name:
-                <b>{{ transaction.credit_account_name }}</b>
-              </div>
-              <div>
-                Credit Status:
-                <b>{{ transaction.credit_status_message }}</b>
+              <div class="flex-equal table-responsive">
+                <table class="table table-flush fw-semobold gy-1">
+                  <tbody>
+                    <tr>
+                      <td class="text-muted">Debit Institution</td>
+                      <td class="text-gray-800">
+                        {{ transaction.credit_account_institution }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Account No.</td>
+                      <td class="text-gray-800">
+                        {{ transaction.credit_account_no }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Account Name</td>
+                      <td class="text-gray-800">
+                        {{ transaction.credit_account_name }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Credit Status</td>
+                      <td class="text-gray-800">
+                        {{ transaction.credit_status_message }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
+            <!--  Credit Info -->
+
+            <!--  Charge Info -->
+            <!--            TODO - SPP-->
+            <!--            GET CHARGE DETAILS-->
+            <div
+              class="py-2 border-bottom border-bottom-dashed border-gray-300"
+              v-if="transaction.charge"
+            >
+              <div class="ms">
+                <span
+                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
+                >
+                  Charge
+                </span>
+              </div>
+              <div class="flex-equal table-responsive">
+                <table class="table table-flush fw-semobold gy-1">
+                  <tbody>
+                    <tr v-if="transaction.charge.amount">
+                      <td class="text-muted">Amount</td>
+                      <td class="text-gray-800">
+                        {{ formatCurrencyAmount(transaction.charge.amount) }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!--  Charge Info -->
           </div>
         </div>
         <!--end::Modal body-->
@@ -226,6 +361,7 @@ import { useRoute } from "vue-router";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "view-transaction-batch",
@@ -263,18 +399,22 @@ export default defineComponent({
       },
 
       {
+        columnLabel: "transaction_reference",
+        columnName: "transaction reference",
+        sortEnabledable: true,
+      },
+      {
         columnLabel: "debit_account_no",
-        columnName: "Dr Acc. No.",
+        columnName: "Debit Account",
         sortEnabledable: true,
       },
 
       {
         columnLabel: "credit_account_no",
-        columnName: "Cr Acc. No.",
+        columnName: "Credit Account",
         sortEnabledable: true,
       },
       { columnLabel: "status", columnName: "Status", sortEnabledable: false },
-      { columnLabel: "errors", columnName: "Errors", sortEnabledable: false },
 
       {
         columnLabel: "actions",
@@ -382,7 +522,9 @@ export default defineComponent({
         }, searchRecords.value.kDebounceTimeoutMs);
       }
     );
-
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
     return {
       //variables
       refData,
@@ -408,6 +550,12 @@ export default defineComponent({
       //state
       loadingData,
       unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

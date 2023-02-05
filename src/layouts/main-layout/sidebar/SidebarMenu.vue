@@ -206,7 +206,7 @@
             <template v-for="(menuItem, j) in item.pages" :key="j">
               <template v-if="menuItem.heading">
                 <div
-                  class="menu-item"
+                  class="menu-item p-0 m-0"
                   v-if="
                     authPermissions &&
                     authPermissions.includes(menuItem.menuPermission[0])

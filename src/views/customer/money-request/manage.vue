@@ -66,25 +66,14 @@
         @on-sort="sortingChanged"
       >
         <template v-slot:status_id="{ row: data }">
-          <span
-            v-if="data.status_id === '1'"
-            class="badge py-3 px-4 fs-7 badge-light-warning"
-            >In-Review</span
+          <span v-if="data.status_id === '1'" class="badge badge-light-warning"
+            >Pending</span
           >
-          <span
-            v-if="data.status_id === '2'"
-            class="badge badge-light-success py-3 px-4 fs-7"
-            >Approved</span
+          <span v-if="data.status_id === '2'" class="badge badge-light-success"
+            >Completed</span
           >
-          <span
-            v-if="data.status_id === '3'"
-            class="badge badge-light-danger py-3 px-4 fs-7"
-            >Rejected</span
-          >
-          <span
-            v-if="data.status_id === '4'"
-            class="badge badge-light-danger py-3 px-4 fs-7"
-            >Suspended</span
+          <span v-if="data.status_id === '3'" class="badge badge-light-danger"
+            >Cancelled</span
           >
         </template>
 
@@ -163,9 +152,7 @@
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">
-                {{ moneyRequest.action }} Money Request Details
-              </h1>
+              <h1 class="mb-3">Request Money from an SPPAY User!</h1>
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -174,7 +161,9 @@
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">SPayer Email</span>
+                <span class="required"
+                  >Email of person you are requesting money from</span
+                >
                 <i
                   class="fas fa-exclamation-circle ms-2 fs-7"
                   data-bs-toggle="tooltip"
@@ -188,6 +177,7 @@
                   v-model="moneyRequest.giver_user_email"
                   placeholder="Enter valid SPPAY User Email"
                   name="giver_user_email"
+                  type="email"
                 ></el-input>
               </el-form-item>
             </div>
@@ -240,7 +230,7 @@
                 ></el-input>
               </el-form-item>
             </div>
-            <div class="d-flex flex-column mb-4 fv-row">
+            <div class="d-flex flex-column fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Amount</span>
@@ -270,7 +260,7 @@
           <button
             type="reset"
             id="kt_modal_add_money_request_cancel"
-            class="btn btn-light me-3"
+            class="btn btn-light me-3 btn-sm"
             data-bs-dismiss="modal"
             :disabled="refData.loadingAction"
           >
@@ -281,13 +271,13 @@
           <!--begin::Button-->
           <button
             :data-kt-indicator="refData.loadingAction ? 'on' : null"
-            class="btn btn-lg btn-primary"
+            class="btn btn-sm btn-primary"
             type="submit"
             @click="processMoneyRequestAction()"
             :disabled="refData.loadingAction"
           >
             <span v-if="!refData.loadingAction" class="indicator-label">
-              Add Request
+              Submit Payment Request
               <span class="svg-icon svg-icon-3 ms-2 me-0">
                 <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
               </span>
@@ -419,6 +409,7 @@ export default defineComponent({
           required: true,
           message: "Payer email is required",
           trigger: "change",
+          type: "email",
         },
       ],
       requester_account_no: [

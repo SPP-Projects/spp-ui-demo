@@ -44,18 +44,32 @@
             <h2 class="fw-bold">
               Status:
 
-              <template v-if="invoiceDetails.status_id === '4'">
-                <span class="text-danger" v-if="invoiceDetails.paid === 0">
-                  Cancelled
-                </span></template
+              <span
+                v-if="invoiceDetails.status_id === '1'"
+                class="badge badge-light-primary"
+                >Pending</span
               >
-              <template v-else>
-                <span class="text-danger" v-if="invoiceDetails.paid === 0">
-                  Pending Payment
-                </span>
+              <span
+                v-if="invoiceDetails.status_id === '2'"
+                class="badge badge-light-success"
+                >Completed</span
+              >
+              <span
+                v-if="invoiceDetails.status_id === '3'"
+                class="badge badge-light-warning"
+                >Rejected</span
+              >
+              <span
+                v-if="invoiceDetails.status_id === '4'"
+                class="badge badge-light-danger"
+                >Cancelled</span
+              >
 
-                <span class="text-primary" v-else>Paid</span>
-              </template>
+              <span
+                v-if="invoiceDetails.status_id === '5'"
+                class="badge badge-secondary"
+                >Draft</span
+              >
             </h2>
           </div>
           <!--end::Card toolbar-->
@@ -362,7 +376,7 @@
     <!--end::Content-->
     <!--begin::Sidebar-->
     <div
-      class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-1 order-lg-2"
+      class="flex-column flex-lg-row-auto w-lg-350px w-xl-400px mb-10 order-1 order-lg-2"
     >
       <!--begin::Card-->
       <div
@@ -427,9 +441,26 @@
               <tr class="">
                 <td class="text-gray-400">Status:</td>
                 <td>
-                  <span class="badge badge-light-success">{{
-                    invoiceDetails.status_id
-                  }}</span>
+                  <span
+                    v-if="invoiceDetails.status_id === '1'"
+                    class="badge badge-light-primary"
+                    >Pending</span
+                  >
+                  <span
+                    v-if="invoiceDetails.status_id === '2'"
+                    class="badge badge-light-success"
+                    >Completed</span
+                  >
+                  <span
+                    v-if="invoiceDetails.status_id === '3'"
+                    class="badge badge-light-warning"
+                    >Rejected</span
+                  >
+                  <span
+                    v-if="invoiceDetails.status_id === '4'"
+                    class="badge badge-light-danger"
+                    >Cancelled</span
+                  >
                 </td>
               </tr>
               <!--end::Row-->
@@ -465,16 +496,43 @@
             <!--end::Details-->
           </div>
           <!--end::Section-->
-
+          <!--          v-if="invoiceDetails.status_id === '1'"-->
           <!--begin::Actions-->
-          <div class="mb-0" v-if="invoiceDetails.status_id !== '4'">
+
+          <div
+            class="mb-0"
+            v-if="
+              invoiceDetails.status_id !== '2' &&
+              invoiceDetails.status_id !== '4'
+            "
+          >
             <a
               href="#"
-              class="btn btn-primary"
+              class="btn btn-danger btn-sm m-2"
               id="kt_invoice_update_button"
               data-bs-toggle="modal"
               data-bs-target="#kt_modal_update_invoice"
-              >Cancel Invoice</a
+              @click="showInvoiceStatusModal('cancel', 'Cancel Invoice')"
+              >Cancel</a
+            >
+            <a
+              href="#"
+              class="btn btn-info btn-sm m-2"
+              id="kt_invoice_update_button"
+              data-bs-toggle="modal"
+              data-bs-target="#kt_modal_update_invoice"
+              @click="showInvoiceStatusModal('complete', 'Mark as Paid')"
+              >Mark as Paid</a
+            >
+
+            <a
+              href="#"
+              class="btn btn-success btn-sm m-2"
+              id="kt_invoice_update_button"
+              data-bs-toggle="modal"
+              data-bs-target="#kt_modal_update_invoice"
+              @click="showInvoiceStatusModal('submit', 'Send Invoice')"
+              >Send Invoice</a
             >
           </div>
           <!--end::Actions-->
@@ -485,6 +543,7 @@
     </div>
     <!--end::Sidebar-->
   </div>
+
   <!--View Transaction Modal-->
   <div
     class="modal fade"
@@ -709,21 +768,31 @@
         <!--begin::Modal header-->
 
         <!--begin::Modal body-->
-        <div
-          class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15"
-          v-if="invoiceForm"
+
+        <el-form
+          @submit.prevent="processInvoiceAction()"
+          class="form"
+          :model="invoiceForm"
+          :rules="rules"
+          ref="formUpdateInvoiceRef"
         >
-          <el-form
-            @submit.prevent="processInvoiceAction()"
-            class="form"
-            :model="invoiceForm"
-            :rules="rules"
-            ref="formUpdateInvoiceRef"
+          <div
+            class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15"
+            v-if="invoiceForm"
           >
             <!--begin::Heading-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
-              <h1 class="mb-3">Cancel Invoice</h1>
+              <h1 class="mb-3" v-if="invoiceForm.action === 'cancel'">
+                Cancel Invoice
+              </h1>
+              <h1 class="mb-3" v-if="invoiceForm.action === 'complete'">
+                Mark as Paid
+              </h1>
+              <h1 class="mb-3" v-if="invoiceForm.action === 'submit'">
+                Send Invoice
+              </h1>
+
               <!--end::Title-->
             </div>
             <!--end::Heading-->
@@ -731,51 +800,93 @@
             <!--begin::Input group-->
             <div class="d-flex flex-column mb-4 fv-row">
               <div class="modal-text">
-                <h6 class="text-center" style="color: red">
-                  Are you sure you want to cancel this money request?
+                <h6
+                  class="text-center"
+                  style="color: red"
+                  v-if="invoiceForm.action === 'cancel'"
+                >
+                  <div
+                    class="svg-icon svg-icon-5tx svg-icon-danger mb-15 text-center"
+                  >
+                    <inline-svg src="/media/icons/duotune/general/gen044.svg" />
+                  </div>
+
+                  Are you sure you want to cancel this invoice?
+                </h6>
+                <h6
+                  class="text-center"
+                  style="color: green"
+                  v-if="invoiceForm.action === 'complete'"
+                >
+                  <div
+                    class="svg-icon svg-icon-5tx svg-icon-danger mb-15 text-center"
+                  >
+                    <inline-svg src="/media/icons/duotune/general/gen044.svg" />
+                  </div>
+                  Are you sure you want mark this invoice as paid?
+                </h6>
+                <h6
+                  class="text-center"
+                  style="color: green"
+                  v-if="invoiceForm.action === 'submit'"
+                >
+                  <div
+                    class="svg-icon svg-icon-5tx svg-icon-danger mb-15 text-center"
+                  >
+                    <inline-svg src="/media/icons/duotune/general/gen044.svg" />
+                  </div>
+                  Are you sure you want to send this invoice?
                 </h6>
               </div>
             </div>
-
             <!--end::Input group-->
-          </el-form>
-        </div>
-        <div class="modal-footer flex-center" v-if="invoiceForm">
-          <!--begin::Button-->
-          <button
-            type="reset"
-            id="kt_modal_update_invoice_cancel"
-            class="btn btn-light me-3"
-            data-bs-dismiss="modal"
-            :disabled="refData.loadingAction"
-          >
-            Discard
-          </button>
-          <!--end::Button-->
+          </div>
+          <div class="modal-footer flex-center" v-if="invoiceForm">
+            <!--begin::Button-->
+            <button
+              type="reset"
+              id="kt_modal_update_invoice_cancel"
+              class="btn btn-light me-3 btn-sm"
+              data-bs-dismiss="modal"
+              :disabled="refData.loadingAction"
+            >
+              Discard
+            </button>
+            <!--end::Button-->
 
-          <!--begin::Button-->
-          <button
-            :data-kt-indicator="refData.loadingAction ? 'on' : null"
-            class="btn btn-lg btn-primary"
-            type="submit"
-            @click="processInvoiceAction()"
-            :disabled="refData.loadingAction"
-          >
-            <span v-if="!refData.loadingAction" class="indicator-label">
-              Cancel Invoice
-              <span class="svg-icon svg-icon-3 ms-2 me-0">
-                <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+            <!--begin::Button-->
+            <button
+              :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              class="btn btn-sm btn-primary"
+              type="submit"
+              @click="processInvoiceAction()"
+              :disabled="refData.loadingAction"
+            >
+              <span v-if="!refData.loadingAction" class="indicator-label">
+                <template v-if="invoiceForm.action === 'cancel'"
+                  >Cancel Invoice</template
+                >
+                <template v-if="invoiceForm.action === 'complete'"
+                  >Mark as Paid</template
+                >
+                <template v-if="invoiceForm.action === 'submit'"
+                  >Send Invoice</template
+                >
+
+                <span class="svg-icon svg-icon-3 ms-2 me-0">
+                  <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+                </span>
               </span>
-            </span>
-            <span v-if="refData.loadingAction" class="indicator-progress">
-              Please wait...
-              <span
-                class="spinner-border spinner-border-sm align-middle ms-2"
-              ></span>
-            </span>
-          </button>
-          <!--end::Button-->
-        </div>
+              <span v-if="refData.loadingAction" class="indicator-progress">
+                Please wait...
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+            </button>
+            <!--end::Button-->
+          </div>
+        </el-form>
         <!--end::Modal body-->
       </div>
       <!--end::Modal content-->
@@ -810,6 +921,9 @@ export default defineComponent({
     PermissionDenied,
     PageLoader,
   },
+  props: {
+    widgetClasses: String,
+  },
   setup() {
     //store
     const invoiceStore = useCustomerInvoiceStore();
@@ -827,11 +941,7 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
-
       loadingAction: false,
     });
 
@@ -874,7 +984,7 @@ export default defineComponent({
 
     const invoiceForm = ref({
       id: 0,
-      action: "Add",
+      action: "",
       paid: 0,
       reference: "",
     } as any);
@@ -910,18 +1020,17 @@ export default defineComponent({
 
           let formPayload = new FormData();
           formPayload.append("paid", invoiceForm.value.paid);
-
           formPayload.append("reference", invoiceDetails.value.reference);
 
           const payload = {
-            action: "cancel",
+            action: invoiceForm.value.action,
           };
+
+          console.log(payload);
 
           invoiceStore
             .updateInvoiceStatus([payload, invoiceForm.value.reference])
             .then(() => {
-              invoiceForm.value.action = "Edit";
-
               refData.value.loadingAction = false;
 
               Message({
@@ -962,7 +1071,18 @@ export default defineComponent({
                   duration: 5000,
                   zIndex: 99999,
                 });
+              } else {
+                Message({
+                  message: error.message,
+                  //TBC
+                  position: "bottom-right",
+                  type: "error",
+                  duration: 5000,
+                  zIndex: 99999,
+                });
               }
+
+              hideModal(updateInvoiceModalRef.value);
 
               // update loading status
               refData.value.loadingAction = false;
@@ -981,12 +1101,32 @@ export default defineComponent({
       invoiceForm.value.reference = route.params.reference;
 
       await getInvoiceByReference(invoiceForm.value.reference);
+
       refData.value.loadingPage = false;
     });
 
     //output formatting
     let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
       useOutputFormat();
+
+    //modal
+    const showInvoiceStatusModal = (action, data) => {
+      if (action === "cancel") {
+        invoiceForm.value.name = "";
+      } else if (action === "complete") {
+        invoiceForm.value.name = data.name;
+        invoiceForm.value.id = data.id;
+      } else if (action === "submit") {
+        invoiceForm.value.name = data.name;
+        invoiceForm.value.id = data.id;
+      } else {
+        return;
+      }
+      invoiceForm.value.data = data;
+      invoiceForm.value.action = action;
+      console.log(invoiceForm.value.action);
+    };
+
     return {
       //variables
       refData,
@@ -1015,6 +1155,9 @@ export default defineComponent({
       formatDateTime,
       formatTime,
       formatDate,
+
+      //new
+      showInvoiceStatusModal,
     };
   },
 });

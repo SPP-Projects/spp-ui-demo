@@ -2,8 +2,10 @@
   <!--begin::Layout-->
   <PermissionDenied v-if="unauthorized" />
   <PageLoader v-else-if="refData.loadingPage" />
+
   <div class="d-flex flex-column flex-xl-row" v-else>
     <!--begin::Sidebar-->
+
     <div class="flex-column flex-lg-row-auto w-100 w-xl-450px mb-10">
       <!--begin::Referral program-->
       <div class="card mb-5 mb-xl-10">
@@ -178,7 +180,21 @@
                   <tr>
                     <td class="text-gray-400 min-w-175px w-175px">Status:</td>
                     <td class="text-gray-800 min-w-200px">
-                      {{ campaignDetails.status_id }}
+                      <span
+                        v-if="campaignDetails.status_id === '1'"
+                        class="badge badge-light-warning"
+                        >In-Review</span
+                      >
+                      <span
+                        v-if="campaignDetails.status_id === '2'"
+                        class="badge badge-light-success"
+                        >Live</span
+                      >
+                      <span
+                        v-if="campaignDetails.status_id === '3'"
+                        class="badge badge-light-danger"
+                        >Closed</span
+                      >
                     </td>
                   </tr>
                   <!--end::Row-->
@@ -228,9 +244,11 @@
                       {{ campaignDetails.youtube_url }}
                     </td>
                   </tr>
-                  <tr>
+                  <tr v-if="campaignDetails.image_url">
                     <td class="text-gray-400">Image:</td>
-                    <td class="text-gray-800">{{ campaignDetails.image }}</td>
+                    <td class="text-gray-800">
+                      <el-image :src="campaignDetails.image_url"></el-image>
+                    </td>
                   </tr>
                   <!--end::Row-->
                 </table>

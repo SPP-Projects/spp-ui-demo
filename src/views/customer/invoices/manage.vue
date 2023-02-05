@@ -81,9 +81,12 @@
           <span v-if="data.status_id === '4'" class="badge badge-light-danger"
             >Cancelled</span
           >
+          <span v-if="data.status_id === '5'" class="badge badge-secondary"
+            >Draft</span
+          >
         </template>
         <template v-slot:total="{ row: data }">
-          {{ formatCurrencyAmount(data.total) }} {{ data.currency_code }}
+          {{ data.currency_code }} {{ formatCurrencyAmount(data.total) }}
         </template>
 
         <template v-slot:user_reference="{ row: data }">
@@ -92,6 +95,10 @@
 
         <template v-slot:bill_to_email="{ row: data }">
           {{ data.bill_to_email }}
+        </template>
+
+        <template v-slot:amount_paid="{ row: data }">
+          {{ data.currency_code }} {{ formatCurrencyAmount(data.paid) }}
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -163,7 +170,16 @@ export default defineComponent({
         columnName: "Email",
         sortEnabled: true,
       },
-      { columnLabel: "total", columnName: "total", sortEnabled: false },
+      {
+        columnLabel: "total",
+        columnName: "Invoice Amount",
+        sortEnabled: false,
+      },
+      {
+        columnLabel: "amount_paid",
+        columnName: "amount paid",
+        sortEnabled: false,
+      },
       {
         columnLabel: "user_reference",
         columnName: "User Ref",

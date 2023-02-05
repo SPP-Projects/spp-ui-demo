@@ -17,6 +17,7 @@ export interface iCampaign {
   donated: number;
   amount_to_goal: number;
   donations: iDonations;
+  image_url: string;
 }
 
 export interface iDonations {

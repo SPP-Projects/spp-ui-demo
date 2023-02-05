@@ -9,7 +9,6 @@
       class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0"
       v-if="transaction"
     >
-      {{ transaction }}
       <!--begin::Card-->
       <div class="card card-flush pt-3 mb-5 mb-xl-10">
         <!--begin::Card header-->
@@ -43,10 +42,8 @@
                 <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400 min-w-175px w-175px">
-                      Request Reference:
-                    </td>
-                    <td class="text-gray-800 min-w-200px">
+                    <td class="text-gray-400">Request Reference:</td>
+                    <td class="text-gray-800">
                       {{ transaction.reference }}
                     </td>
                   </tr>
@@ -54,7 +51,7 @@
 
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">external_reference:</td>
+                    <td class="text-gray-400">External Reference:</td>
                     <td class="text-gray-800">
                       {{ transaction.external_reference }}
                     </td>
@@ -62,7 +59,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">type_code:</td>
+                    <td class="text-gray-400">Transaction Type:</td>
                     <td class="text-gray-800">
                       {{ transaction.type_code }}
                     </td>
@@ -86,7 +83,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="text-gray-400">status_message:</td>
+                    <td class="text-gray-400">Status:</td>
                     <td class="text-gray-800">
                       {{ transaction.status_message }}
                     </td>
@@ -142,9 +139,7 @@
                 <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400 min-w-175px w-175px">
-                      debit_account_name:
-                    </td>
+                    <td class="text-gray-400">Debit Account Name:</td>
                     <td class="text-gray-800 min-w-200px">
                       {{ transaction.debit_account_name }}
                     </td>
@@ -152,7 +147,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">debit_account_no:</td>
+                    <td class="text-gray-400">Debit Account No:</td>
                     <td class="text-gray-800">
                       {{ transaction.debit_account_no }}
                     </td>
@@ -160,7 +155,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">debit_account_institution_id:</td>
+                    <td class="text-gray-400">Debit Account Institution:</td>
                     <td class="text-gray-800">
                       {{ transaction.debit_account_institution_id }}
                     </td>
@@ -208,7 +203,7 @@
                   <!--begin::Row-->
                   <tr>
                     <td class="text-gray-400 min-w-175px w-175px">
-                      credit_account_name:
+                      Credit Account Name:
                     </td>
                     <td class="text-gray-800 min-w-200px">
                       {{ transaction.credit_account_name }}
@@ -217,7 +212,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">credit_account_no:</td>
+                    <td class="text-gray-400">Credit Account No:</td>
                     <td class="text-gray-800">
                       {{ transaction.credit_account_no }}
                     </td>
@@ -225,9 +220,7 @@
                   <!--end::Row-->
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400">
-                      credit_account_institution_id:
-                    </td>
+                    <td class="text-gray-400">Credit Institution:</td>
                     <td class="text-gray-800">
                       {{ transaction.credit_account_institution_id }}
                     </td>
@@ -260,6 +253,134 @@
           <!--end::Section-->
 
           <div class="separator separator-dashed mb-10"></div>
+
+          <!--begin::Charge-->
+          <div class="mb-5" v-if="transaction.charge">
+            <!--begin::Title-->
+            <h5 class="mb-1">Charge:</h5>
+            <!--end::Title-->
+            <!--begin::Details-->
+            <div class="d-flex flex-wrap py-5">
+              <!--begin::Row-->
+              <div class="flex-equal me-5">
+                <!--begin::Details-->
+                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Transaction Type:</td>
+                    <td class="text-gray-800">
+                      {{ transaction.charge.type_code }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Amount:</td>
+                    <td class="text-gray-800">
+                      {{ transaction.charge.currency }}
+                      {{ transaction.charge.amount }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Status:</td>
+                    <td class="text-gray-800">
+                      {{ transaction.charge.status_message }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+                </table>
+                <!--end::Details-->
+              </div>
+              <!--end::Row-->
+              <!--begin::Row-->
+              <div class="flex-equal">
+                <!--begin::Details-->
+                <!--                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">-->
+                <!--                  &lt;!&ndash;begin::Row&ndash;&gt;-->
+                <!--                  <tr>-->
+                <!--                    <td class="text-gray-400 min-w-175px w-175px">.</td>-->
+                <!--                    <td class="text-gray-800 min-w-200px">.</td>-->
+                <!--                  </tr>-->
+                <!--                  &lt;!&ndash;end::Row&ndash;&gt;-->
+                <!--                  &lt;!&ndash;begin::Row&ndash;&gt;-->
+
+                <!--                  &lt;!&ndash;end::Row&ndash;&gt;-->
+                <!--                </table>-->
+                <!--end::Details-->
+              </div>
+              <!--end::Row-->
+            </div>
+            <!--end::Row-->
+          </div>
+          <!--end::Charge-->
+
+          <div class="separator separator-dashed mb-10"></div>
+
+          <!--begin::Tax-->
+          <div class="mb-5" v-if="transaction.tax">
+            <!--begin::Title-->
+            <h5 class="mb-1">Tax:</h5>
+            <!--end::Title-->
+            <!--begin::Details-->
+            <div class="d-flex flex-wrap py-5">
+              <!--begin::Row-->
+              <div class="flex-equal me-5">
+                <!--begin::Details-->
+                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Transaction Type:</td>
+                    <td class="text-gray-800">
+                      {{ transaction.tax.type_code }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Amount:</td>
+                    <td class="text-gray-800">
+                      {{ transaction.tax.currency }}
+                      {{ transaction.tax.amount }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Status:</td>
+                    <td class="text-gray-800">
+                      {{ transaction.tax.status_message }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+                </table>
+                <!--end::Details-->
+              </div>
+              <!--end::Row-->
+              <!--begin::Row-->
+              <div class="flex-equal">
+                <!--begin::Details-->
+                <!--                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">-->
+                <!--                  &lt;!&ndash;begin::Row&ndash;&gt;-->
+                <!--                  <tr>-->
+                <!--                    <td class="text-gray-400 min-w-175px w-175px">.</td>-->
+                <!--                    <td class="text-gray-800 min-w-200px">.</td>-->
+                <!--                  </tr>-->
+                <!--                  &lt;!&ndash;end::Row&ndash;&gt;-->
+                <!--                  &lt;!&ndash;begin::Row&ndash;&gt;-->
+
+                <!--                  &lt;!&ndash;end::Row&ndash;&gt;-->
+                <!--                </table>-->
+                <!--end::Details-->
+              </div>
+              <!--end::Row-->
+            </div>
+            <!--end::Row-->
+          </div>
+          <!--end::Tax-->
+
+          <div class="separator separator-dashed mb-10"></div>
         </div>
         <!--end::Card body-->
       </div>
@@ -268,7 +389,7 @@
     <!--end::Content-->
     <!--begin::Sidebar-->
     <div
-      class="flex-column flex-lg-row-auto w-lg-350px w-xl-300px mb-10 order-1 order-lg-2"
+      class="flex-column flex-lg-row-auto w-lg-350px w-xl-400px mb-10 order-1 order-lg-2"
     >
       <!--begin::Card-->
       <div
@@ -312,15 +433,16 @@
               <tr class="">
                 <td class="text-gray-400">Created At:</td>
                 <td class="text-gray-800" v-if="transaction.created_at">
-                  {{ formatDate(transaction.created_at) }} <br />
-                  {{ formatTime(transaction.created_at) }}
+                  {{ formatDateTime(transaction.created_at) }}
                 </td>
               </tr>
               <tr class="">
-                <td class="text-gray-400">Updated Atfffffffffffffffff:</td>
-                <td class="text-gray-800" v-if="transaction.updated_at">
-                  {{ formatDate(transaction.updated_at) }} <br />
-                  {{ formatTime(transaction.updated_at) }}
+                <td class="text-gray-400">Updated At:</td>
+                <td
+                  class="text-gray-800 text-nowrap"
+                  v-if="transaction.updated_at"
+                >
+                  {{ formatDateTime(transaction.updated_at) }}
                 </td>
               </tr>
               <!--end::Row-->

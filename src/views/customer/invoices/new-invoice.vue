@@ -10,8 +10,9 @@
         <!--begin::Card body-->
         <div class="card-body p-12">
           <!--begin::Form-->
+
+          <!--          @submit.prevent="processInvoice()"-->
           <el-form
-            @submit.prevent="processInvoice()"
             id="kt_invoice_form"
             :rules="formRules"
             :model="formData"
@@ -426,7 +427,7 @@
     </div>
     <!--end::Content-->
     <!--begin::Sidebar-->
-    <div class="flex-lg-auto min-w-lg-300px">
+    <div class="flex-lg-auto min-w-lg-400px">
       <!--begin::Card-->
       <div
         class="card"
@@ -511,13 +512,34 @@
           <div class="mb-0">
             <button
               :data-kt-indicator="refData.loadingAction ? 'on' : null"
-              class="btn btn-lg btn-primary"
+              class="btn btn-sm btn-secondary m-3"
               type="submit"
-              @click="processInvoice()"
+              @click="processInvoice({ is_draft: true })"
               :disabled="refData.loadingAction"
             >
               <span v-if="!refData.loadingAction" class="indicator-label">
-                Add Invoice
+                Save Draft
+                <span class="svg-icon svg-icon-3 ms-2 me-0">
+                  <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+                </span>
+              </span>
+              <span v-if="refData.loadingAction" class="indicator-progress">
+                Please wait...
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+            </button>
+
+            <button
+              :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              class="btn btn-sm btn-success m-3"
+              type="submit"
+              @click="processInvoice({ is_draft: false })"
+              :disabled="refData.loadingAction"
+            >
+              <span v-if="!refData.loadingAction" class="indicator-label">
+                Send Invoice
                 <span class="svg-icon svg-icon-3 ms-2 me-0">
                   <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
                 </span>
@@ -579,6 +601,7 @@ export default defineComponent({
 
     const formData = ref({
       //notes: "", //TODO - add notes
+      is_draft: true,
       user_reference:
         moment(new Date()).format("DDMMYY") +
         "-" +
@@ -594,8 +617,8 @@ export default defineComponent({
       tax_amount: 0,
       discount: 0,
       shipping: 0,
-      sub_total_with_discount: 0,
 
+      sub_total_with_discount: 0,
       items: [] as invoiceItems[],
     });
 
@@ -623,6 +646,7 @@ export default defineComponent({
           required: true,
           message: "Recipient email is required",
           trigger: "change",
+          type: "email",
         },
       ],
       bill_to_name: [
@@ -654,13 +678,16 @@ export default defineComponent({
         },
       ],
     });
-    const processInvoice = () => {
+    const processInvoice = (action) => {
       if (!formAddMoneyRequestRef.value) {
         return;
       }
       formAddMoneyRequestRef.value.validate((valid) => {
         if (valid) {
           refData.value.loadingAction = true;
+
+          //check if draft
+          formData.value.is_draft = action.is_draft === true;
 
           invoiceStore
             .addInvoice(formData.value)
@@ -755,9 +782,11 @@ export default defineComponent({
     onMounted(() => {
       loadingPage.value = false;
     });
+
     //output formatting
     let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
       useOutputFormat();
+
     return {
       loadingPage,
 

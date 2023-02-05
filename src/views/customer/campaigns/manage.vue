@@ -66,25 +66,14 @@
         @on-sort="sortingChanged"
       >
         <template v-slot:status_id="{ row: data }">
-          <span
-            v-if="data.status_id === '1'"
-            class="badge py-3 px-4 fs-7 badge-light-warning"
+          <span v-if="data.status_id === '1'" class="badge badge-light-warning"
             >In-Review</span
           >
-          <span
-            v-if="data.status_id === '2'"
-            class="badge badge-light-success py-3 px-4 fs-7"
-            >Approved</span
+          <span v-if="data.status_id === '2'" class="badge badge-light-success"
+            >Live</span
           >
-          <span
-            v-if="data.status_id === '3'"
-            class="badge badge-light-danger py-3 px-4 fs-7"
-            >Rejected</span
-          >
-          <span
-            v-if="data.status_id === '4'"
-            class="badge badge-light-danger py-3 px-4 fs-7"
-            >Suspended</span
+          <span v-if="data.status_id === '3'" class="badge badge-light-danger"
+            >Closed</span
           >
         </template>
 
@@ -339,6 +328,12 @@ export default defineComponent({
     //variables
     const tableHeader = ref([
       {
+        columnLabel: "reference",
+        columnName: "reference",
+        sortEnabled: true,
+      },
+
+      {
         columnLabel: "created_at",
         columnName: "created dated",
         sortEnabled: true,
@@ -346,12 +341,6 @@ export default defineComponent({
       {
         columnLabel: "status_id",
         columnName: "status",
-        sortEnabled: true,
-      },
-
-      {
-        columnLabel: "reference",
-        columnName: "reference",
         sortEnabled: true,
       },
 

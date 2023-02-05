@@ -140,19 +140,17 @@
           >
         </template>
         <template v-slot:debit_account_institution_name="{ row: data }">
-          {{ data.debit_account_institution.name }}
-        </template>
-
-        <template v-slot:debit_account_no="{ row: data }">
-          {{ data.debit_account_no }}
+          {{ data.debit_account_institution.name }} <br />
+          <span class="text-muted fs-6 fw-normal text-muted small">
+            {{ data.debit_account_no }}
+          </span>
         </template>
 
         <template v-slot:credit_account_institution_name="{ row: data }">
-          {{ data.credit_account_institution.name }}
-        </template>
-
-        <template v-slot:credit_account_no="{ row: data }">
-          {{ data.credit_account_no }}
+          {{ data.credit_account_institution.name }} <br />
+          <span class="text-muted fs-6 fw-normal text-muted small">
+            {{ data.credit_account_no }}
+          </span>
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -399,7 +397,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import sppay from "@/helpers/sppay";
+
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
 import { useCustomerTransactionStore } from "@/stores/customer/transaction";
@@ -427,15 +425,16 @@ export default defineComponent({
     const { accounts } = storeToRefs(accountStore);
 
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
-
       loadingAction: false,
     });
 
     const tableHeader = ref([
+      {
+        columnLabel: "reference",
+        columnName: "Reference",
+        sortEnabled: false,
+      },
       {
         columnLabel: "created_at",
         columnName: "Created Date",
@@ -443,31 +442,17 @@ export default defineComponent({
       },
       { columnLabel: "status_id", columnName: "Status", sortEnabled: false },
 
-      {
-        columnLabel: "reference",
-        columnName: "Reference",
-        sortEnabled: false,
-      },
       { columnLabel: "type_code", columnName: "Type", sortEnabled: false },
       { columnLabel: "amount", columnName: "Amount", sortEnabled: true },
       {
         columnLabel: "debit_account_institution_name",
-        columnName: "Debit Inst.",
+        columnName: "Debit Account",
         sortEnabled: false,
       },
-      {
-        columnLabel: "debit_account_no",
-        columnName: "Debit Acc.",
-        sortEnabled: false,
-      },
+
       {
         columnLabel: "credit_account_institution_name",
-        columnName: "Credit Inst.",
-        sortEnabled: false,
-      },
-      {
-        columnLabel: "credit_account_no",
-        columnName: "Credit Acc.",
+        columnName: "Credit Account",
         sortEnabled: false,
       },
 

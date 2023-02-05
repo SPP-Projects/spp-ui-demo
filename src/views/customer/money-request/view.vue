@@ -228,7 +228,7 @@
                 <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
                   <!--begin::Row-->
                   <tr>
-                    <td class="text-gray-400 min-w-175px w-175px">Status:</td>
+                    <td class="text-gray-400">Status:</td>
                     <td class="text-gray-800 min-w-200px">
                       {{ moneyRequestDetails.transaction.status_message }}
                     </td>
@@ -380,7 +380,7 @@
     <!--end::Content-->
     <!--begin::Sidebar-->
     <div
-      class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-1 order-lg-2"
+      class="flex-column flex-lg-row-auto w-lg-250px w-xl-450px mb-10 order-1 order-lg-2"
     >
       <!--begin::Card-->
       <div
@@ -492,7 +492,7 @@
                         :data-kt-indicator="
                           refData.loadingAccounts ? 'on' : null
                         "
-                        class="btn btn-lg btn-danger btn-sm"
+                        class="btn btn-lg btn-success btn-sm m-2"
                         @click="payMoneyRequestAction()"
                         :disabled="refData.loadingAction"
                       >
@@ -516,6 +516,16 @@
                             class="spinner-border spinner-border-sm align-middle ms-2"
                           ></span>
                         </span>
+                      </button>
+
+                      <button
+                        class="btn btn-danger btn-sm m-2"
+                        @click="showEditMoneyRequestModal()"
+                        data-bs-toggle="modal"
+                        id="edit-btn"
+                        data-bs-target="#kt_modal_add_customer"
+                      >
+                        Cancel Request
                       </button>
                     </div>
                   </div>

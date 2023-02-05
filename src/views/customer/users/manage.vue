@@ -108,10 +108,6 @@
           >
         </template>
 
-        <template v-slot:phone="{ row: data }">
-          {{ data.phone }}
-        </template>
-
         <template v-slot:last_login_at="{ row: data }">
           {{ formatDateTime(data.last_login_at) }}
         </template>
@@ -232,26 +228,7 @@
                   ></el-input>
                 </el-form-item>
               </div>
-              <div class="d-flex flex-column mb-4 fv-row">
-                <!--begin::Label-->
-                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                  <span class="required">Phone</span>
-                  <i
-                    class="fas fa-exclamation-circle ms-2 fs-7"
-                    data-bs-toggle="tooltip"
-                    title="Specify a target name for future usage and reference"
-                  ></i>
-                </label>
-                <!--end::Label-->
 
-                <el-form-item prop="phone">
-                  <el-input
-                    v-model="user.phone"
-                    placeholder="Enter Phone"
-                    name="phone"
-                  ></el-input>
-                </el-form-item>
-              </div>
               <!--end::Input group-->
 
               <!--begin::Input group-->
@@ -402,7 +379,7 @@ export default defineComponent({
     const tableHeader = ref([
       { columnLabel: "name", columnName: "Name", sortEnabled: true },
       { columnLabel: "status_id", columnName: "Status", sortEnabled: false },
-      { columnLabel: "phone", columnName: "Phone", sortEnabled: true },
+
       {
         columnLabel: "last_login_at",
         columnName: "Last Logged Time",
@@ -431,7 +408,7 @@ export default defineComponent({
       action: "Add",
       name: "",
       email: "",
-      phone: "",
+
       enabled_permissions: [],
     });
     // const user = ref<iUser>();
@@ -676,7 +653,6 @@ export default defineComponent({
         action: "Add",
         name: "",
         email: "",
-        phone: "",
       };
     };
 

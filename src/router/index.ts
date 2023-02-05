@@ -253,7 +253,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "profile-navbar",
         component: () => import("@/views/customer/profile/header.vue"),
         meta: {
-          breadcrumbs: ["Crafted", "Account"],
+          breadcrumbs: ["Account", "Profile"],
         },
         children: [
           {
@@ -277,28 +277,39 @@ const routes: Array<RouteRecordRaw> = [
       },
 
       //onboarding
-      // {
-      //   path: "/spchart",
-      //   name: "spchart-1",
-      //   component: function () {
-      //     return import("@/views/_dev/spchart/manage.vue");
-      //   },
-      //   meta: {
-      //     pageTitle: "Manage Your Details",
-      //     breadcrumbs: ["Onboarding", "Manage Your Details"],
-      //   },
-      // },
-      // {
-      //   path: "/spchart2",
-      //   name: "chart2",
-      //   component: function () {
-      //     return import("@/views/_dev/spchart/chart-two.vue");
-      //   },
-      //   meta: {
-      //     pageTitle: "Manage Your Details",
-      //     breadcrumbs: ["Onboarding", "Manage Your Details"],
-      //   },
-      // },
+      {
+        path: "/spchart",
+        name: "spchart-1",
+        component: function () {
+          return import("@/views/_dev/spchart/manage.vue");
+        },
+        meta: {
+          pageTitle: "Manage Your Details",
+          breadcrumbs: ["Onboarding", "Manage Your Details"],
+        },
+      },
+      {
+        path: "/spchart2",
+        name: "chart2",
+        component: function () {
+          return import("@/views/_dev/spchart/chart-two.vue");
+        },
+        meta: {
+          pageTitle: "Manage Your Details",
+          breadcrumbs: ["Onboarding", "Manage Your Details"],
+        },
+      },
+      {
+        path: "/spchart3",
+        name: "chart3",
+        component: function () {
+          return import("@/views/_dev/spchart/chart-three.vue");
+        },
+        meta: {
+          pageTitle: "Manage Your Details",
+          breadcrumbs: ["Onboarding", "Manage Your Details"],
+        },
+      },
     ],
   },
 
@@ -465,7 +476,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import("@/views/admin/customers/customer/customer-navbar.vue"),
         meta: {
-          breadcrumbs: ["Crafted", "Account"],
+          breadcrumbs: ["Admin", "Customers"],
         },
         children: [
           {
@@ -922,6 +933,78 @@ const routes: Array<RouteRecordRaw> = [
       //     breadcrumbs: ["Manage Todo"],
       //   },
       // },
+      //refresh
+      {
+        path: "/refresh",
+        name: "sp-manage-fre",
+        component: function () {
+          return import("@/views/_dev/refresh/index.vue");
+        },
+        meta: {
+          pageTitle: "Manage Todo",
+          breadcrumbs: ["Manage Todo"],
+        },
+      },
+
+      //2faa
+      {
+        path: "/2fa",
+        name: "sp-manage-2fa",
+        component: function () {
+          return import("@/views/_dev/2fa/index.vue");
+        },
+        meta: {
+          pageTitle: "Manage Todo",
+          breadcrumbs: ["Manage Todo"],
+        },
+      },
+      //test guest pay
+      {
+        path: "/test-pay",
+        name: "sp-manage-test-pay",
+        component: function () {
+          return import("@/views/_dev/pay/TestPay.vue");
+        },
+        meta: {
+          pageTitle: "Manage Todo",
+          breadcrumbs: ["Manage Todo"],
+        },
+      },
+
+      //test guest pay
+      {
+        path: "/counter1",
+        name: "sp-manage-counter1",
+        component: function () {
+          return import("@/views/_dev/counter/CounterOne.vue");
+        },
+        meta: {
+          pageTitle: "Manage Todo",
+          breadcrumbs: ["Manage Todo"],
+        },
+      },
+      {
+        path: "/counter2",
+        name: "sp-manage-counter2",
+        component: function () {
+          return import("@/views/_dev/counter/CounterTwo.vue");
+        },
+        meta: {
+          pageTitle: "Manage Todo",
+          breadcrumbs: ["Manage Todo"],
+        },
+      },
+      {
+        path: "/temp",
+        name: "sp-manage-temp",
+        component: function () {
+          return import("@/views/_dev/final-chart/TempPage.vue");
+        },
+        meta: {
+          pageTitle: "Manage Todo",
+          breadcrumbs: ["Manage Todo"],
+        },
+      },
     ],
   },
 

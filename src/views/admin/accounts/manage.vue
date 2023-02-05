@@ -472,7 +472,7 @@
                     placeholder="Select"
                   >
                     <el-option
-                      v-for="item in institutions"
+                      v-for="item in sppData.institutions"
                       :key="item.id"
                       :label="item.name"
                       :value="item.id"
@@ -564,6 +564,7 @@ import { useAdminCustomerStore } from "@/stores/admin/customer";
 import { useAdminInstitutionStore } from "@/stores/admin/institution";
 import { hideModal } from "@/core/helpers/dom";
 import sppay from "@/helpers/sppay";
+import sppData from "@/helpers/data";
 import { storeToRefs } from "pinia";
 
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
@@ -666,7 +667,7 @@ export default defineComponent({
     const table_options = ref({
       account: "" as any,
       current_page: 1,
-      page_size: 10,
+      page_size: 15,
       search_text: "",
       sort: { column: "", direction: "" },
     });
@@ -939,6 +940,9 @@ export default defineComponent({
       formatDateTime,
       formatTime,
       formatDate,
+
+      //
+      sppData,
     };
   },
 });

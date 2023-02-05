@@ -53,9 +53,20 @@
 
         <!--begin::Col-->
         <div class="col-lg-8">
-          <span class="fw-bold fs-6 text-dark">
-            {{ authenticatedUserDetails.status_id }}
-            <span class="badge badge-success">Verified</span></span
+          <span
+            v-if="authenticatedUserDetails.status_id === 1"
+            class="badge badge-light-info"
+            >Inactive</span
+          >
+          <span
+            v-if="authenticatedUserDetails.status_id === 2"
+            class="badge badge-success"
+            >Active</span
+          >
+          <span
+            v-if="authenticatedUserDetails.status_id === 3"
+            class="badge badge-danger"
+            >Deleted</span
           >
         </div>
         <!--end::Col-->
@@ -65,13 +76,13 @@
       <!--begin::Input group-->
       <div class="row mb-7">
         <!--begin::Label-->
-        <label class="col-lg-4 fw-semobold text-muted">last_login_at</label>
+        <label class="col-lg-4 fw-semobold text-muted">Last Login At</label>
         <!--begin::Label-->
 
         <!--begin::Label-->
         <div class="col-lg-8">
           <span class="fw-semobold fs-6">{{
-            authenticatedUserDetails.last_login_at
+            formatDateTime(authenticatedUserDetails.last_login_at)
           }}</span>
         </div>
         <!--begin::Label-->
@@ -79,7 +90,7 @@
 
       <div class="row mb-7">
         <!--begin::Label-->
-        <label class="col-lg-4 fw-semobold text-muted">last_login_ip </label>
+        <label class="col-lg-4 fw-semobold text-muted">Last Login IP </label>
         <!--begin::Label-->
 
         <!--begin::Label-->
@@ -93,7 +104,7 @@
       <!--end::Input group-->
 
       <hr />
-      <h3>Customer Details</h3>
+      <h3 class="mb-7">Customer Details</h3>
       <div class="row mb-7" v-if="authenticatedUserDetails.customer">
         <!--begin::Label-->
         <label class="col-lg-4 fw-semobold text-muted">Customer Name</label>
@@ -109,7 +120,7 @@
       </div>
       <div class="row mb-7" v-if="authenticatedUserDetails.customer">
         <!--begin::Label-->
-        <label class="col-lg-4 fw-semobold text-muted">phone</label>
+        <label class="col-lg-4 fw-semobold text-muted">Phone Number</label>
         <!--begin::Label-->
 
         <!--begin::Label-->
@@ -136,33 +147,33 @@
 
       <div class="row mb-7" v-if="authenticatedUserDetails.customer">
         <!--begin::Label-->
-        <label class="col-lg-4 fw-semobold text-muted">Group ID</label>
+        <label class="col-lg-4 fw-semobold text-muted">Customer Group</label>
         <!--begin::Label-->
 
         <!--begin::Label-->
         <div class="col-lg-8">
           <span class="fw-semobold fs-6">{{
-            authenticatedUserDetails.customer.group_id
+            getCustomerGroup(authenticatedUserDetails.customer.group_id).name
           }}</span>
         </div>
         <!--begin::Label-->
       </div>
       <div class="row mb-7" v-if="authenticatedUserDetails.customer">
         <!--begin::Label-->
-        <label class="col-lg-4 fw-semobold text-muted">type_id </label>
+        <label class="col-lg-4 fw-semobold text-muted">Customer Type </label>
         <!--begin::Label-->
 
         <!--begin::Label-->
         <div class="col-lg-8">
           <span class="fw-semobold fs-6">{{
-            authenticatedUserDetails.customer.type_id
+            getCustomerType(authenticatedUserDetails.customer.type_id).name
           }}</span>
         </div>
         <!--begin::Label-->
       </div>
       <div class="row mb-7" v-if="authenticatedUserDetails.customer">
         <!--begin::Label-->
-        <label class="col-lg-4 fw-semobold text-muted">test_mode </label>
+        <label class="col-lg-4 fw-semobold text-muted">Test Mode? </label>
         <!--begin::Label-->
 
         <!--begin::Label-->
@@ -181,7 +192,7 @@
         <!--begin::Label-->
         <div class="col-lg-8">
           <span class="fw-semobold fs-6">{{
-            authenticatedUserDetails.customer.created_at
+            formatDateTime(authenticatedUserDetails.customer.created_at)
           }}</span>
         </div>
         <!--begin::Label-->
@@ -189,13 +200,13 @@
 
       <div class="row mb-7" v-if="authenticatedUserDetails.customer">
         <!--begin::Label-->
-        <label class="col-lg-4 fw-semobold text-muted">updated_at</label>
+        <label class="col-lg-4 fw-semobold text-muted">Last Updated</label>
         <!--begin::Label-->
 
         <!--begin::Label-->
         <div class="col-lg-8">
           <span class="fw-semobold fs-6">{{
-            authenticatedUserDetails.customer.updated_at
+            formatDateTime(authenticatedUserDetails.customer.updated_at)
           }}</span>
         </div>
         <!--begin::Label-->
@@ -210,6 +221,8 @@
 import { defineComponent, ref } from "vue";
 import { useCustomerUserStore } from "@/stores/customer/user";
 import { storeToRefs } from "pinia";
+import sppData from "@/helpers/data";
+import useOutputFormat from "@/composables/useOutputFormat";
 
 export default defineComponent({
   name: "account-overview",
@@ -230,9 +243,26 @@ export default defineComponent({
       loadingAction: false,
     });
 
+    const getCustomerType = (id: number) => {
+      return sppData.customerTypes.find((item) => item.id === id);
+    };
+    const getCustomerGroup = (id: number) => {
+      return sppData.customerGroups.find((item) => item.id === id);
+    };
+
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
+
     return {
       refData,
       authenticatedUserDetails,
+      getCustomerGroup,
+      getCustomerType,
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });

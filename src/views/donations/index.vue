@@ -182,6 +182,11 @@
                   <!--end::Row-->
 
                   <!--begin::Text-->
+                  <el-image
+                    :src="campaignData.image_url"
+                    class="mb-15 w-auto"
+                  />
+
                   <p class="fw-semibold fs-4 text-gray-600 mb-2">
                     {{ campaignData.description }}
                   </p>
@@ -197,8 +202,9 @@
               <!--begin::Careers about-->
               <div class="card">
                 <!--begin::Body-->
-                <div class="card-body">
+                <div class="card-bodys">
                   <!--begin::Progress-->
+
                   <div class="d-flex flex-column mb-10">
                     <div
                       class="d-flex justify-content-between w-100 fs-4 fw-bold mb-3"
@@ -568,7 +574,6 @@ export default defineComponent({
     const request = ref({
       collection_type: "campaign" as any,
       collection_reference: "" as any,
-
       amount: 0,
       payee: {
         email: "",

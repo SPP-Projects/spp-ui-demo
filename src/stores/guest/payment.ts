@@ -4,6 +4,7 @@ import { getError } from "@/helpers/errors";
 
 import type { iInvoice, iInvoiceItem } from "@/models/invoice";
 import type { iCampaign } from "@/models/campaign";
+import { useStorage } from "@vueuse/core";
 
 export const useGuestPaymentStore = defineStore("guestPaymentStore", {
   state: () => ({
@@ -11,6 +12,18 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
     error: null,
     paymentInfo: {},
     validatedPayment: null,
+
+    //store in local storage
+    paymentValidationResponse: useStorage(
+      "paymentValidationResponse",
+      []
+    ) as any,
+    paymentInvoiceData: useStorage("paymentInvoiceData", {} as iInvoice),
+    paymentInvoiceItems: useStorage(
+      "paymentInvoiceItems",
+      [] as iInvoiceItem[]
+    ),
+
     submittedPayment: [],
     submittedOtpResponse: [],
 
@@ -19,7 +32,7 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
     invoiceData: {} as iInvoice,
     invoiceItems: [] as iInvoiceItem[],
 
-    //campaigin
+    //campaign
     campaignData: {} as iCampaign,
 
     //shared
@@ -37,7 +50,6 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
             resolve(response);
           })
           .catch((error) => {
-            console.log("errrorrrrrrrrrrrrrrrrrrr");
             this.loadingData = false;
             this.error = getError(error);
             reject(error);
@@ -75,11 +87,12 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
 
         PaymentService.validatePayment(payload)
           .then((response) => {
+            //TODO - remove redundant validatedPayment
             this.validatedPayment = response.data;
+            this.paymentValidationResponse = response.data;
             resolve(response);
           })
           .catch((error) => {
-            console.log("errrrrrrrrrrrrrrrrorrr");
             this.loadingData = false;
             this.error = getError(error);
             reject(error);
@@ -92,6 +105,8 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
     },
 
     getInvoice(id) {
+      this.paymentInvoiceData = {} as iInvoice;
+      this.paymentInvoiceItems = [] as iInvoiceItem[];
       return new Promise((resolve, reject) => {
         this.loadingPaymentData = true;
         PaymentService.getInvoiceByReference(id)
@@ -99,6 +114,8 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
             if (data.status !== "Error") {
               this.invoiceData = data.invoice;
               this.invoiceItems = data.invoice.items;
+              this.paymentInvoiceData = data.invoice;
+              this.paymentInvoiceItems = data.invoice.items;
               console.log(data.invoice);
             }
 
@@ -135,6 +152,18 @@ export const useGuestPaymentStore = defineStore("guestPaymentStore", {
             this.loadingPaymentData = false;
           });
       });
+    },
+  },
+
+  getters: {
+    getPaymentValidationResponse(state) {
+      return state.paymentValidationResponse;
+    },
+    getPaymentInvoiceData(state) {
+      return state.paymentInvoiceData;
+    },
+    getPaymentInvoiceItems(state) {
+      return state.paymentInvoiceItems;
     },
   },
 });

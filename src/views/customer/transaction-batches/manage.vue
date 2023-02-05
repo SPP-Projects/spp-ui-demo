@@ -81,12 +81,10 @@
           <span v-if="data.status_id === '4'" class="badge badge-warning"
             >Submitting</span
           >
-          <span v-if="data.status_id === '5'" class="badge badge-success"
+          <span v-if="data.status_id === '5'" class="badge badge-info"
             >Submitted</span
           >
-          <span v-if="data.status_id === '6'" class="badge badge-info"
-            >Paused</span
-          >
+
           <span v-if="data.status_id === '7'" class="badge badge-danger"
             >Cancelled</span
           >
@@ -102,7 +100,9 @@
           {{ data.file_name }}
         </template>
         <template v-slot:transaction_count="{ row: data }">
-          {{ data.transaction_count }}
+          <span class="text-danger fw-bold fs-2">
+            {{ data.transaction_count }}</span
+          >
         </template>
 
         <template v-slot:actions="{ row: data }">
@@ -212,12 +212,11 @@
               Discard
             </button>
             <!--end::Button-->
-
+            <!--            @click="submitTransactionBatch()"-->
             <!--begin::Button-->
             <button
               class="btn btn-primary"
               type="submit"
-              @click="submitTransactionBatch()"
               :disabled="loading_batch.submit"
             >
               <span v-if="loading_batch.process"
@@ -336,7 +335,7 @@ export default defineComponent({
     const tableHeader = ref([
       {
         columnLabel: "batch_reference",
-        columnName: "Reference",
+        columnName: "Batch Reference",
         sortEnabled: false,
       },
       {
