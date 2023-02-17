@@ -99,7 +99,7 @@ const events: Array<EventInput> = [
   },
   {
     title: "Click for Google",
-    url: "http://google.com/",
+    url: "https://google.com/",
     start: YM + "-28",
     className: "fc-event-solid-info fc-event-light",
     description: "Lorem ipsum dolor sit amet, labore",

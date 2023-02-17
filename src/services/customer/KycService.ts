@@ -19,6 +19,10 @@ class KycService {
       },
     });
   }
+
+  updatePassword(payload) {
+    return ApiService.post(`/v1/customer/security/update-password`, payload);
+  }
 }
 
 export default new KycService();

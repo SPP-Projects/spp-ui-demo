@@ -3,10 +3,12 @@ import ApiService from "@/core/services/ApiService";
 class TransactionService {
   getAllTransactions(options) {
     const url_account_section = options.account ? `/${options.account}` : ``;
+
+    console.log(options.date);
     return ApiService.get(
       `/v1/transactions` +
         url_account_section +
-        `?page=${options.current_page}&page_size=${options.page_size}&search_text=${options.search_text}&sort_column=${options.sort.column}&sort_direction=${options.sort.direction}`
+        `?page=${options.current_page}&page_size=${options.page_size}&amount_or_reference=${options.amount_or_reference}&sort_column=${options.sort.column}&sort_direction=${options.sort.direction}&type_code=${options.type_code}&status_id=${options.status_id}&date=${options.date}&account_no=${options.account_no}`
     );
   }
 

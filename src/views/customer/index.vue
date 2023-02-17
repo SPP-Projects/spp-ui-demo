@@ -258,8 +258,13 @@ export default defineComponent({
     const table_options = ref({
       account: "",
       current_page: 1,
-      page_size: 10,
+      page_size: 20,
       search_text: "",
+      amount_or_reference: "",
+      type_code: "",
+      status_id: "",
+      date: "",
+      account_no: "",
       sort: { column: "created_at", direction: "DESC" },
     });
 

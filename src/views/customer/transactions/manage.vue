@@ -1,23 +1,8 @@
 <template>
   <!--begin::Card-->
-  <PermissionDenied v-if="unauthorized" />
-  <PageLoader v-else-if="loadingTransactionData" />
-
-  <div class="card" v-else>
+  <div class="card">
     <!--begin::Card header-->
-    <div class="card-header border-1 pt-6 mb-0">
-      <div class="row">
-        <div class="col-12">
-          <h4>
-            View Transactions
-            <span v-if="table_options.account"
-              >- Account: <b>{{ table_options.account }}</b></span
-            >
-          </h4>
-        </div>
-      </div>
-    </div>
-    <div class="card-header border-0 pt-1">
+    <div class="card-header border-5 pt-6">
       <!--begin::Card title-->
       <div class="card-title">
         <!--begin::Search-->
@@ -27,58 +12,288 @@
             class="me-5"
             data-kt-subscription-table-filter="search"
             placeholder="Search ..."
-            v-model="table_options.search_text"
+            v-model="table_options.amount_or_reference"
           />
         </div>
-        <span class="ml me-5">
-          <label for="account-change">
-            <el-select
-              aria-label="Select example"
-              v-model="table_options.account"
-              name="account-change"
-              id="account-change"
-              @change="accountChanged(table_options)"
-            >
-              <el-option
-                v-for="account in accounts"
-                :key="account.id"
-                :value="account.id"
-              >
-                {{ account.id + " - " + account.name_on_account }}
-              </el-option>
-            </el-select>
-          </label>
-        </span>
-
         <!--end::Search-->
       </div>
       <!--begin::Card title-->
 
       <!--begin::Card toolbar-->
       <div class="card-toolbar">
-        <!--begin::Group actions-->
-        <div class="d-flex justify-content-end align-items-center">
+        <!--begin::Toolbar-->
+        <div
+          class="d-flex justify-content-end align-items-center"
+          data-kt-customer-table-toolbar="base"
+        >
           <div class="fw-bold me-5">
             <span class="me-2" v-if="meta.total >= 1">
               Showing {{ meta.from }} to {{ meta.to }} of
               {{ meta.total }}
             </span>
           </div>
+
+          <!--begin::Filter-->
           <button
-            class="btn btn-primary btn-sm"
-            @click="getTransactions(table_options)"
+            type="button"
+            class="btn btn-light-primary me-3 btn-sm"
+            data-kt-menu-trigger="click"
+            data-kt-menu-placement="bottom-end"
+          >
+            <!--begin::Svg Icon | path: icons/duotune/general/gen031.svg-->
+            <span class="svg-icon svg-icon-2">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19.0759 3H4.72777C3.95892 3 3.47768 3.83148 3.86067 4.49814L8.56967 12.6949C9.17923 13.7559 9.5 14.9582 9.5 16.1819V19.5072C9.5 20.2189 10.2223 20.7028 10.8805 20.432L13.8805 19.1977C14.2553 19.0435 14.5 18.6783 14.5 18.273V13.8372C14.5 12.8089 14.8171 11.8056 15.408 10.964L19.8943 4.57465C20.3596 3.912 19.8856 3 19.0759 3Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <!--end::Svg Icon-->Filter
+          </button>
+          <!--begin::Menu 1-->
+          <div
+            class="menu menu-sub menu-sub-dropdown w-300px w-md-325px"
+            data-kt-menu="true"
+            id="kt-toolbar-filter"
+          >
+            <!--begin::Header-->
+            <div class="px-7 py-5">
+              <div class="fs-4 text-dark fw-bold">Filter Options</div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Separator-->
+            <div class="separator border-gray-200"></div>
+            <!--end::Separator-->
+            <!--begin::Content-->
+            <div class="px-7 py-5">
+              <!--begin::Amount or Reference-->
+              <div class="mb-5">
+                <!--begin::Label-->
+                <label class="form-label fs-5 fw-semibold mb-3"
+                  >Amount or Reference:</label
+                >
+                <!--end::Label-->
+                <!--begin::Input-->
+                <el-form-item
+                  prop="amount_or_reference"
+                  class="fw-bold"
+                  data-kt-select2="true"
+                  data-placeholder="Select option"
+                  data-allow-clear="true"
+                  data-kt-customer-table-filter="amount_or_reference"
+                  data-dropdown-parent="#kt-toolbar-filter"
+                >
+                  <el-input
+                    v-model="table_options.amount_or_reference"
+                    placeholder="Amount or Reference"
+                    name="amount_or_reference"
+                  ></el-input>
+                </el-form-item>
+                <!--end::Input-->
+              </div>
+              <!--end::Amount or Reference-->
+
+              <!--begin::Transaction Type-->
+              <div class="mb-5">
+                <!--begin::Label-->
+                <label class="form-label fs-5 fw-semibold mb-3"
+                  >Transaction Type:</label
+                >
+                <!--end::Label-->
+                <!--begin::Input-->
+                <el-form-item
+                  prop="type_code"
+                  class="fw-bold"
+                  data-kt-select2="true"
+                  data-placeholder="Select option"
+                  data-allow-clear="true"
+                  data-kt-customer-table-filter="type_code"
+                  data-dropdown-parent="#kt-toolbar-filter"
+                >
+                  <el-select
+                    placeholder="Select"
+                    v-model="table_options.type_code"
+                  >
+                    <el-option
+                      v-for="item in sppData.transactionTypes"
+                      :key="item.code"
+                      :label="item.name"
+                      :value="item.code"
+                      :disabled="loadingPage"
+                    />
+                  </el-select>
+                </el-form-item>
+                <!--end::Input-->
+              </div>
+              <!--end::Transaction Type-->
+
+              <!--begin::Transaction Status-->
+              <div class="mb-5">
+                <!--begin::Label-->
+                <label class="form-label fs-5 fw-semibold mb-3"
+                  >Transaction Status:</label
+                >
+                <!--end::Label-->
+                <!--begin::Input-->
+                <el-form-item
+                  prop="status_id"
+                  class="fw-bold"
+                  data-kt-select2="true"
+                  data-placeholder="Select option"
+                  data-allow-clear="true"
+                  data-kt-customer-table-filter="status_id"
+                  data-dropdown-parent="#kt-toolbar-filter"
+                >
+                  <el-select
+                    placeholder="Select"
+                    v-model="table_options.status_id"
+                  >
+                    <el-option
+                      v-for="item in sppData.transactionStatuses"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                      :disabled="loadingPage"
+                    />
+                  </el-select>
+                </el-form-item>
+                <!--end::Input-->
+              </div>
+              <!--end::Transaction Status-->
+
+              <!--begin::Transaction Date-->
+              <div class="mb-5">
+                <!--begin::Label-->
+                <label class="form-label fs-5 fw-semibold mb-3">Date:</label>
+                <!--end::Label-->
+                <!--begin::Input-->
+                <el-row :gutter="0">
+                  <el-form-item prop="date">
+                    <el-date-picker
+                      v-model="table_options.date"
+                      type="date"
+                      placeholder="Select a date"
+                      :teleported="false"
+                      name="due_date"
+                      value-format="YYYY-MM-DD"
+                    />
+                  </el-form-item>
+                </el-row>
+                <!--end::Input-->
+              </div>
+              <!--end::Transaction Date-->
+
+              <!--begin::Account No-->
+              <div class="mb-5">
+                <!--begin::Label-->
+                <label class="form-label fs-5 fw-semibold mb-3"
+                  >Account No:</label
+                >
+                <!--end::Label-->
+                <!--begin::Input-->
+                <el-form-item
+                  prop="account_no"
+                  class="fw-bold"
+                  data-kt-select2="true"
+                  data-placeholder="Select option"
+                  data-allow-clear="true"
+                  data-kt-customer-table-filter="account_no"
+                  data-dropdown-parent="#kt-toolbar-filter"
+                >
+                  <el-select
+                    placeholder="Select"
+                    v-model="table_options.account_no"
+                  >
+                    <el-option
+                      v-for="account in accounts"
+                      :key="account.id"
+                      :label="account.id + ' - ' + account.name_on_account"
+                      :value="account.id"
+                      :disabled="loadingPage"
+                    >
+                      {{ account.id + " - " + account.name_on_account }}
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <!--end::Input-->
+              </div>
+              <!--end::Account No-->
+
+              <!--begin::Actions-->
+              <div class="d-flex justify-content-end">
+                <button
+                  type="reset"
+                  class="btn btn-light btn-active-light-primary me-2 btn-sm"
+                  data-kt-menu-dismiss="true"
+                  data-kt-customer-table-filter="reset"
+                  @click.prevent="handleFilterChange('reset')"
+                >
+                  Reset
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-sm"
+                  data-kt-menu-dismiss="true"
+                  data-kt-customer-table-filter="filter"
+                  @click.prevent="handleFilterChange('submit')"
+                >
+                  Apply
+                </button>
+              </div>
+              <!--end::Actions-->
+            </div>
+            <!--end::Content-->
+          </div>
+          <!--end::Menu 1-->
+
+          <!--end::Filter-->
+          <!--begin::Refresh-->
+          <button
+            type="button"
+            class="btn btn-light-primary me-3 btn-sm"
+            @click.prevent="handleFilterChange('reset')"
           >
             Refresh Transactions
           </button>
+          <!--end::Refresh-->
 
-          <div class="m-lg-5">
-            <router-link
-              to="/transactions/initiate"
-              class="btn btn-primary btn-sm"
-            >
-              New Transaction
-            </router-link>
+          <!--begin::New Transaction-->
+          <router-link
+            to="/transactions/initiate"
+            class="btn btn-primary btn-sm"
+          >
+            New Transaction
+          </router-link>
+
+          <!--end::New Transaction-->
+        </div>
+        <!--end::Toolbar-->
+        <!--begin::Group actions-->
+        <div
+          class="d-flex justify-content-end align-items-center d-none"
+          data-kt-customer-table-toolbar="selected"
+        >
+          <div class="fw-bold me-5">
+            <span
+              class="me-2"
+              data-kt-customer-table-select="selected_count"
+            ></span
+            >Selected
           </div>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            data-kt-customer-table-select="delete_selected"
+          >
+            Delete Selected
+          </button>
         </div>
         <!--end::Group actions-->
       </div>
@@ -86,8 +301,9 @@
     </div>
     <!--end::Card header-->
 
-    <!--begin::Card body-->
-    <div class="card-body pt-0">
+    <!--begin::Transaction List-->
+    <div class="card-body">
+      <!--begin::Table-->
       <KTDatatable
         :data="transactions"
         :header="tableHeader"
@@ -154,281 +370,46 @@
         </template>
 
         <template v-slot:actions="{ row: data }">
-          <button
-            class="btn btn-sm btn-light-info btn-active-light-info"
-            data-bs-toggle="modal"
-            data-bs-target="#kt_modal_view_transaction"
-            @click="viewTransaction(data)"
-          >
-            View
-          </button>
+          <router-link :to="'/transactions/' + data.reference">
+            <button class="btn btn-sm btn-light-info btn-active-light-info">
+              View
+            </button>
+          </router-link>
         </template>
       </KTDatatable>
+      <!--end::Table-->
     </div>
-
-    <!--end::Card body-->
+    <!--end::Transaction List-->
   </div>
   <!--end::Card-->
-
-  <!--View Transaction Modal-->
-  <div
-    class="modal fade"
-    id="kt_modal_view_transaction"
-    tabindex="-1"
-    aria-hidden="true"
-  >
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog mw-650px">
-      <!--begin::Modal content-->
-      <div class="modal-content">
-        <!--begin::Modal header-->
-        <div class="modal-header pb-0 border-0 justify-content-end">
-          <!--begin::Close-->
-          <div
-            class="btn btn-sm btn-icon btn-active-color-primary"
-            data-bs-dismiss="modal"
-          >
-            <span class="svg-icon svg-icon-1">
-              <inline-svg src="/media/icons/duotune/arrows/arr061.svg" />
-            </span>
-          </div>
-          <!--end::Close-->
-        </div>
-        <!--begin::Modal header-->
-
-        <!--begin::Modal body-->
-        <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
-          <div data-kt-stepper-element="content">
-            <!--begin::Wrapper-->
-            <div class="w-100" v-if="transaction.id">
-              <!--begin::Heading-->
-              <div class="pb-12">
-                <!--begin::Title-->
-                <h1 class="fw-bold text-dark">
-                  Transaction Details: {{ transaction.id }} -
-                  {{ transaction.reference }}
-                </h1>
-                <!--end::Title-->
-              </div>
-              <!--end::Heading-->
-            </div>
-            <!--end::Wrapper-->
-          </div>
-          <div v-if="transaction.id">
-            <!--  General Info -->
-            <div
-              class="py-2 border-bottom border-bottom-dashed border-gray-300"
-            >
-              <div class="ms">
-                <span
-                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
-                >
-                  General
-                </span>
-              </div>
-              <div class="flex-equal table-responsive">
-                <table class="table table-flush fw-semobold gy-1">
-                  <tbody>
-                    <tr>
-                      <td class="text-muted">Amount</td>
-                      <td class="text-gray-800">
-                        {{ formatCurrencyAmount(transaction.amount) }}
-                        {{ transaction.currency_code }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Type Name</td>
-                      <td class="text-gray-800">
-                        {{ transaction.type.name }} /
-                        {{ transaction.type_code }}
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="text-muted">Created At</td>
-                      <td class="text-gray-800">
-                        {{ formatDateTime(transaction.created_at) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Last Updated At</td>
-                      <td class="text-gray-800">
-                        {{ formatDateTime(transaction.updated_at) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Status message</td>
-                      <td class="text-gray-800">
-                        {{ transaction.status_message }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!--  General Info -->
-
-            <!--  Debit Info -->
-            <div
-              class="py-2 border-bottom border-bottom-dashed border-gray-300"
-            >
-              <div class="ms">
-                <span
-                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
-                >
-                  Debit Account
-                </span>
-              </div>
-              <div class="flex-equal table-responsive">
-                <table class="table table-flush fw-semobold gy-1">
-                  <tbody>
-                    <tr>
-                      <td class="text-muted">Institution</td>
-                      <td class="text-gray-800">
-                        {{ transaction.debit_account_institution.name }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Account No</td>
-                      <td class="text-gray-800">
-                        {{ transaction.debit_account_no }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Account Name</td>
-                      <td class="text-gray-800">
-                        {{ transaction.debit_account_name }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Debit Status</td>
-                      <td class="text-gray-800">
-                        {{ transaction.debit_status_message }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!--  Debit Info -->
-
-            <!--  Credit Info -->
-            <div
-              class="py-2 border-bottom border-bottom-dashed border-gray-300"
-            >
-              <div class="ms">
-                <span
-                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
-                >
-                  Credit Account
-                </span>
-              </div>
-              <div class="flex-equal table-responsive">
-                <table class="table table-flush fw-semobold gy-1">
-                  <tbody>
-                    <tr>
-                      <td class="text-muted">Debit Institution</td>
-                      <td class="text-gray-800">
-                        {{ transaction.credit_account_institution.name }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Account No.</td>
-                      <td class="text-gray-800">
-                        {{ transaction.credit_account_no }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Account Name</td>
-                      <td class="text-gray-800">
-                        {{ transaction.credit_account_name }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">Credit Status</td>
-                      <td class="text-gray-800">
-                        {{ transaction.credit_status_message }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!--  Credit Info -->
-
-            <!--  Charge Info -->
-            <!--            TODO - SPP-->
-            <!--            GET CHARGE DETAILS-->
-            <div
-              class="py-2 border-bottom border-bottom-dashed border-gray-300"
-              v-if="transaction.charge"
-            >
-              <div class="ms">
-                <span
-                  class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary"
-                >
-                  Charge
-                </span>
-              </div>
-              <div class="flex-equal table-responsive">
-                <table class="table table-flush fw-semobold gy-1">
-                  <tbody>
-                    <tr v-if="transaction.charge.amount">
-                      <td class="text-muted">Amount</td>
-                      <td class="text-gray-800">
-                        {{ formatCurrencyAmount(transaction.charge.amount) }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!--  Charge Info -->
-          </div>
-        </div>
-        <!--end::Modal body-->
-      </div>
-      <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
-  </div>
-  <!--View Transaction Modal-->
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from "vue";
-
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { useCustomerTransactionStore } from "@/stores/customer/transaction";
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
-import { useCustomerTransactionStore } from "@/stores/customer/transaction";
-import type { iTransaction } from "@/models/transaction";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-import PageLoader from "@/components/PageLoader.vue";
-import PermissionDenied from "@/components/PermissionDenied.vue";
+import { onMounted, ref, watch } from "vue";
 import useOutputFormat from "@/composables/useOutputFormat";
-
-export default defineComponent({
-  name: "transactions-list",
-  components: {
-    KTDatatable,
-    PermissionDenied,
-    PageLoader,
-  },
+import type { iTransaction } from "@/models/transaction";
+import sppData from "@/helpers/data";
+export default {
+  name: "customer-manage-transaction",
+  components: { KTDatatable },
   setup() {
-    //store
+    //transaction store
     const transactionStore = useCustomerTransactionStore();
-    const accountStore = useCustomerAccountStore();
-    const { transactions, meta, loadingTransactionData, unauthorized } =
+    const { transactions, meta, loadingTransactionData } =
       storeToRefs(transactionStore);
     const { getTransactions } = useCustomerTransactionStore();
+
+    //accounts store
+    const accountStore = useCustomerAccountStore();
     const { getAccounts } = useCustomerAccountStore();
     const { accounts } = storeToRefs(accountStore);
 
-    const refData = ref({
-      loadingPage: true,
-      loadingAction: false,
-    });
-
+    //refs
+    const loadingPage = ref(true);
     const tableHeader = ref([
       {
         columnLabel: "reference",
@@ -461,36 +442,35 @@ export default defineComponent({
         columnLabel: "actions",
       },
     ]);
-    const transaction = ref<iTransaction | any>({});
-
-    const account = ref("");
-
     const table_options = ref({
       account: "" as any,
       current_page: 1,
-      page_size: 10,
-      search_text: "",
+      page_size: 20,
+      amount_or_reference: "",
+      type_code: "",
+      status_id: "",
+      date: "",
+      account_no: "",
       sort: { column: "", direction: "" },
     });
-
     const searchRecords = ref({
       isSearching: false,
       debounceTimeout: ref<number>(0),
       debounce: 2000,
       kDebounceTimeoutMs: 1000,
     });
+    const transaction = ref<iTransaction | any>({});
 
+    //methods
     const handlePerPageChange = (size: number) => {
       table_options.value.current_page = 1;
       table_options.value.page_size = size;
       getTransactions(table_options.value);
     };
-
     const handlePageChange = (val) => {
       table_options.value.current_page = val;
       getTransactions(table_options.value);
     };
-
     const sortingChanged = (ctx) => {
       table_options.value.sort.column = ctx.label;
       table_options.value.sort.direction = ctx.order === true ? "DESC" : "ASC";
@@ -499,39 +479,34 @@ export default defineComponent({
 
       getTransactions(table_options.value);
     };
-
     const accountChanged = (table_options) => {
       //  set account
       accountStore.setLastSelectedAccount(table_options.account);
       getTransactions(table_options);
     };
-
-    //view single transaction
     const viewTransaction = (val) => {
       //TODO - SPP
       //call transaction by ref from api to get charge details
       transaction.value = val;
     };
+    const handleFilterChange = (action) => {
+      //set current page to page 1
+      table_options.value.current_page = 1;
 
-    onMounted(async () => {
-      refData.value.loadingPage = true;
+      if (action === "reset") {
+        table_options.value.type_code = "";
+        table_options.value.status_id = "";
+        table_options.value.amount_or_reference = "";
+        table_options.value.account_no = "";
+        table_options.value.date = "";
+      }
 
-      table_options.value.account = accountStore.lastSelectedAccount;
+      getTransactions(table_options.value);
+    };
 
-      await getTransactions(table_options.value);
-      refData.value.loadingPage = false;
-      getAccounts({
-        account: "",
-        current_page: 1,
-        page_size: 10,
-        search_text: "",
-        sort: { column: "", direction: "" },
-      });
-    });
-
-    //search data
+    //search
     watch(
-      () => table_options.value.search_text,
+      () => table_options.value.amount_or_reference,
       () => {
         if (searchRecords.value.debounceTimeout) {
           clearTimeout(searchRecords.value.debounceTimeout);
@@ -547,37 +522,47 @@ export default defineComponent({
     );
 
     //output formatting
-    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
-      useOutputFormat();
+    let { formatCurrencyAmount, formatDateTime } = useOutputFormat();
 
+    onMounted(async () => {
+      loadingPage.value = true;
+
+      table_options.value.account = accountStore.lastSelectedAccount;
+
+      await getTransactions(table_options.value);
+
+      await getAccounts({
+        account: "",
+        current_page: 1,
+        page_size: 10,
+        search_text: "",
+        sort: { column: "", direction: "" },
+      });
+      loadingPage.value = false;
+    });
     return {
-      refData,
-      searchRecords,
+      loadingTransactionData,
+      loadingPage,
+      meta,
+      transactions,
+      tableHeader,
+      table_options,
       handlePageChange,
       handlePerPageChange,
+      handleFilterChange,
       sortingChanged,
       viewTransaction,
-      getTransactions,
-      // getAccounts,
-      accountChanged,
-      table_options,
-      meta,
-      tableHeader,
-      transaction,
-      transactions,
-      accounts,
-      account,
-
-      //state
-      loadingTransactionData,
-      unauthorized,
-
-      //composable
       formatCurrencyAmount,
       formatDateTime,
-      formatTime,
-      formatDate,
+      sppData,
+      getTransactions,
+      accounts,
+
+      //TODO
+      accountChanged,
     };
   },
-});
+};
 </script>
+
+<style scoped></style>

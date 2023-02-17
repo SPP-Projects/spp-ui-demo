@@ -56,7 +56,6 @@ import PageLoader from "@/components/PageLoader.vue";
 import { useCustomerTransactionStore } from "@/stores/customer/transaction";
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
-import { useCustomerUserStore } from "@/stores/customer/user";
 
 export default defineComponent({
   name: "admin-dashboard",
@@ -70,11 +69,10 @@ export default defineComponent({
     const transactionStore = useCustomerTransactionStore();
     const { transactions, loadingTransactionData, unauthorized } =
       storeToRefs(transactionStore);
-    const { getTransactions } = useCustomerTransactionStore();
 
     //account
     const accountStore = useCustomerAccountStore();
-    const { getAccounts } = useCustomerAccountStore();
+
     const { accounts, loadingAccountData } = storeToRefs(accountStore);
 
     //
@@ -86,23 +84,7 @@ export default defineComponent({
 
     const authUser = ref({});
 
-    const table_options = ref({
-      account: "",
-      current_page: 1,
-      page_size: 10,
-      search_text: "",
-      sort: { column: "created_at", direction: "DESC" },
-    });
-
     onMounted(async () => {
-      // await getTransactions(table_options.value);
-      //  await getAccounts({
-      //    current_page: 1,
-      //    page_size: 10, // Add view more at the bottom to link to accounts
-      //    search_text: "",
-      //    sort: { column: "is_default", direction: "DESC" },
-      //  });
-
       loadingTransactionData.value = false;
       loadingAccountData.value = false;
     });

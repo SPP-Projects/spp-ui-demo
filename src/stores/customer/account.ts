@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import AccountService from "@/services/customer/AccountService";
 import { getError } from "@/helpers/errors";
+import TransactionService from "@/services/customer/TransactionService";
 
 export const useCustomerAccountStore = defineStore("customerAccountStore", {
   state: () => ({
@@ -19,29 +20,52 @@ export const useCustomerAccountStore = defineStore("customerAccountStore", {
   }),
   actions: {
     getAccounts(options) {
-      this.loadingAccountData = true;
+      return new Promise((resolve, reject) => {
+        this.loadingAccountData = true;
 
-      AccountService.getAccounts(options)
-        .then(({ data }) => {
-          this.accounts = data.data;
-          this.meta.total = data.total;
-          this.meta.from = data.from;
-          this.meta.to = data.to;
-          this.meta.last_page = data.last_page;
-        })
-        .catch((error) => {
-          if (error.response.status === 403) {
-            // unauthorized.
-            this.unauthorized = true;
-          }
+        AccountService.getAccounts(options)
+          .then(({ data }) => {
+            this.accounts = data.data;
+            this.meta.total = data.total;
+            this.meta.from = data.from;
+            this.meta.to = data.to;
+            this.meta.last_page = data.last_page;
+            resolve(data);
+          })
+          .catch((error) => {
+            this.accounts = [];
+            this.loadingAccountData = false;
 
-          this.accounts = [];
-          this.loadingAccountData = false;
-          this.error = getError(error);
-        })
-        .finally(() => {
-          this.loadingAccountData = false;
-        });
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingAccountData = false;
+          });
+      });
+
+      // AccountService.getAccounts(options)
+      //   .then(({ data }) => {
+      //     this.accounts = data.data;
+      //     this.meta.total = data.total;
+      //     this.meta.from = data.from;
+      //     this.meta.to = data.to;
+      //     this.meta.last_page = data.last_page;
+      //     resolve(data);
+      //   })
+      //   .catch((error) => {
+      //     if (error.response.status === 403) {
+      //       // unauthorized.
+      //       this.unauthorized = true;
+      //     }
+      //
+      //     this.accounts = [];
+      //     this.loadingAccountData = false;
+      //     this.error = getError(error);
+      //   })
+      //   .finally(() => {
+      //     this.loadingAccountData = false;
+      //   });
     },
 
     getAccount(account_no) {

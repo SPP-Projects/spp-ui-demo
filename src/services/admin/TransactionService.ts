@@ -5,8 +5,9 @@ class TransactionService {
    * Transactions
    */
   getAllTransactions(options) {
+    console.log(options.account_no);
     return ApiService.get(
-      `/v1/admin/transactions?page=${options.current_page}&page_size=${options.page_size}&search_text=${options.search_text}&sort_column=${options.sort.column}&sort_direction=${options.sort.direction}`
+      `/v1/admin/transactions?page=${options.current_page}&page_size=${options.page_size}&search_text=${options.search_text}&sort_column=${options.sort.column}&sort_direction=${options.sort.direction}&type_code=${options.type_code}&status_id=${options.status_id}&date=${options.date}&account_no=${options.account_no}`
     );
   }
   getSingleTransaction(id) {

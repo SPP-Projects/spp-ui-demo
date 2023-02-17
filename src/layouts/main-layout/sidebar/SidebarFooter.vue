@@ -5,7 +5,7 @@
     id="kt_app_sidebar_footer"
   >
     <router-link
-      to="/profile/overview"
+      to="/settings/overview"
       class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100"
       data-bs-toggle="tooltip"
       data-bs-trigger="hover"

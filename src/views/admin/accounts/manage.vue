@@ -73,8 +73,10 @@
           {{ data.id }}
         </template>
         <template v-slot:name_on_account="{ row: data }">
-          {{ data.name_on_account }}
+          {{ data.name_on_account }} <br />
+          Customer: {{ data.customer.name }}
         </template>
+
         <template v-slot:type="{ row: data }">
           {{ data.type.name }}
         </template>
@@ -563,7 +565,7 @@ import { useAdminAccountStore } from "@/stores/admin/account";
 import { useAdminCustomerStore } from "@/stores/admin/customer";
 import { useAdminInstitutionStore } from "@/stores/admin/institution";
 import { hideModal } from "@/core/helpers/dom";
-import sppay from "@/helpers/sppay";
+
 import sppData from "@/helpers/data";
 import { storeToRefs } from "pinia";
 
@@ -619,17 +621,13 @@ export default defineComponent({
         columnLabel: "name_on_account",
         sortEnabled: true,
       },
+
       {
         columnName: "Account Type",
         columnLabel: "type",
         sortEnabled: true,
       },
 
-      {
-        columnName: "Account name",
-        columnLabel: "name_on_account",
-        sortEnabled: true,
-      },
       {
         columnName: "institution",
         columnLabel: "institution",

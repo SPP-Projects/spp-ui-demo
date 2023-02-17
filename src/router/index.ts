@@ -8,15 +8,10 @@ import { useConfigStore } from "@/stores/config";
 
 import { storeToRefs } from "pinia";
 
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
 const routes: Array<RouteRecordRaw> = [
   /**
-   * Customer App
+   * Customer Routes
    */
-  // @ts-ignore
   {
     path: "/",
     redirect: "/dashboard",
@@ -138,19 +133,6 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
 
-      //users
-      {
-        path: "/users",
-        name: "manage-users",
-        component: function () {
-          return import("@/views/customer/users/manage.vue");
-        },
-        meta: {
-          pageTitle: "Manage Users",
-          breadcrumbs: ["Users & Permissions", "manage"],
-        },
-      },
-
       //campaigns
       {
         path: "/campaigns",
@@ -234,24 +216,11 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
 
-      //onboarding
-      {
-        path: "/onboarding/kyc",
-        name: "kyc",
-        component: function () {
-          return import("@/views/customer/onboarding/kyc.vue");
-        },
-        meta: {
-          pageTitle: "Manage Your Details",
-          breadcrumbs: ["Onboarding", "Manage Your Details"],
-        },
-      },
-
       //user profile
       {
-        path: "/profile",
-        name: "profile-navbar",
-        component: () => import("@/views/customer/profile/header.vue"),
+        path: "/settings",
+        name: "settings-navbar",
+        component: () => import("@/views/customer/settings/settings-nav.vue"),
         meta: {
           breadcrumbs: ["Account", "Profile"],
         },
@@ -259,7 +228,7 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: "overview",
             name: "profile-overview",
-            component: () => import("@/views/customer/profile/index.vue"),
+            component: () => import("@/views/customer/settings/index.vue"),
             meta: {
               pageTitle: "Overview",
             },
@@ -268,55 +237,133 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: "permissions",
             name: "profile-permissions",
-            component: () => import("@/views/customer/profile/permissions.vue"),
+            component: () =>
+              import("@/views/customer/settings/permissions.vue"),
             meta: {
               pageTitle: "Permissions",
+            },
+          },
+
+          {
+            path: "security",
+            name: "profile-security",
+            component: () => import("@/views/customer/settings/security.vue"),
+            meta: {
+              pageTitle: "Permissions",
+            },
+          },
+
+          //KYC
+          {
+            path: "kyc",
+            name: "kyc",
+            component: function () {
+              return import("@/views/customer/settings/kyc.vue");
+            },
+            meta: {
+              pageTitle: "Manage Your Details",
+              breadcrumbs: ["Onboarding", "Manage Your Details"],
+            },
+          },
+
+          //users
+          {
+            path: "team",
+            name: "manage-users",
+            component: function () {
+              return import("@/views/customer/settings/team.vue");
+            },
+            meta: {
+              pageTitle: "Manage Users",
+              breadcrumbs: ["Users & Permissions", "manage"],
             },
           },
         ],
       },
 
       //onboarding
+      // {
+      //   path: "/spchart",
+      //   name: "spchart-1",
+      //   component: function () {
+      //     return import("@/views/_dev/spchart/manage.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Your Details",
+      //     breadcrumbs: ["Onboarding", "Manage Your Details"],
+      //   },
+      // },
+      // {
+      //   path: "/spchart2",
+      //   name: "chart2",
+      //   component: function () {
+      //     return import("@/views/_dev/spchart/chart-two.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Your Details",
+      //     breadcrumbs: ["Onboarding", "Manage Your Details"],
+      //   },
+      // },
+      // {
+      //   path: "/spchart3",
+      //   name: "chart3",
+      //   component: function () {
+      //     return import("@/views/_dev/spchart/chart-three.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Your Details",
+      //     breadcrumbs: ["Onboarding", "Manage Your Details"],
+      //   },
+      // },
+    ],
+  },
+
+  /**
+   * Remittance Routes
+   */
+  {
+    path: "/",
+    redirect: "/dashboard",
+    component: () => import("@/layouts/main-layout/MainLayout.vue"),
+    meta: {
+      middleware: "auth",
+    },
+    children: [
       {
-        path: "/spchart",
-        name: "spchart-1",
-        component: function () {
-          return import("@/views/_dev/spchart/manage.vue");
-        },
+        path: "/remittance",
+        name: "remittance-manage-transactions",
+        component: () => import("@/views/remittance/manage.vue"),
         meta: {
-          pageTitle: "Manage Your Details",
-          breadcrumbs: ["Onboarding", "Manage Your Details"],
+          pageTitle: "Transfers",
+          breadcrumbs: ["Manage Transfers"],
         },
       },
       {
-        path: "/spchart2",
-        name: "chart2",
-        component: function () {
-          return import("@/views/_dev/spchart/chart-two.vue");
-        },
+        path: "/remittance/transactions/:reference",
+        name: "remittance-view-transactions",
+        component: () => import("@/views/remittance/view.vue"),
         meta: {
-          pageTitle: "Manage Your Details",
-          breadcrumbs: ["Onboarding", "Manage Your Details"],
+          pageTitle: "Transfer Details",
+          breadcrumbs: ["Manage Transfers"],
         },
       },
       {
-        path: "/spchart3",
-        name: "chart3",
+        path: "/remittance/initiate",
+        name: "remittance-initiate-transaction",
         component: function () {
-          return import("@/views/_dev/spchart/chart-three.vue");
+          return import("@/views/remittance/initiate.vue");
         },
         meta: {
-          pageTitle: "Manage Your Details",
-          breadcrumbs: ["Onboarding", "Manage Your Details"],
+          pageTitle: "Send Money",
+          breadcrumbs: ["Manage Transfers", "Send Money"],
         },
       },
     ],
   },
 
   /**
-   * Admin App
+   * Admin Routes
    */
-  // @ts-ignore
   {
     path: "/admin",
     redirect: "/dashboard",
@@ -353,6 +400,16 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               pageTitle: "Manage Transactions",
               breadcrumbs: ["Manage Transactions"],
+            },
+          },
+          {
+            path: "view/:reference",
+            name: "admin-manage-view-transactions",
+            component: () =>
+              import("@/views/admin/transactions/view-transaction.vue"),
+            meta: {
+              pageTitle: "View Transaction",
+              breadcrumbs: ["View Transaction"],
             },
           },
           {
@@ -807,6 +864,16 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/admin/settings/charges/add",
+        name: "admin-add-charges-settings",
+        component: () =>
+          import("@/views/admin/settings/charges/add-charge.vue"),
+        meta: {
+          pageTitle: "Manage Charge Settings",
+          breadcrumbs: ["Manage Charge Settings"],
+        },
+      },
+      {
         path: "/admin/settings/commissions",
         name: "admin-manage-commissions-settings",
         component: () =>
@@ -834,7 +901,6 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["Manage Charges"],
         },
       },
-
       {
         path: "/admin/settings/payment-maps",
         name: "admin-manage-payment-map-settings",
@@ -875,7 +941,6 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["Manage Permission Groups"],
         },
       },
-
       {
         path: "/admin/settings/permission-types",
         name: "admin-manage-permission-type-settings",
@@ -934,84 +999,72 @@ const routes: Array<RouteRecordRaw> = [
       //   },
       // },
       //refresh
-      {
-        path: "/refresh",
-        name: "sp-manage-fre",
-        component: function () {
-          return import("@/views/_dev/refresh/index.vue");
-        },
-        meta: {
-          pageTitle: "Manage Todo",
-          breadcrumbs: ["Manage Todo"],
-        },
-      },
+      // {
+      //   path: "/refresh",
+      //   name: "sp-manage-fre",
+      //   component: function () {
+      //     return import("@/views/_dev/refresh/index.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Todo",
+      //     breadcrumbs: ["Manage Todo"],
+      //   },
+      // },
 
       //2faa
-      {
-        path: "/2fa",
-        name: "sp-manage-2fa",
-        component: function () {
-          return import("@/views/_dev/2fa/index.vue");
-        },
-        meta: {
-          pageTitle: "Manage Todo",
-          breadcrumbs: ["Manage Todo"],
-        },
-      },
+      // {
+      //   path: "/2fa",
+      //   name: "sp-manage-2fa",
+      //   component: function () {
+      //     return import("@/views/_dev/2fa/index.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Todo",
+      //     breadcrumbs: ["Manage Todo"],
+      //   },
+      // },
       //test guest pay
-      {
-        path: "/test-pay",
-        name: "sp-manage-test-pay",
-        component: function () {
-          return import("@/views/_dev/pay/TestPay.vue");
-        },
-        meta: {
-          pageTitle: "Manage Todo",
-          breadcrumbs: ["Manage Todo"],
-        },
-      },
+      // {
+      //   path: "/test-pay",
+      //   name: "sp-manage-test-pay",
+      //   component: function () {
+      //     return import("@/views/_dev/pay/TestPay.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Todo",
+      //     breadcrumbs: ["Manage Todo"],
+      //   },
+      // },
 
       //test guest pay
-      {
-        path: "/counter1",
-        name: "sp-manage-counter1",
-        component: function () {
-          return import("@/views/_dev/counter/CounterOne.vue");
-        },
-        meta: {
-          pageTitle: "Manage Todo",
-          breadcrumbs: ["Manage Todo"],
-        },
-      },
-      {
-        path: "/counter2",
-        name: "sp-manage-counter2",
-        component: function () {
-          return import("@/views/_dev/counter/CounterTwo.vue");
-        },
-        meta: {
-          pageTitle: "Manage Todo",
-          breadcrumbs: ["Manage Todo"],
-        },
-      },
-      {
-        path: "/temp",
-        name: "sp-manage-temp",
-        component: function () {
-          return import("@/views/_dev/final-chart/TempPage.vue");
-        },
-        meta: {
-          pageTitle: "Manage Todo",
-          breadcrumbs: ["Manage Todo"],
-        },
-      },
+      // {
+      //   path: "/counter1",
+      //   name: "sp-manage-counter1",
+      //   component: function () {
+      //     return import("@/views/_dev/counter/CounterOne.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Todo",
+      //     breadcrumbs: ["Manage Todo"],
+      //   },
+      // },
+      // {
+      //   path: "/counter2",
+      //   name: "sp-manage-counter2",
+      //   component: function () {
+      //     return import("@/views/_dev/counter/CounterTwo.vue");
+      //   },
+      //   meta: {
+      //     pageTitle: "Manage Todo",
+      //     breadcrumbs: ["Manage Todo"],
+      //   },
+      // },
     ],
   },
 
   /**
-   * Guest App
+   * Guest Routes
    */
-  // @ts-ignore
   {
     path: "/",
     component: () => import("@/layouts/AuthLayoutTwo.vue"),
@@ -1151,8 +1204,6 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
-
-  //logout
   {
     path: "/logout",
     name: "logout",

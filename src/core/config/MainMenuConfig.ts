@@ -21,36 +21,35 @@ const MainMenuConfig: Array<MenuItem> = [
         menuPermission: ["generate sanctum tokens"],
       },
       {
-        heading: "KYC",
-        route: "/onboarding/kyc",
-        svgIcon: "/media/icons/duotune/art/art002.svg",
-        fontIcon: "bi bi-file-earmark-person-fill",
-        menuPermission: ["view KYC & customer details"],
-      },
-    ],
-  },
-
-  //account
-  {
-    heading: "SPP Account",
-    route: "/account",
-    pages: [
-      {
         heading: "Manage Accounts",
         route: "/accounts",
         svgIcon: "/media/icons/duotune/general/gen014.svg",
         fontIcon: "bi bi-wallet-fill",
         menuPermission: ["view accounts and balances"],
       },
+    ],
+  },
+
+  //remittance
+  {
+    heading: "Remittance",
+    route: "/remittance",
+    pages: [
       {
-        heading: "Users",
-        route: "/users",
+        heading: "Transfers",
+        route: "/remittance",
         svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi bi-people-fill",
-        menuPermission: ["view users"],
+        fontIcon: "bi bi-credit-card-2-front-fill",
+        menuPermission: ["view transactions"],
+      },
+      {
+        heading: "Send Money",
+        route: "/remittance/initiate",
+        svgIcon: "/media/icons/duotune/general/gen014.svg",
+        fontIcon: "bi bi-person-fill-up",
+        menuPermission: ["view transactions"],
       },
     ],
-    menuPermission: ["view accounts and balances"],
   },
 
   //payments

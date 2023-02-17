@@ -396,7 +396,7 @@ export default defineComponent({
     const table_options = ref({
       customer_id: 0 as number,
       current_page: 1,
-      page_size: 10,
+      page_size: 20,
       search_text: "",
       sort: { column: "", direction: "" },
     } as any);

@@ -85,5 +85,28 @@ export const useCustomerKycStore = defineStore("customerKycStore", {
           });
       });
     },
+
+    updatePassword(payload) {
+      return new Promise((resolve, reject) => {
+        this.loadingData = true;
+        KycService.updatePassword(payload)
+          .then(({ data }) => {
+            resolve(data);
+          })
+          .catch((error) => {
+            if (error.response.status === 403) {
+              // unauthorized.
+              this.unauthorized = true;
+            }
+
+            this.loadingData = false;
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingData = false;
+          });
+      });
+    },
   },
 });

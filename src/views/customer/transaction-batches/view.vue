@@ -426,7 +426,7 @@ export default defineComponent({
     const table_options = ref({
       reference: "",
       current_page: 1,
-      page_size: 10,
+      page_size: 20,
       search_text: "",
       sort: { column: "", direction: "" },
     });

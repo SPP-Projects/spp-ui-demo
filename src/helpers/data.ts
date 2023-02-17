@@ -321,6 +321,19 @@ const sppData = {
       name: "Premium",
     },
   ],
+  transactionTypes: [
+    { id: 1, code: "DPST", name: "SPPay Deposit" },
+    { id: 2, code: "WTRL", name: "SPPay Withdrawal" },
+    { id: 3, code: "ITRF", name: "Internal Transfer" },
+    { id: 4, code: "PYMT", name: "SPPay Payment" },
+    { id: 5, code: "TRBK", name: "Transfer to Bank" },
+    { id: 6, code: "TRMM", name: "Transfer to Mobile Money" },
+    { id: 7, code: "TPPY", name: "Third-Party Payment" },
+    { id: 8, code: "TPSD", name: "Third-Party SPPay Deposit" },
+    { id: 9, code: "CHRG", name: "SP Pay Charge" },
+    { id: 10, code: "COMM", name: "SP Pay Commission" },
+    { id: 11, code: "TAX", name: "SP Pay Tax" },
+  ],
 };
 
 export default sppData;
