@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/dashboard",
         name: "dashboard",
-        component: () => import("@/views/Dashboard.vue"),
+        component: () => import("../views/Dashboard.vue"),
         meta: {
           pageTitle: "Dashboard",
           breadcrumbs: ["Dashboards"],
@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/accounts",
         name: "customer-manage-accounts",
-        component: () => import("@/views/customer/accounts/manage.vue"),
+        component: () => import("../views/customer/accounts/manage.vue"),
         meta: {
           pageTitle: "Manage Accounts",
           breadcrumbs: ["Manage Accounts"],
@@ -45,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/transactions",
         name: "manage-transactions",
-        component: () => import("@/views/customer/transactions/manage.vue"),
+        component: () => import("../views/customer/transactions/manage.vue"),
         meta: {
           pageTitle: "Transactions",
           breadcrumbs: ["Manage Transactions"],
@@ -54,7 +54,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/transactions/:reference",
         name: "view-transactions",
-        component: () => import("@/views/customer/transactions/view.vue"),
+        component: () => import("../views/customer/transactions/view.vue"),
         meta: {
           pageTitle: "Transactions",
           breadcrumbs: ["Manage Transactions"],
@@ -64,7 +64,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/transactions/initiate",
         name: "initiate-transaction",
         component: function () {
-          return import("@/views/customer/transactions/initiate.vue");
+          return import("../views/customer/transactions/initiate.vue");
         },
         meta: {
           pageTitle: "New Transaction",
@@ -77,7 +77,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/transactions/batches",
         name: "transaction-batches",
         component: function () {
-          return import("@/views/customer/transaction-batches/manage.vue");
+          return import("../views/customer/transaction-batches/manage.vue");
         },
         meta: {
           pageTitle: "Transaction Batches",
@@ -88,7 +88,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/transactions/batch/:reference",
         name: "view-transaction-batch",
         component: function () {
-          return import("@/views/customer/transaction-batches/view.vue");
+          return import("../views/customer/transaction-batches/view.vue");
         },
         meta: {
           pageTitle: "View Transaction Batch",
@@ -101,7 +101,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/sms/reports",
         name: "manage-sms",
         component: function () {
-          return import("@/views/customer/sms/reports.vue");
+          return import("../views/customer/sms/reports.vue");
         },
         meta: {
           pageTitle: "View SMS reports",
@@ -112,7 +112,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/sms/sender-ids",
         name: "manage-sms-sender-ids",
         component: function () {
-          return import("@/views/customer/sms/sender-ids.vue");
+          return import("../views/customer/sms/sender-ids.vue");
         },
         meta: {
           pageTitle: "Manage Sender IDS",
@@ -125,7 +125,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/documentation",
         name: "documentation",
         component: function () {
-          return import("@/views/customer/documentation/index.vue");
+          return import("../views/customer/documentation/index.vue");
         },
         meta: {
           pageTitle: "Documentation & Help",
@@ -138,7 +138,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/campaigns",
         name: "manage-campaigns",
         component: function () {
-          return import("@/views/customer/campaigns/manage.vue");
+          return import("../views/customer/campaigns/manage.vue");
         },
         meta: {
           pageTitle: "Manage Campaigns",
@@ -147,9 +147,9 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "/campaigns/payments/:reference",
-        name: "campaign-payments",
+        name: "customer-campaign-payments",
         component: function () {
-          return import("@/views/customer/campaigns/view.vue");
+          return import("../views/customer/campaigns/view.vue");
         },
         meta: {
           pageTitle: "Campaign Payments",
@@ -162,7 +162,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/money-requests",
         name: "manage-money-requests",
         component: function () {
-          return import("@/views/customer/money-request/manage.vue");
+          return import("../views/customer/money-request/manage.vue");
         },
         meta: {
           pageTitle: "Money Request",
@@ -173,7 +173,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/money-requests/payments/:reference",
         name: "money-request-payments",
         component: function () {
-          return import("@/views/customer/money-request/view.vue");
+          return import("../views/customer/money-request/view.vue");
         },
         meta: {
           pageTitle: "Request Details",
@@ -186,7 +186,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/invoices",
         name: "invoices",
         component: function () {
-          return import("@/views/customer/invoices/manage.vue");
+          return import("../views/customer/invoices/manage.vue");
         },
         meta: {
           pageTitle: "Invoices",
@@ -197,7 +197,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/invoices/new",
         name: "new-invoice",
         component: function () {
-          return import("@/views/customer/invoices/new-invoice.vue");
+          return import("../views/customer/invoices/new-invoice.vue");
         },
         meta: {
           pageTitle: "New Invoice",
@@ -208,7 +208,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/invoices/payments/:reference",
         name: "invoice-payments",
         component: function () {
-          return import("@/views/customer/invoices/view.vue");
+          return import("../views/customer/invoices/view.vue");
         },
         meta: {
           pageTitle: "Invoices",
@@ -216,7 +216,7 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
 
-      //user profile
+      //settings
       {
         path: "/settings",
         name: "settings-navbar",
@@ -228,7 +228,7 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: "overview",
             name: "profile-overview",
-            component: () => import("@/views/customer/settings/index.vue"),
+            component: () => import("../views/customer/settings/index.vue"),
             meta: {
               pageTitle: "Overview",
             },
@@ -238,7 +238,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "permissions",
             name: "profile-permissions",
             component: () =>
-              import("@/views/customer/settings/permissions.vue"),
+              import("../views/customer/settings/permissions.vue"),
             meta: {
               pageTitle: "Permissions",
             },
@@ -247,7 +247,7 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: "security",
             name: "profile-security",
-            component: () => import("@/views/customer/settings/security.vue"),
+            component: () => import("../views/customer/settings/security.vue"),
             meta: {
               pageTitle: "Permissions",
             },
@@ -258,7 +258,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "kyc",
             name: "kyc",
             component: function () {
-              return import("@/views/customer/settings/kyc.vue");
+              return import("../views/customer/settings/kyc.vue");
             },
             meta: {
               pageTitle: "Manage Your Details",
@@ -271,7 +271,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "team",
             name: "manage-users",
             component: function () {
-              return import("@/views/customer/settings/team.vue");
+              return import("../views/customer/settings/team.vue");
             },
             meta: {
               pageTitle: "Manage Users",
@@ -332,16 +332,16 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/remittance",
         name: "remittance-manage-transactions",
-        component: () => import("@/views/remittance/manage.vue"),
+        component: () => import("../views/remittance/manage.vue"),
         meta: {
-          pageTitle: "Transfers",
+          pageTitle: "Remittances",
           breadcrumbs: ["Manage Transfers"],
         },
       },
       {
-        path: "/remittance/transactions/:reference",
-        name: "remittance-view-transactions",
-        component: () => import("@/views/remittance/view.vue"),
+        path: "/remittance/:reference",
+        name: "remittance-view-tranfers",
+        component: () => import("../views/remittance/view.vue"),
         meta: {
           pageTitle: "Transfer Details",
           breadcrumbs: ["Manage Transfers"],
@@ -351,7 +351,18 @@ const routes: Array<RouteRecordRaw> = [
         path: "/remittance/initiate",
         name: "remittance-initiate-transaction",
         component: function () {
-          return import("@/views/remittance/initiate.vue");
+          return import("../views/remittance/initiate.vue");
+        },
+        meta: {
+          pageTitle: "Send Money",
+          breadcrumbs: ["Manage Transfers", "Send Money"],
+        },
+      },
+      {
+        path: "/remittance/rates",
+        name: "remittance-rates",
+        component: function () {
+          return import("../views/remittance/rates.vue");
         },
         meta: {
           pageTitle: "Send Money",
@@ -973,6 +984,60 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
 
+      /**
+       * Admin Campaign
+       */
+      {
+        path: "/admin/campaigns",
+        name: "admin-manage-campaigns",
+        component: function () {
+          return import("../views/admin/campaigns/manage.vue");
+        },
+        meta: {
+          pageTitle: "Manage Campaigns",
+          breadcrumbs: ["Campaigns", "manage"],
+        },
+      },
+      {
+        path: "/admin/campaigns/:reference",
+        name: "campaign-payments",
+        component: function () {
+          return import("../views/admin/campaigns/view.vue");
+        },
+        meta: {
+          pageTitle: "Campaign Payments",
+          breadcrumbs: ["Campaigns", "manage"],
+        },
+      },
+
+      /**
+       * Admin Invoices
+       */
+
+      //invoices
+      {
+        path: "/admin/invoices",
+        name: "admin-manage-invoices",
+        component: function () {
+          return import("../views/admin/invoices/manage.vue");
+        },
+        meta: {
+          pageTitle: "Invoices",
+          breadcrumbs: ["Manage Invoices"],
+        },
+      },
+      {
+        path: "/admin/invoices/:reference",
+        name: "admin-view-invoice",
+        component: function () {
+          return import("../views/admin/invoices/view.vue");
+        },
+        meta: {
+          pageTitle: "Invoices",
+          breadcrumbs: ["View invoice"],
+        },
+      },
+
       //dev
       // {
       //   path: "/validation",
@@ -1072,13 +1137,17 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/sign-in",
         name: "sign-in",
-        component: () => import("@/views/shared/authentication/SignIn.vue"),
+        component: () => import("../views/shared/authentication/SignIn.vue"),
         meta: {
           pageTitle: "Sign In",
         },
       },
     ],
   },
+
+  /**
+   * Auth Routes
+   */
   {
     path: "/",
     component: () => import("@/layouts/AuthLayout.vue"),
@@ -1086,7 +1155,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/sign-up",
         name: "sign-up",
-        component: () => import("@/views/shared/authentication/SignUp.vue"),
+        component: () => import("../views/shared/authentication/SignUp.vue"),
         meta: {
           pageTitle: "Sign Up",
         },
@@ -1095,7 +1164,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/password-reset",
         name: "password-reset",
         component: () =>
-          import("@/views/shared/authentication/PasswordReset.vue"),
+          import("../views/shared/authentication/PasswordReset.vue"),
         meta: {
           pageTitle: "Password reset",
         },
@@ -1114,18 +1183,18 @@ const routes: Array<RouteRecordRaw> = [
         path: "/pay/payment/:reference/:collectiontype",
         name: "guest-initiate-payment",
         component: function () {
-          return import("@/views/guest/pay/payment.vue");
+          return import("../views/guest/pay/payment.vue");
         },
         meta: {
-          pageTitle: "Request campaign Payment",
-          breadcrumbs: ["campaign", "manage"],
+          pageTitle: "Request Payment",
+          breadcrumbs: ["payments", "manage"],
         },
       },
       {
         path: "/pay/invoice-details/:reference",
         name: "guest-invoice-details",
         component: function () {
-          return import("@/views/guest/pay/invoice.vue");
+          return import("../views/guest/pay/invoice.vue");
         },
         meta: {
           pageTitle: "Invoice Payment",
@@ -1136,7 +1205,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/pay",
         name: "guest-payment-page",
         component: function () {
-          return import("@/views/guest/pay/index.vue");
+          return import("../views/guest/pay/index.vue");
         },
         meta: {
           pageTitle: "SP Pay",
@@ -1145,7 +1214,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/sign-up",
         name: "sign-up",
-        component: () => import("@/views/shared/authentication/SignUp.vue"),
+        component: () => import("../views/shared/authentication/SignUp.vue"),
         meta: {
           pageTitle: "Sign Up",
         },
@@ -1153,7 +1222,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/donations/:reference",
         name: "donations",
-        component: () => import("@/views/donations/index.vue"),
+        component: () => import("../views/donations/index.vue"),
         meta: {
           pageTitle: "Donations Page",
         },
@@ -1161,7 +1230,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/donations/process/:reference",
         name: "guest-donations-process",
-        component: () => import("@/views/donations/process.vue"),
+        component: () => import("../views/donations/process.vue"),
         meta: {
           pageTitle: "Process Donation",
         },
@@ -1180,7 +1249,7 @@ const routes: Array<RouteRecordRaw> = [
         // the 403 route, when none of the above matches
         path: "/403",
         name: "403",
-        component: () => import("@/views/shared/errors/Error403.vue"),
+        component: () => import("../views/shared/errors/Error403.vue"),
         meta: {
           pageTitle: "Error 403",
         },
@@ -1189,7 +1258,7 @@ const routes: Array<RouteRecordRaw> = [
         // the 404 route, when none of the above matches
         path: "/404",
         name: "404",
-        component: () => import("@/views/shared/errors/Error404.vue"),
+        component: () => import("../views/shared/errors/Error404.vue"),
         meta: {
           pageTitle: "Error 404",
         },
@@ -1197,7 +1266,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/500",
         name: "500",
-        component: () => import("@/views/shared/errors/Error500.vue"),
+        component: () => import("../views/shared/errors/Error500.vue"),
         meta: {
           pageTitle: "Error 500",
         },
@@ -1262,7 +1331,7 @@ router.beforeEach((to, from, next) => {
 
       //TODO
       hasAuthorisedAccess.value = true;
-      console.log(hasAuthorisedAccess.value);
+
       next();
     } else {
       next({ name: "sign-in" });

@@ -4,6 +4,8 @@ import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
 import { useCustomerUserStore } from "@/stores/customer/user";
 import type { iUser } from "@/models/user";
+import { CaretakerApiService } from "@/services/guest/CaretakerApiService";
+import { useStorage } from "@vueuse/core";
 
 export interface CoreUser {
   name: string;
@@ -35,6 +37,7 @@ export const useAuthStore = defineStore("auth", () => {
       return value === "admin";
     }
   };
+
   //TODO - set user mode
   // const isAdminMode =
   //   getJSONFromLocalStorage("isAdminMode") || (false as boolean);
@@ -100,6 +103,13 @@ export const useAuthStore = defineStore("auth", () => {
     window.localStorage.removeItem("userpermissions");
     window.localStorage.removeItem("userid");
     window.localStorage.removeItem("isAdminMode");
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("userid");
+    window.localStorage.removeItem("validatedRemittanceResponse");
+    window.localStorage.removeItem("fxRates");
+    window.localStorage.removeItem("checkRates");
+    window.localStorage.removeItem("exchangeRates");
+    window.localStorage.removeItem("exchangeRate");
     // Reset all stores
   }
 
@@ -129,12 +139,18 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   function forgotPassword(email: string) {
-    return ApiService.post("forgot_password", email)
-      .then(() => {
+    console.log(email);
+    return CaretakerApiService.post(
+      "/v1/customer/forgot-password/initiate",
+      email
+    )
+      .then(({ data }) => {
         setError({});
+        return data;
       })
       .catch(({ response }) => {
         setError(response.data.errors);
+        return response;
       });
   }
 
@@ -147,7 +163,7 @@ export const useAuthStore = defineStore("auth", () => {
           //TODO  -move to centralised location
           //setAuth(data);
           setAuthUser(data);
-          console.log(data);
+
           //TODO
           //store user permissions in local storage
           authPermissions.value = data.permissions;

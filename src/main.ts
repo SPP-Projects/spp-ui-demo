@@ -10,10 +10,11 @@ import i18n from "@/core/plugins/i18n";
 //imports for app initialization
 import ApiService from "@/core/services/ApiService";
 import { initApexCharts } from "@/core/plugins/apexcharts";
-import { initInlineSvg } from "@/core/plugins/inline-svg";
+// import { initInlineSvg } from "@/core/plugins/inline-svg";
 import { initVeeValidate } from "@/core/plugins/vee-validate";
-
+import InlineSvg from "vue-inline-svg";
 import "@/core/plugins/prismjs";
+
 const app = createApp(App);
 
 app.use(createPinia());
@@ -22,9 +23,10 @@ app.use(ElementPlus);
 
 ApiService.init(app);
 initApexCharts(app);
-initInlineSvg(app);
+// initInlineSvg(app);
 initVeeValidate();
 
+app.component("inline-svg", InlineSvg);
 app.use(i18n);
 
 app.directive("tooltip", (el) => {

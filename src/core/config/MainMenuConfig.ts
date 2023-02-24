@@ -44,7 +44,7 @@ const MainMenuConfig: Array<MenuItem> = [
       },
       {
         heading: "Send Money",
-        route: "/remittance/initiate",
+        route: "/remittance/rates",
         svgIcon: "/media/icons/duotune/general/gen014.svg",
         fontIcon: "bi bi-person-fill-up",
         menuPermission: ["view transactions"],

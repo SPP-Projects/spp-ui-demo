@@ -306,6 +306,40 @@ const MainMenuConfig: Array<MenuItem> = [
           },
         ],
       },
+
+      /**
+       * Campaigns
+       */
+      {
+        sectionTitle: "Campaign",
+        route: "/campaign",
+        svgIcon: "/media/icons/duotune/finance/fin006.svg",
+        fontIcon: "bi bi-person-vcard-fill",
+        sub: [
+          {
+            heading: "Manage",
+            route: "/admin/campaigns",
+            menuPermission: ["view campaigns"],
+          },
+        ],
+      },
+
+      /**
+       * Invoices
+       */
+      {
+        sectionTitle: "Invoices",
+        route: "/invoices",
+        svgIcon: "/media/icons/duotune/finance/fin006.svg",
+        fontIcon: "bi bi-person-vcard-fill",
+        sub: [
+          {
+            heading: "Manage",
+            route: "/admin/invoices",
+            menuPermission: ["view invoices"],
+          },
+        ],
+      },
     ],
   },
 ];

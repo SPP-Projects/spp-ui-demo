@@ -333,6 +333,8 @@ const sppData = {
     { id: 9, code: "CHRG", name: "SP Pay Charge" },
     { id: 10, code: "COMM", name: "SP Pay Commission" },
     { id: 11, code: "TAX", name: "SP Pay Tax" },
+    { id: 11, code: "TAX", name: "SP Pay Tax" },
+    { id: 12, code: "REMIT", name: "Remittance" },
   ],
 };
 

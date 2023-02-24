@@ -33,6 +33,25 @@ class OnboardingService {
       }
     );
   }
+
+  initiateForgotPassword(data) {
+    return CaretakerApiService.post(
+      "/v1/customer/forgot-password/initiate",
+      data
+    );
+  }
+  validateResetCode(data) {
+    return CaretakerApiService.post(
+      "/v1/customer/forgot-password/validate-code",
+      data
+    );
+  }
+  resetPassword(data) {
+    return CaretakerApiService.post(
+      "/v1/customer/forgot-password/reset-password",
+      data
+    );
+  }
 }
 
 export default new OnboardingService();

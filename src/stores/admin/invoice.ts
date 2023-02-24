@@ -1,0 +1,101 @@
+import { defineStore } from "pinia";
+import InvoiceService from "@/services/admin/InvoiceService";
+import { getError } from "@/helpers/errors";
+import type { iInvoice } from "@/models/invoice";
+
+export const useAdminInvoiceStore = defineStore("adminInvoiceStore", {
+  state: () => ({
+    invoices: [],
+    invoiceDetails: {} as iInvoice,
+    invoiceItems: [],
+    invoicePayments: [],
+
+    invoice: {},
+
+    //shared
+    loadingInvoiceData: false,
+    error: null,
+    unauthorized: false,
+    meta: { total: 0, from: 0, to: 0, last_page: 0 },
+  }),
+  actions: {
+    getAllInvoices(options) {
+      return new Promise((resolve, reject) => {
+        this.loadingInvoiceData = true;
+        InvoiceService.getAllInvoices(options)
+          .then(({ data }) => {
+            this.invoices = data.data;
+            this.meta.total = data.total;
+            this.meta.from = data.from;
+            this.meta.to = data.to;
+            this.meta.last_page = data.last_page;
+            resolve(data);
+          })
+          .catch((error) => {
+            if (error.response.status === 403) {
+              // unauthorized.
+              this.unauthorized = true;
+            }
+
+            this.loadingInvoiceData = false;
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingInvoiceData = false;
+          });
+      });
+    },
+
+    updateInvoiceStatus([payload, reference]) {
+      return new Promise((resolve, reject) => {
+        this.loadingInvoiceData = true;
+        InvoiceService.updateInvoiceStatus(payload, reference)
+          .then(({ data }) => {
+            resolve(data);
+          })
+          .catch((error) => {
+            if (error.response.status === 403) {
+              // unauthorized.
+              this.unauthorized = true;
+            }
+
+            this.loadingInvoiceData = false;
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingInvoiceData = false;
+          });
+      });
+    },
+
+    getInvoiceByReference(id) {
+      console.log(id);
+      return new Promise((resolve, reject) => {
+        this.loadingInvoiceData = true;
+        InvoiceService.getInvoiceByReference(id)
+          .then(({ data }) => {
+            this.invoiceDetails = data.invoice;
+            this.invoiceItems = data.invoice.items;
+            this.invoicePayments = data.invoice.payments;
+            console.log(data);
+            resolve(data);
+          })
+          .catch((error) => {
+            if (error.response.status === 403) {
+              // unauthorized.
+              this.unauthorized = true;
+            }
+
+            this.loadingInvoiceData = false;
+            this.error = getError(error);
+            reject(error);
+          })
+          .finally(() => {
+            this.loadingInvoiceData = false;
+          });
+      });
+    },
+  },
+});

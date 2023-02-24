@@ -76,6 +76,14 @@
             >Closed</span
           >
         </template>
+        <template v-slot:is_private="{ row: data }">
+          <span v-if="data.is_private === 0" class="badge badge-danger"
+            >Private</span
+          >
+          <span v-if="data.is_private === 1" class="badge badge-light-success"
+            >Public</span
+          >
+        </template>
 
         <template v-slot:created_at="{ row: data }">
           <p class="text-muted">{{ formatDateTime(data.created_at) }}</p>
@@ -222,6 +230,35 @@
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                <span class="required">Visible to Public?</span>
+                <i
+                  class="fas fa-exclamation-circle ms-2 fs-7"
+                  data-bs-toggle="tooltip"
+                ></i>
+              </label>
+              <!--end::Label-->
+
+              <!--begin::Input group-->
+              <div class="row g-9 mb-8">
+                <!--begin::Col-->
+                <div class="col-md-6 fv-row">
+                  <el-form-item prop="is_private">
+                    <el-select
+                      v-model="campaign.is_private"
+                      placeholder="Select"
+                    >
+                      <el-option value="1">Yes</el-option>
+                      <el-option value="0">No</el-option>
+                    </el-select></el-form-item
+                  >
+                </div>
+                <!--end::Col-->
+              </div>
+              <!--end::Input group-->
+            </div>
+            <div class="d-flex flex-column mb-4 fv-row">
+              <!--begin::Label-->
+              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span>Image/Banner</span>
                 <i
                   class="fas fa-exclamation-circle ms-2 fs-7"
@@ -347,6 +384,11 @@ export default defineComponent({
       { columnLabel: "title", columnName: "title", sortEnabled: true },
       { columnLabel: "goal", columnName: "goal", sortEnabled: false },
       { columnLabel: "donated", columnName: "donated", sortEnabled: true },
+      {
+        columnLabel: "is_private",
+        columnName: "is_private",
+        sortEnabled: true,
+      },
 
       {
         columnLabel: "actions",
@@ -370,6 +412,7 @@ export default defineComponent({
       image: "",
       goal: "",
       reference: "",
+      is_private: "",
     } as any);
 
     const campaignImageRef = ref(null);
@@ -427,6 +470,7 @@ export default defineComponent({
           formPayload.append("title", campaign.value.title);
           formPayload.append("description", campaign.value.description);
           formPayload.append("goal", campaign.value.goal);
+          formPayload.append("is_private", campaign.value.is_private);
 
           if (payload.value.batch_file !== null) {
             formPayload.append("image", payload.value.batch_file);
@@ -498,6 +542,7 @@ export default defineComponent({
         image: "",
         goal: "",
         reference: "",
+        is_private: "",
       };
     };
 
@@ -520,6 +565,13 @@ export default defineComponent({
         {
           required: true,
           message: "Campaign goal/amount is required",
+          trigger: "change",
+        },
+      ],
+      is_private: [
+        {
+          required: true,
+          message: "Private field is required",
           trigger: "change",
         },
       ],

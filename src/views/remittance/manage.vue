@@ -100,11 +100,11 @@
               </div>
               <!--end::Amount or Reference-->
 
-              <!--begin::Transaction Status-->
+              <!--begin::Remittance Status-->
               <div class="mb-5">
                 <!--begin::Label-->
                 <label class="form-label fs-5 fw-semibold mb-3"
-                  >Transaction Status:</label
+                  >Remittance Status:</label
                 >
                 <!--end::Label-->
                 <!--begin::Input-->
@@ -132,9 +132,9 @@
                 </el-form-item>
                 <!--end::Input-->
               </div>
-              <!--end::Transaction Status-->
+              <!--end::Remittance Status-->
 
-              <!--begin::Transaction Date-->
+              <!--begin::Remittance Date-->
               <div class="mb-5">
                 <!--begin::Label-->
                 <label class="form-label fs-5 fw-semibold mb-3">Date:</label>
@@ -154,7 +154,7 @@
                 </el-row>
                 <!--end::Input-->
               </div>
-              <!--end::Transaction Date-->
+              <!--end::Remittance Date-->
 
               <!--begin::Actions-->
               <div class="d-flex justify-content-end">
@@ -190,59 +190,34 @@
             class="btn btn-light-primary me-3 btn-sm"
             @click.prevent="handleFilterChange('reset')"
           >
-            Refresh Transactions
+            Refresh Transfers
           </button>
           <!--end::Refresh-->
 
-          <!--begin::New Transaction-->
-          <router-link
-            to="/transactions/initiate"
-            class="btn btn-primary btn-sm"
-          >
-            New Transaction
+          <!--begin::New Transfer-->
+          <router-link to="/remittance/initiate" class="btn btn-primary btn-sm">
+            Send Money >>
           </router-link>
-
-          <!--end::New Transaction-->
+          <!--end::New Transfer-->
         </div>
         <!--end::Toolbar-->
-        <!--begin::Group actions-->
-        <div
-          class="d-flex justify-content-end align-items-center d-none"
-          data-kt-customer-table-toolbar="selected"
-        >
-          <div class="fw-bold me-5">
-            <span
-              class="me-2"
-              data-kt-customer-table-select="selected_count"
-            ></span
-            >Selected
-          </div>
-          <button
-            type="button"
-            class="btn btn-danger btn-sm"
-            data-kt-customer-table-select="delete_selected"
-          >
-            Delete Selected
-          </button>
-        </div>
-        <!--end::Group actions-->
       </div>
       <!--end::Card toolbar-->
     </div>
     <!--end::Card header-->
 
-    <!--begin::Transaction List-->
+    <!--begin::Remittance List-->
     <div class="card-body">
       <!--begin::Table-->
       <KTDatatable
-        :data="transactions"
+        :data="remittances"
         :header="tableHeader"
         :enable-items-per-page-dropdown="true"
         :checkbox-enabled="false"
         checkbox-label="id"
         :itemsPerPage="table_options.page_size"
         :total="meta.total"
-        :loading="loadingTransactionData"
+        :loading="loadingRemittanceData"
         @page-change="handlePageChange"
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
@@ -272,7 +247,7 @@
         </template>
 
         <template v-slot:reference="{ row: data }">
-          <router-link :to="'/transactions/' + data.reference">
+          <router-link :to="'/remittance/' + data.reference">
             {{ data.reference }}</router-link
           >
         </template>
@@ -300,7 +275,7 @@
         </template>
 
         <template v-slot:actions="{ row: data }">
-          <router-link :to="'/transactions/' + data.reference">
+          <router-link :to="'/remittances/' + data.reference">
             <button class="btn btn-sm btn-light-info btn-active-light-info">
               View
             </button>
@@ -309,29 +284,31 @@
       </KTDatatable>
       <!--end::Table-->
     </div>
-    <!--end::Transaction List-->
+    <!--end::Remittance List-->
   </div>
   <!--end::Card-->
 </template>
 
 <script lang="ts">
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-import { useCustomerTransactionStore } from "@/stores/customer/transaction";
+
 import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
 import { onMounted, ref, watch } from "vue";
 import useOutputFormat from "@/composables/useOutputFormat";
-import type { iTransaction } from "@/models/transaction";
+
 import sppData from "@/helpers/data";
+import { useCustomerRemittanceStore } from "@/stores/remittance/remittance";
+import type { iRemittance } from "@/models/remittance";
 export default {
-  name: "customer-manage-transaction",
+  name: "customer-manage-remittance",
   components: { KTDatatable },
   setup() {
-    //transaction store
-    const transactionStore = useCustomerTransactionStore();
-    const { transactions, meta, loadingTransactionData } =
-      storeToRefs(transactionStore);
-    const { getTransactions } = useCustomerTransactionStore();
+    //remittance store
+    const remittanceStore = useCustomerRemittanceStore();
+    const { remittances, meta, loadingRemittanceData } =
+      storeToRefs(remittanceStore);
+    const { getRemittances } = useCustomerRemittanceStore();
 
     //accounts store
     const accountStore = useCustomerAccountStore();
@@ -375,7 +352,7 @@ export default {
     const table_options = ref({
       account: "" as any,
       current_page: 1,
-      page_size: 10,
+      page_size: 20,
       amount_or_reference: "",
       type_code: "REMIT",
       status_id: "",
@@ -389,17 +366,17 @@ export default {
       debounce: 2000,
       kDebounceTimeoutMs: 1000,
     });
-    const transaction = ref<iTransaction | any>({});
+    const remittance = ref<iRemittance | any>({});
 
     //methods
     const handlePerPageChange = (size: number) => {
       table_options.value.current_page = 1;
       table_options.value.page_size = size;
-      getTransactions(table_options.value);
+      getRemittances(table_options.value);
     };
     const handlePageChange = (val) => {
       table_options.value.current_page = val;
-      getTransactions(table_options.value);
+      getRemittances(table_options.value);
     };
     const sortingChanged = (ctx) => {
       table_options.value.sort.column = ctx.label;
@@ -407,17 +384,17 @@ export default {
       table_options.value.sort.direction = ctx.order;
       table_options.value.current_page = 1;
 
-      getTransactions(table_options.value);
+      getRemittances(table_options.value);
     };
     const accountChanged = (table_options) => {
       //  set account
       accountStore.setLastSelectedAccount(table_options.account);
-      getTransactions(table_options);
+      getRemittances(table_options);
     };
-    const viewTransaction = (val) => {
+    const viewRemittance = (val) => {
       //TODO - SPP
-      //call transaction by ref from api to get charge details
-      transaction.value = val;
+      //call remittance by ref from api to get charge details
+      remittance.value = val;
     };
     const handleFilterChange = (action) => {
       //set current page to page 1
@@ -429,7 +406,7 @@ export default {
         table_options.value.date = "";
       }
 
-      getTransactions(table_options.value);
+      getRemittances(table_options.value);
     };
 
     //search
@@ -443,7 +420,7 @@ export default {
         searchRecords.value.isSearching = true;
 
         searchRecords.value.debounceTimeout = setTimeout(() => {
-          getTransactions(table_options.value);
+          getRemittances(table_options.value);
           searchRecords.value.isSearching = false;
         }, searchRecords.value.kDebounceTimeoutMs);
       }
@@ -457,26 +434,26 @@ export default {
 
       table_options.value.account = accountStore.lastSelectedAccount;
 
-      await getTransactions(table_options.value);
+      await getRemittances(table_options.value);
 
       loadingPage.value = false;
     });
     return {
-      loadingTransactionData,
+      loadingRemittanceData,
       loadingPage,
       meta,
-      transactions,
+      remittances,
       tableHeader,
       table_options,
       handlePageChange,
       handlePerPageChange,
       handleFilterChange,
       sortingChanged,
-      viewTransaction,
+      viewRemittance,
       formatCurrencyAmount,
       formatDateTime,
       sppData,
-      getTransactions,
+      getRemittances,
       accounts,
 
       //TODO

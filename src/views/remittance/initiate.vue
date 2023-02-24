@@ -170,7 +170,7 @@
         v-if="stepper === 'confirm'"
         class="m-10 p-10"
       >
-        <el-form ref="confirmTransferFormRef" :rules="confirmTransferRules">
+        <el-form ref="confirmTransferFormRef">
           <!--begin::Wrapper-->
           <div class="w-100">
             <!--begin::Heading-->
@@ -235,7 +235,7 @@
                 type="button"
                 class="btn btn-lg btn-light-primary me-3"
                 data-kt-stepper-action="previous"
-                @click.prevent="addPaymentDetails()"
+                @click.prevent="jumpToStep('payment')"
               >
                 <span class="svg-icon svg-icon-3 me-1">
                   <inline-svg src="/media/icons/duotune/arrows/arr063.svg" />
@@ -246,26 +246,7 @@
             <!--end::Wrapper-->
 
             <!--begin::Wrapper-->
-            <div>
-              <button
-                type="submit"
-                class="btn btn-lg btn-primary"
-                @click="addRecipientDetails()"
-              >
-                <span class="indicator-label">
-                  Submit
-                  <span class="svg-icon svg-icon-3 ms-2 me-0">
-                    <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
-                  </span>
-                </span>
-                <span class="indicator-progress">
-                  Please wait...
-                  <span
-                    class="spinner-border spinner-border-sm align-middle ms-2"
-                  ></span>
-                </span>
-              </button>
-            </div>
+            <div></div>
             <!--end::Wrapper-->
           </div>
           <!--end::Actions--></el-form
@@ -279,11 +260,11 @@
         v-if="stepper === 'input'"
         class="m-10 p-10"
       >
-        <el-form
+        <VForm
           ref="validateTransferFormRef"
-          :rules="validateTransferRules"
-          :model="remittanceForm.validationDetails"
+          :validation-schema="validateTransferSchema"
           class="form"
+          @submit="validateTransfer()"
         >
           <!--begin::Wrapper-->
           <div class="w-100">
@@ -308,21 +289,25 @@
                 <div class="row fv-row">
                   <!--begin::Col-->
                   <div class="">
-                    <el-form-item prop="debit_currency_code">
-                      <el-select
-                        name="debit_currency_code"
-                        class="form-control"
-                        data-placeholder="Currency"
-                        as="select"
-                        v-model="
-                          remittanceForm.validationDetails.debit_currency_code
-                        "
-                      >
-                        <el-option label="GBP" value="GBP">GBP</el-option>
-                        <el-option label="USD" value="USD">EUR</el-option>
-                        <el-option label="EUR" value="EUR">EUR</el-option>
-                      </el-select>
-                    </el-form-item>
+                    <Field
+                      name="debit_currency_code"
+                      class="form-control form-select form-select-solid"
+                      data-placeholder="Currency"
+                      as="select"
+                      v-model="
+                        remittanceForm.validationDetails.debit_currency_code
+                      "
+                    >
+                      <option label="GBP" value="GBP">GBP</option>
+                      <option label="USD" value="USD">USD</option>
+                      <option label="EUR" value="EUR">EUR</option>
+                    </Field>
+
+                    <div class="fv-plugins-message-container">
+                      <div class="fv-help-block">
+                        <ErrorMessage name="debit_currency_code" />
+                      </div>
+                    </div>
                   </div>
                   <!--end::Col-->
                 </div>
@@ -341,15 +326,18 @@
                 </label>
                 <!--end::Label-->
 
-                <el-form-item prop="amount">
-                  <el-input
-                    type="number"
-                    class="form-control form-control-solid"
-                    placeholder="Amount"
-                    name="amount"
-                    v-model="remittanceForm.validationDetails.amount"
-                  />
-                </el-form-item>
+                <Field
+                  type="number"
+                  class="form-control form-control-solid"
+                  placeholder="Amount"
+                  name="amount"
+                  v-model="remittanceForm.validationDetails.amount"
+                />
+                <div class="fv-plugins-message-container">
+                  <div class="fv-help-block">
+                    <ErrorMessage name="amount" />
+                  </div>
+                </div>
               </div>
               <!--end::Col-->
             </div>
@@ -369,25 +357,31 @@
                 <div class="row fv-row">
                   <!--begin::Col-->
                   <div class="">
-                    <el-form-item prop="credit_account_institution">
-                      <el-select
-                        name="credit_account_institution"
-                        class="form-select form-select-solid"
-                        data-control="select2"
-                        data-hide-search="true"
-                        data-placeholder="Institution"
-                        as="select"
-                        v-model="
-                          remittanceForm.validationDetails
-                            .credit_account_institution
-                        "
-                      >
-                        <el-option label="SPPAY" value="1">SPPAY</el-option>
-                        <el-option label="MTN" value="26">MTN</el-option>
-                        <el-option label="VOD" value="40">VOD</el-option>
-                        <el-option label="ATL" value="5">ATL</el-option>
-                      </el-select></el-form-item
+                    <Field
+                      name="credit_account_institution"
+                      class="form-select form-select-solid"
+                      data-control="select2"
+                      data-hide-search="true"
+                      data-placeholder="Institution"
+                      as="select"
+                      v-model="
+                        remittanceForm.validationDetails
+                          .credit_account_institution
+                      "
                     >
+                      <option
+                        v-for="item in recipientInstitutions"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      />
+                    </Field>
+
+                    <div class="fv-plugins-message-container">
+                      <div class="fv-help-block">
+                        <ErrorMessage name="credit_account_institution" />
+                      </div>
+                    </div>
                   </div>
                   <!--end::Col-->
                 </div>
@@ -408,16 +402,20 @@
                   ></i>
                 </label>
                 <!--end::Label-->
-                <el-form-item prop="credit_account_no">
-                  <el-input
-                    type="text"
-                    class="form-control form-control-solid"
-                    placeholder="Enter Account Number to Transfer To E.g. 027XXXXXXX"
-                    name="credit_account_no"
-                    v-model="
-                      remittanceForm.validationDetails.credit_account_no
-                    "
-                /></el-form-item>
+
+                <Field
+                  type="text"
+                  class="form-control form-control-solid"
+                  placeholder="Enter Account Number to Transfer To E.g. 027XXXXXXX"
+                  name="credit_account_no"
+                  v-model="remittanceForm.validationDetails.credit_account_no"
+                />
+
+                <div class="fv-plugins-message-container">
+                  <div class="fv-help-block">
+                    <ErrorMessage name="credit_account_no" />
+                  </div>
+                </div>
               </div>
               <!--end::Col-->
             </div>
@@ -427,9 +425,9 @@
             <div class="d-flex flex-column mb-7 fv-row">
               <!--begin::Label-->
               <label
-                class="d-flex align-items-center fs-6 fw-semobold form-label mb-2"
+                class="d-flex required align-items-center fs-6 fw-semobold form-label mb-2"
               >
-                <span>Reference (Optional)</span>
+                <span>Reference/Reason</span>
                 <i class="fas ms-2 fs-7" title="Enter reference"></i>
               </label>
               <!--end::Label-->
@@ -464,7 +462,6 @@
                 type="submit"
                 class="btn btn-lg btn-primary"
                 ref="validateTransferButtonRef"
-                @click.prevent="validateTransfer()"
               >
                 <span class="indicator-label">
                   Validate Transfer
@@ -483,7 +480,7 @@
             <!--end::Wrapper-->
           </div>
           <!--end::Actions-->
-        </el-form>
+        </VForm>
       </div>
       <!--end::Input Currency and Amount-->
 
@@ -493,11 +490,11 @@
         v-if="stepper === 'recipient'"
         class="m-10 p-10"
       >
-        <el-form
+        <VForm
           ref="addRecipientDetailsFormRef"
-          :rules="addRecipientDetailsRules"
           class="form"
-          :model="remittanceForm.recipientDetails"
+          :validation-schema="addRecipientDetailsSchema"
+          @submit="addPaymentDetails()"
           ><!--begin::Wrapper-->
           <div class="w-100">
             <!--begin::Heading-->
@@ -519,12 +516,17 @@
               <!--end::Label-->
 
               <!--begin::Input-->
-              <el-form-item prop="recipient_name">
-                <el-input
-                  name="recipient_name"
-                  class="form-control form-control-lg form-control-solid"
-                  v-model="remittanceForm.recipientDetails.recipient_name"
-              /></el-form-item>
+
+              <Field
+                name="recipient_name"
+                class="form-control form-control-lg form-control-solid"
+                v-model="remittanceForm.recipientDetails.recipient_name"
+              />
+              <div class="fv-plugins-message-container">
+                <div class="fv-help-block">
+                  <ErrorMessage name="recipient_name" />
+                </div>
+              </div>
               <!--end::Input-->
             </div>
             <!--end::Recipient Name-->
@@ -538,12 +540,17 @@
               <!--end::Label-->
 
               <!--begin::Input-->
-              <el-form-item prop="recipient_email">
-                <el-input
-                  name="recipient_email"
-                  class="form-control form-control-lg form-control-solid"
-                  v-model="remittanceForm.recipientDetails.recipient_email"
-              /></el-form-item>
+
+              <Field
+                name="recipient_email"
+                class="form-control form-control-lg form-control-solid"
+                v-model="remittanceForm.recipientDetails.recipient_email"
+              />
+              <div class="fv-plugins-message-container">
+                <div class="fv-help-block">
+                  <ErrorMessage name="recipient_email" />
+                </div>
+              </div>
 
               <!--end::Input-->
             </div>
@@ -574,7 +581,7 @@
               <button
                 type="submit"
                 class="btn btn-lg btn-primary"
-                @click.prevent="addPaymentDetails()"
+                ref="addPaymentDetailsButtonRef"
               >
                 <span class="indicator-label">
                   Add Payment Details
@@ -593,7 +600,7 @@
             <!--end::Wrapper-->
           </div>
           <!--end::Actions-->
-        </el-form>
+        </VForm>
       </div>
       <!--end::Recipient Details-->
 
@@ -603,11 +610,11 @@
         v-if="stepper === 'payment'"
         class="m-10 p-10"
       >
-        <el-form
+        <VForm
           ref="addPaymentDetailsFormRef"
-          :rules="addPaymentDetailsRules"
+          :validation-schema="addPaymentDetailsSchema"
+          @submit="confirmTransfer()"
           class="form"
-          :model="remittanceForm.paymentDetails"
         >
           <!--begin::Wrapper-->
           <div class="w-100">
@@ -637,14 +644,115 @@
                 ></i>
               </label>
               <!--end::Label-->
-              <el-form-item prop="name">
-                <el-input
-                  type="text"
+
+              <Field
+                type="text"
+                class="form-control form-control-solid"
+                placeholder=""
+                name="name"
+                v-model="remittanceForm.paymentDetails.name"
+              />
+              <div class="fv-plugins-message-container">
+                <div class="fv-help-block">
+                  <ErrorMessage name="name" />
+                </div>
+              </div>
+            </div>
+            <!--end::Input group-->
+
+            <!--begin::Input group-->
+            <div class="d-flex flex-column mb-5 fv-row">
+              <!--begin::Label-->
+              <label class="required fs-5 fw-semobold mb-2"
+                >Address Line 1</label
+              >
+              <!--end::Label-->
+
+              <!--begin::Input-->
+              <Field
+                class="form-control form-control-solid"
+                placeholder=""
+                name="address1"
+                v-model="remittanceForm.paymentDetails.address.line1"
+              />
+              <div class="fv-plugins-message-container">
+                <div class="fv-help-block">
+                  <ErrorMessage name="address1" />
+                </div>
+              </div>
+              <!--end::Input-->
+            </div>
+            <!--end::Input group-->
+
+            <!--begin::Input group-->
+            <div class="d-flex flex-column mb-5 fv-row">
+              <!--begin::Label-->
+              <label class="fs-5 fw-semobold mb-2">Address Line 2</label>
+              <!--end::Label-->
+
+              <!--begin::Input-->
+              <Field
+                class="form-control form-control-solid"
+                placeholder=""
+                name="address2"
+                v-model="remittanceForm.paymentDetails.address.line2"
+              />
+              <div class="fv-plugins-message-container">
+                <div class="fv-help-block">
+                  <ErrorMessage name="address2" />
+                </div>
+              </div>
+              <!--end::Input-->
+            </div>
+            <!--end::Input group-->
+
+            <!--begin::Input group-->
+            <div class="row g-9 mb-5">
+              <!--begin::Col-->
+              <div class="col-md-6 fv-row">
+                <!--begin::Label-->
+                <label class="fs-5 required fw-semobold mb-2">City</label>
+                <!--end::Label-->
+
+                <!--begin::Input-->
+                <Field
                   class="form-control form-control-solid"
                   placeholder=""
-                  v-model="remittanceForm.paymentDetails.name"
+                  name="city"
+                  v-model="remittanceForm.paymentDetails.address.city"
                 />
-              </el-form-item>
+                <div class="fv-plugins-message-container">
+                  <div class="fv-help-block">
+                    <ErrorMessage name="city" />
+                  </div>
+                </div>
+                <!--end::Input-->
+              </div>
+              <!--end::Col-->
+
+              <!--begin::Col-->
+              <div class="col-md-6 fv-row">
+                <!--begin::Label-->
+                <label class="fs-5 required fw-semobold mb-2"
+                  >Post Code / Zip Code</label
+                >
+                <!--end::Label-->
+
+                <!--begin::Input-->
+                <Field
+                  class="form-control form-control-solid"
+                  placeholder=""
+                  name="postCode"
+                  v-model="remittanceForm.paymentDetails.address.postal_code"
+                />
+                <div class="fv-plugins-message-container">
+                  <div class="fv-help-block">
+                    <ErrorMessage name="postCode" />
+                  </div>
+                </div>
+                <!--end::Input-->
+              </div>
+              <!--end::Col-->
             </div>
             <!--end::Input group-->
 
@@ -691,7 +799,7 @@
               <button
                 type="submit"
                 class="btn btn-lg btn-primary"
-                @click.prevent="confirmTransfer()"
+                ref="confirmPaymentButtonRef"
               >
                 <span class="indicator-label">
                   Confirm Payment
@@ -710,7 +818,7 @@
             <!--end::Wrapper-->
           </div>
           <!--end::Actions-->
-        </el-form>
+        </VForm>
       </div>
       <!--end::Payment Details-->
 
@@ -853,14 +961,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 
-import { ErrorMessage, Field } from "vee-validate";
+import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import { loadStripe } from "@stripe/stripe-js";
 import Message from "vue-m-message";
 import { useCustomerRemittanceStore } from "@/stores/remittance/remittance";
 
 import PaymentSuccess from "@/views/remittance/success.vue";
+import sppData from "@/helpers/data";
+
+import * as Yup from "yup";
+import { storeToRefs } from "pinia";
 
 export default defineComponent({
   name: "create-account-modal",
@@ -868,11 +980,17 @@ export default defineComponent({
     PaymentSuccess,
     Field,
     ErrorMessage,
+    VForm,
   },
   setup() {
     const remittanceStore = useCustomerRemittanceStore();
-
+    const { formRate } = storeToRefs(remittanceStore);
     const loading = ref(false);
+
+    const validateTransferFormRef = ref<null | HTMLFormElement>(null);
+    const confirmTransferFormRef = ref<null | HTMLFormElement>(null);
+    const addRecipientDetailsFormRef = ref<null | HTMLFormElement>(null);
+    const addPaymentDetailsFormRef = ref<null | HTMLFormElement>(null);
 
     const remittanceForm = ref({
       stepper: "input",
@@ -880,30 +998,31 @@ export default defineComponent({
         //TODO - Add more code
         debit_account_no: "CARD",
         //TODO - Add more code
-        debit_account_institution: "42",
-        debit_currency_code: "GBP",
-        credit_account_no: "1016", //0257025683",
-        credit_account_institution: "1", //"26",
-        amount: "50",
-        external_reference: "Welcome to our test",
+        debit_account_institution: "42", //42 STRIPE
+        debit_currency_code: "",
+        credit_account_no: "",
+        credit_account_institution: "", //"26",
+        amount: "",
+        external_reference: "",
         payment_intent_id: "",
       },
       recipientDetails: {
-        recipient_name: "Michael Boateng",
-        recipient_email: "thuggistry@gmail.com",
-        recipient_address: "Accra",
-        recipient_city: "Accra",
-        recipient_state: "Ghana",
-        recipient_zip_code: "23321",
+        recipient_name: "",
+        recipient_email: "",
+        recipient_address: "",
+        recipient_city: "",
+        recipient_state: "",
+        recipient_zip_code: "",
       },
       paymentDetails: {
-        name: "michael",
-        email: "thuggistry@gmail.com",
+        name: "",
+        email: "",
         address: {
-          city: "accra",
-          line1: "address",
-          state: "state",
-          postal_code: "zip",
+          city: "",
+          line1: "",
+          line2: "",
+          state: "",
+          postal_code: "",
         },
       },
       paymentIntentDetails: {
@@ -930,69 +1049,72 @@ export default defineComponent({
       stepper.value = "input";
     };
     const validateTransfer = () => {
-      if (!validateTransferFormRef.value) {
-        return;
+      if (validateTransferButtonRef.value) {
+        //Disable button
+        validateTransferButtonRef.value!.disabled = true;
+        // Activate indicator
+        validateTransferButtonRef.value.setAttribute("data-kt-indicator", "on");
       }
 
-      validateTransferFormRef.value.validate((valid: boolean) => {
-        if (valid) {
-          loading.value = true;
-          stepper.value = "validate";
-          transferStatus.value.loading = true;
-          loading.value = true;
+      stepper.value = "validate";
+      loading.value = true;
+      transferStatus.value.loading = true;
 
-          setTimeout(() => {
-            //TODO - validation
-            // if (submitButtonRef.value) {
-            //   submitButtonRef.value.disabled = false;
-            //
-            //   submitButtonRef.value?.removeAttribute("data-kt-indicator");
-            // }
+      setTimeout(() => {
+        //TODO - validation
+        // if (submitButtonRef.value) {
+        //   submitButtonRef.value.disabled = false;
+        //
+        //   submitButtonRef.value?.removeAttribute("data-kt-indicator");
+        // }
 
-            remittanceStore
-              .validateRemittance(remittanceForm.value.validationDetails)
-              .then(async (response: any) => {
-                console.log(response);
-                validatedTransferDetails.value = response;
-                remittanceForm.value.validationDetails.payment_intent_id =
-                  response.payment_intent.id;
-              })
-              .catch((error) => {
-                stepper.value = "input";
-                loading.value = false;
-                const response = error.response.data;
+        remittanceStore
+          .validateRemittance(remittanceForm.value.validationDetails)
+          .then(async (response: any) => {
+            console.log(response);
+            validatedTransferDetails.value = response;
+            remittanceForm.value.validationDetails.payment_intent_id =
+              response.payment_intent.id;
+          })
+          .catch((error) => {
+            stepper.value = "input";
+            loading.value = false;
+            const response = error.response.data;
 
-                if (response.errors) {
-                  const errors = response.errors;
-                  for (const key in errors) {
-                    Message({
-                      message: errors[key][0],
-                      position: "bottom-right",
-                      type: "error",
-                      duration: 5000,
-                      zIndex: 99999,
-                    });
-                  }
-                } else if (response.error) {
-                  Message({
-                    message: response.error,
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              })
-              .finally(function () {
-                loading.value = false;
-                transferStatus.value.loading = false;
+            if (response.errors) {
+              const errors = response.errors;
+              for (const key in errors) {
+                Message({
+                  message: errors[key][0],
+                  position: "bottom-right",
+                  type: "error",
+                  duration: 5000,
+                  zIndex: 99999,
+                });
+              }
+            } else if (response.error) {
+              Message({
+                message: response.error,
+                position: "bottom-right",
+                type: "error",
+                duration: 5000,
+                zIndex: 99999,
               });
-          }, 2000);
-        } else {
-          stepper.value = "input";
-          return false;
-        }
-      });
+            } else {
+              Message({
+                message: error,
+                position: "bottom-right",
+                type: "error",
+                duration: 5000,
+                zIndex: 99999,
+              });
+            }
+          })
+          .finally(function () {
+            loading.value = false;
+            transferStatus.value.loading = false;
+          });
+      }, 2000);
     };
 
     const addRecipientDetails = () => {
@@ -1002,13 +1124,196 @@ export default defineComponent({
     let stripe = "" as any;
     let elements = "" as any;
     let cardElement = "" as any;
+    const addPaymentDetailsButtonRef = ref<null | HTMLButtonElement>(null);
 
     const addPaymentDetails = async () => {
+      if (!addPaymentDetailsButtonRef.value) {
+        return;
+      }
+      //reset transfer status
+      transferStatus.value.loading = false;
+      transferStatus.value.error = false;
+
       stepper.value = "payment";
 
-      stripe = await loadStripe(
-        "pk_test_51I6SdiGlH0aO6inDfRKEjC9f6Xc4d5l37IvGI0gSijHm38WRxt74QXS1sl8NtChtESqMypV2YzqDXQOUGUnZVm0y00CKC6pML1"
-      );
+      await initStripePaymentForm();
+    };
+
+    const confirmedTransferDetails = ref({} as any);
+
+    const confirmTransfer = async () => {
+      if (confirmPaymentButtonRef.value) {
+        //Disable button
+        confirmPaymentButtonRef.value!.disabled = true;
+        // Activate indicator
+        confirmPaymentButtonRef.value.setAttribute("data-kt-indicator", "on");
+      }
+
+      loading.value = true;
+      transferStatus.value.loading = true;
+      transferStatus.value.error = false;
+
+      //log
+      transferStatus.value.statusMessage = "Confirming Transfer";
+      const paymentProcessing = ref(true);
+
+      paymentProcessing.value = true;
+      remittanceForm.value.stepper = "confirm";
+
+      //log
+      transferStatus.value.statusMessage = "Creating Payment Method";
+
+      const { paymentMethod, error } = await stripe
+        .createPaymentMethod({
+          type: "card",
+          card: cardElement,
+          billing_details: remittanceForm.value.paymentDetails,
+        })
+        .catch((error) => {
+          transferStatus.value.statusMessage = error;
+          transferStatus.value.loading = false;
+          transferStatus.value.error = true;
+          Message({
+            message: error,
+            position: "bottom-right",
+            type: "error",
+            duration: 5000,
+            zIndex: 99999,
+          });
+        })
+        .finally(() => {
+          loading.value = false;
+          transferStatus.value.loading = false;
+          transferStatus.value.error = false;
+        });
+
+      stepper.value = "confirm";
+
+      //log
+      transferStatus.value.statusMessage = "Checking for card errors";
+
+      if (error) {
+        paymentProcessing.value = false;
+        console.error(error.message);
+        transferStatus.value.error = true;
+        transferStatus.value.loading = false;
+        transferStatus.value.statusMessage = error.message;
+        Message({
+          message: error.message,
+          position: "bottom-right",
+          type: "error",
+          duration: 5000,
+          zIndex: 99999,
+        });
+        return;
+      }
+
+      setTimeout(() => {
+        console.log("creating payment method");
+      }, 3000);
+
+      transferStatus.value.statusMessage = "Connecting to Stripe";
+
+      await stripe
+        .confirmCardPayment(
+          validatedTransferDetails.value.payment_intent.client_secret,
+          {
+            payment_method: paymentMethod.id,
+          }
+        )
+        .then((paymentResult) => {
+          transferStatus.value.loading = true;
+          transferStatus.value.statusMessage =
+            "Confirming Card Payment with Stripe";
+
+          if (paymentResult.error) {
+            transferStatus.value.statusMessage = paymentResult.error.message;
+            transferStatus.value.loading = false;
+            transferStatus.value.error = true;
+            Message({
+              message: paymentResult.error.message,
+              position: "bottom-right",
+              type: "error",
+              duration: 5000,
+              zIndex: 99999,
+            });
+            return;
+          } else {
+            transferStatus.value.loading = true;
+            transferStatus.value.statusMessage =
+              "Confirming Payment with SPPAY";
+            setTimeout(() => {
+              //TODO
+              // self.cardError = {};
+
+              console.log("sending card payment response");
+            }, 3000);
+
+            remittanceStore
+              .confirmRemittance(remittanceForm.value.validationDetails)
+              .then((data: any) => {
+                confirmedTransferDetails.value = data;
+                transferStatus.value.statusMessage =
+                  "Confirmation with SPPAY Complete";
+                confirmed.value = data;
+                stepper.value = "complete";
+              });
+
+            //TODO
+            //  if (data.status === 'succeeded') {
+            //    setError(null);
+            //    setProcessing(false);
+            //   setSucceeded(true);
+            //  reset();
+            //  }
+          }
+        })
+        .catch((error) => {
+          // get errors from state
+          transferStatus.value.loading = false;
+          transferStatus.value.statusMessage = error;
+          Message({
+            message: error,
+            position: "bottom-right",
+            type: "error",
+            duration: 5000,
+            zIndex: 99999,
+          });
+          console.log(error);
+        })
+        .finally(() => {
+          loading.value = false;
+          transferStatus.value.loading = false;
+          transferStatus.value.error = false;
+        });
+
+      // //Deactivate indicator
+      // confirmPaymentButtonRef.value?.removeAttribute("data-kt-indicator");
+      // // eslint-disable-next-line
+      // confirmPaymentButtonRef.value!.disabled = false;
+    };
+
+    const recipientInstitutions = computed(() => {
+      //filter spp & telcos
+      return sppData.institutions.filter((item: any) => {
+        return item.type_id === "1" || item.type_id === "3";
+      });
+    });
+
+    const confirmPaymentButtonRef = ref<HTMLButtonElement | null>(null);
+    const validateTransferButtonRef = ref<HTMLButtonElement | null>(null);
+
+    const jumpToStep = (step) => {
+      transferStatus.value.loading = false;
+      transferStatus.value.error = false;
+      if (step === "payment") {
+        initStripePaymentForm();
+      }
+      stepper.value = step;
+    };
+
+    const initStripePaymentForm = async () => {
+      stripe = await loadStripe(import.meta.env.VITE_APP_STRIPE_KEY);
 
       elements = stripe.elements();
       cardElement = elements.create("card", {
@@ -1019,267 +1324,46 @@ export default defineComponent({
         },
       });
       cardElement.mount("#card");
-
-      // console.log("before");
-      // if (!addRecipientDetailsFormRef.value) {
-      //   return;
-      // }
-      // console.log("done");
-      // addRecipientDetailsFormRef.value.validate(async (valid: boolean) => {
-      //   if (valid) {
-      //     stepper.value = "payment";
-      //
-      //     stripe = await loadStripe(
-      //       "pk_test_51I6SdiGlH0aO6inDfRKEjC9f6Xc4d5l37IvGI0gSijHm38WRxt74QXS1sl8NtChtESqMypV2YzqDXQOUGUnZVm0y00CKC6pML1"
-      //     );
-      //
-      //     elements = stripe.elements();
-      //     cardElement = elements.create("card", {
-      //       hidePostalCode: true,
-      //       //showIcon: true,
-      //       classes: {
-      //         base: "form-control bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 p-3 leading-8 transition-colors duration-200 ease-in-out",
-      //       },
-      //     });
-      //     cardElement.mount("#card");
-      //   } else {
-      //     return false;
-      //   }
-      // });
     };
 
-    const confirmedTransferDetails = ref({} as any);
+    //recipient details validation
+    const addRecipientDetailsSchema = Yup.object().shape({
+      recipient_name: Yup.string().required().label("Recipient Name"),
+      recipient_email: Yup.string().email().required().label("Recipient Email"),
+    });
 
-    const confirmTransfer = () => {
-      console.log("111");
-      if (!addPaymentDetailsFormRef.value) {
-        return;
-      }
-      console.log("222");
-      addPaymentDetailsFormRef.value.validate(async (valid: boolean) => {
-        if (valid) {
-          loading.value = true;
-          transferStatus.value.loading = true;
+    //payment details validation
+    const addPaymentDetailsSchema = Yup.object().shape({
+      name: Yup.string().required().label("Name"),
+      city: Yup.string().required().label("City / State"),
+      address1: Yup.string().required().label("Address"),
+      postCode: Yup.string().required().label("Postal / Zip Code"),
+    });
 
-          //log
-          transferStatus.value.statusMessage = "Confirming Transfer";
-          const paymentProcessing = ref(true);
-          const billingDetails = {
-            name: "michael",
-            email: "thuggistry@gmail.com",
-            address: {
-              city: "accra",
-              line1: "address",
-              state: "state",
-              postal_code: "zip",
-            },
-          };
-
-          paymentProcessing.value = true;
-          remittanceForm.value.stepper = "confirm";
-
-          //log
-          transferStatus.value.statusMessage = "Creating Payment Method";
-          const { paymentMethod, error } = await stripe
-            .createPaymentMethod({
-              type: "card",
-              card: cardElement,
-              billing_details: billingDetails,
-            })
-            .catch((error) => {
-              transferStatus.value.statusMessage = error;
-              transferStatus.value.loading = false;
-              transferStatus.value.error = true;
-              Message({
-                message: error,
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            });
-
-          stepper.value = "confirm";
-
-          //log
-          transferStatus.value.statusMessage = "Checking for card errors";
-
-          if (error) {
-            paymentProcessing.value = false;
-            console.error(error.message);
-            transferStatus.value.error = true;
-            transferStatus.value.loading = false;
-            transferStatus.value.statusMessage = error.message;
-            Message({
-              message: error.message,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-            return;
-          }
-
-          setTimeout(() => {
-            //TODO
-            // self.cardError = {};
-
-            console.log("creating payment method");
-          }, 3000);
-
-          transferStatus.value.statusMessage = "Connecting to Stripe";
-
-          await stripe
-            .confirmCardPayment(
-              validatedTransferDetails.value.payment_intent.client_secret,
-              {
-                payment_method: paymentMethod.id,
-              }
-            )
-            .then((paymentResult) => {
-              transferStatus.value.loading = true;
-              transferStatus.value.statusMessage =
-                "Confirming Card Payment with Stripe";
-
-              if (paymentResult.error) {
-                transferStatus.value.statusMessage =
-                  paymentResult.error.message;
-                transferStatus.value.loading = false;
-                transferStatus.value.error = true;
-                Message({
-                  message: paymentResult.error.message,
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-                return;
-              } else {
-                transferStatus.value.loading = true;
-                transferStatus.value.statusMessage =
-                  "Confirming Payment with SPPAY";
-                setTimeout(() => {
-                  //TODO
-                  // self.cardError = {};
-
-                  console.log("sending card payment response");
-                }, 3000);
-
-                remittanceStore
-                  .confirmRemittance(remittanceForm.value.validationDetails)
-                  .then((data: any) => {
-                    confirmedTransferDetails.value = data;
-                    transferStatus.value.statusMessage =
-                      "Confirmation with SPPAY Complete";
-                    confirmed.value = data;
-                    stepper.value = "complete";
-                  });
-
-                //TODO
-                //  if (data.status === 'succeeded') {
-                //    setError(null);
-                //    setProcessing(false);
-                //   setSucceeded(true);
-                //  reset();
-                //  }
-              }
-            })
-
-            .catch((error) => {
-              // get errors from state
-              transferStatus.value.loading = false;
-              transferStatus.value.statusMessage = error;
-              Message({
-                message: error,
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-              console.log(error);
-            })
-            .finally(() => {
-              loading.value = false;
-              transferStatus.value.loading = false;
-            });
-        } else {
-          return false;
-        }
-      });
-    };
+    //initiate transfer validation
+    const validateTransferSchema = Yup.object().shape({
+      // debit_account_institution: Yup.string()
+      //   .required()
+      //   .label("Debit Institution"),
+      // debit_currency_code: Yup.string().required().label("Transfer Currency"),
+      credit_account_no: Yup.string().required().label("Recipient Number"),
+      credit_account_institution: Yup.string()
+        .required()
+        .label("Recipient Mobile Network"),
+      amount: Yup.string().required().label("Amount"),
+      external_reference: Yup.string().required().label("Transfer Reason"),
+    });
 
     onMounted(() => {
       stepper.value = "input";
-    });
 
-    const validateTransferFormRef = ref<null | HTMLFormElement>(null);
-    const confirmTransferFormRef = ref<null | HTMLFormElement>(null);
-    const addRecipientDetailsFormRef = ref<null | HTMLFormElement>(null);
-    const addPaymentDetailsFormRef = ref<null | HTMLFormElement>(null);
-
-    const validateTransferRules = ref({
-      debit_account_institution: [
-        {
-          required: true,
-          message: "Please input debit institution",
-          trigger: "blur",
-        },
-      ],
-      debit_currency_code: [
-        {
-          required: true,
-          message: "Please select currency",
-          trigger: "blur",
-        },
-      ],
-      credit_account_no: [
-        {
-          required: true,
-          message: "Please input recipient mobile number",
-          trigger: "blur",
-        },
-      ],
-      credit_account_institution: [
-        {
-          required: true,
-          message: "Please select mobile number",
-          trigger: "blur",
-        },
-      ],
-      amount: [
-        {
-          required: true,
-          message: "Please input amount",
-          trigger: "blur",
-        },
-      ],
-    });
-    const confirmTransferRules = ref({
-      eventName: [
-        {
-          required: true,
-          message: "Please input event name",
-          trigger: "blur",
-        },
-      ],
-    });
-    const addRecipientDetailsRules = ref({
-      recipient_name: [
-        {
-          required: true,
-          message: "Please input recipient name",
-          trigger: "blur",
-        },
-      ],
-    });
-    const addPaymentDetailsRules = ref({
-      name: [
-        {
-          required: true,
-          message: "Please input name",
-          trigger: "blur",
-        },
-      ],
+      //set to amount/currency to values set from fx rates
+      if (formRate.value) {
+        remittanceForm.value.validationDetails.debit_currency_code =
+          formRate.value.base_currency_code;
+        remittanceForm.value.validationDetails.amount =
+          formRate.value.sender_amount;
+      }
     });
 
     return {
@@ -1299,12 +1383,19 @@ export default defineComponent({
       confirmTransferFormRef,
       addRecipientDetailsFormRef,
       addPaymentDetailsFormRef,
+      validateTransferButtonRef,
 
-      //form rules
-      validateTransferRules,
-      confirmTransferRules,
-      addRecipientDetailsRules,
-      addPaymentDetailsRules,
+      //button ref
+      confirmPaymentButtonRef,
+
+      //
+      recipientInstitutions,
+      addRecipientDetailsSchema,
+      addPaymentDetailsSchema,
+      addPaymentDetailsButtonRef,
+      validateTransferSchema,
+      //
+      jumpToStep,
     };
   },
 });

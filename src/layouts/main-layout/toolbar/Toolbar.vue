@@ -12,24 +12,19 @@
     >
       <KTPageTitle />
       <!--begin::Actions-->
+
       <div class="d-flex align-items-center gap-2 gap-lg-3">
         <!--begin::Secondary button-->
-        <!--        <a-->
-        <!--          href="#"-->
-        <!--          class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"-->
-        <!--          data-bs-toggle="modal"-->
-        <!--          data-bs-target="#kt_modal_create_app"-->
-        <!--          >Rollover</a-->
-        <!--        >-->
-        <!--end::Secondary button-->
-        <!--begin::Primary button-->
-        <!--        <a-->
-        <!--          href="#"-->
-        <!--          class="btn btn-sm fw-bold btn-primary"-->
-        <!--          data-bs-toggle="modal"-->
-        <!--          data-bs-target="#kt_modal_new_target"-->
-        <!--          >Todo</a-->
-        <!--        >-->
+
+        <span
+          class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
+          v-for="(fx, id) in fxRates"
+          :key="id"
+        >
+          {{ fx.base_currency_code }}/{{ fx.quote_currency_code }}:
+          {{ parseFloat(fx.rate).toFixed(2) }}</span
+        >
+
         <!--end::Primary button-->
       </div>
       <!--end::Actions-->
@@ -43,6 +38,8 @@
 import { defineComponent } from "vue";
 import { toolbarWidthFluid } from "@/core/helpers/config";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
+import { useCustomerRemittanceStore } from "@/stores/remittance/remittance";
+import { storeToRefs } from "pinia";
 
 export default defineComponent({
   name: "layout-toolbar",
@@ -50,8 +47,13 @@ export default defineComponent({
     KTPageTitle,
   },
   setup() {
+    //exchange rates
+    const remittanceStore = useCustomerRemittanceStore();
+    const { loadingExchangeRate, exchangeRates, fxRates } =
+      storeToRefs(remittanceStore);
     return {
       toolbarWidthFluid,
+      fxRates,
     };
   },
 });

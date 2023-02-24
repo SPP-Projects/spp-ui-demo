@@ -7,7 +7,135 @@
     <!--begin::Sidebar-->
 
     <div class="flex-column flex-lg-row-auto w-100 w-xl-450px mb-10">
-      <!--begin::Referral program-->
+      <div class="card card-flush pt-3 mb-5 mb-xl-5">
+        <!--begin::Card header-->
+        <div class="card-header">
+          <!--begin::Card title-->
+          <div class="card-title">
+            <h2 class="fw-bold">Campaign Details</h2>
+          </div>
+          <!--begin::Card title-->
+          <!--begin::Card toolbar-->
+          <div class="card-toolbar">
+            <span
+              data-bs-toggle="tooltip"
+              data-bs-trigger="hover"
+              title="Edit campaign details"
+            >
+              <a
+                href="#"
+                class="btn btn-sm btn-light-primary"
+                @click="showEditCampaignModal()"
+                data-bs-toggle="modal"
+                id="edit-btn"
+                data-bs-target="#kt_modal_update_campaign"
+              >
+                Edit Campaign
+              </a>
+            </span>
+          </div>
+          <!--end::Card toolbar-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-3">
+          <!--begin::Section-->
+          <div class="mb-1">
+            <!--begin::Details-->
+            <div class="d-flex flex-wrap py-5">
+              <!--begin::Row-->
+              <div class="me-5">
+                <!--begin::Details-->
+                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400 min-w-175px w-175px">Status:</td>
+                    <td class="text-gray-800 min-w-200px">
+                      <span
+                        v-if="campaignDetails.status_id === '1'"
+                        class="badge badge-light-warning"
+                        >In-Review</span
+                      >
+                      <span
+                        v-if="campaignDetails.status_id === '2'"
+                        class="badge badge-light-success"
+                        >Live</span
+                      >
+                      <span
+                        v-if="campaignDetails.status_id === '3'"
+                        class="badge badge-light-danger"
+                        >Closed</span
+                      >
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400 min-w-175px w-175px">
+                      Reference #:
+                    </td>
+                    <td class="text-gray-800 min-w-200px">
+                      {{ campaignDetails.reference }}
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Title</td>
+                    <td class="text-gray-800">{{ campaignDetails.title }}</td>
+                  </tr>
+                  <!--end::Row-->
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400" colspan="2">
+                      Description:
+
+                      <div class="text-gray-800">
+                        {{ campaignDetails.description }}
+                      </div>
+                    </td>
+                    <!--                    <td class="text-gray-800">-->
+                    <!--                      {{ campaignDetails.description }}-->
+                    <!--                    </td>-->
+                  </tr>
+                  <!--end::Row-->
+
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Goal:</td>
+                    <td class="text-gray-800">{{ campaignDetails.goal }}</td>
+                  </tr>
+                  <!--end::Row-->
+                  <!--begin::Row-->
+                  <tr>
+                    <td class="text-gray-400">Youtube:</td>
+                    <td class="text-gray-800">
+                      {{ campaignDetails.youtube_url }}
+                    </td>
+                  </tr>
+                  <tr v-if="campaignDetails.image_url">
+                    <td class="text-gray-400">Image:</td>
+                    <td class="text-gray-800">
+                      <el-image :src="campaignDetails.image_url"></el-image>
+                    </td>
+                  </tr>
+                  <!--end::Row-->
+                </table>
+                <!--end::Details-->
+              </div>
+              <!--end::Row-->
+            </div>
+            <!--end::Row-->
+          </div>
+          <!--end::Section-->
+
+          <div class="separator separator-dashed mb-1"></div>
+        </div>
+        <!--end::Card body-->
+      </div>
+
       <div class="card mb-5 mb-xl-10">
         <!--begin::Body-->
         <div class="card-body py-10">
@@ -82,269 +210,14 @@
             <!--end::Col-->
           </div>
           <!--end::Stats-->
-
-          <!--begin::Notice-->
-          <div
-            class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 mt-4"
-          >
-            <!--begin::Icon-->
-            <!--begin::Svg Icon | path: icons/duotune/finance/fin001.svg-->
-            <span class="svg-icon svg-icon-2tx svg-icon-primary me-4">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M20 19.725V18.725C20 18.125 19.6 17.725 19 17.725H5C4.4 17.725 4 18.125 4 18.725V19.725H3C2.4 19.725 2 20.125 2 20.725V21.725H22V20.725C22 20.125 21.6 19.725 21 19.725H20Z"
-                  fill="currentColor"
-                />
-                <path
-                  opacity="0.3"
-                  d="M22 6.725V7.725C22 8.325 21.6 8.725 21 8.725H18C18.6 8.725 19 9.125 19 9.725C19 10.325 18.6 10.725 18 10.725V15.725C18.6 15.725 19 16.125 19 16.725V17.725H15V16.725C15 16.125 15.4 15.725 16 15.725V10.725C15.4 10.725 15 10.325 15 9.725C15 9.125 15.4 8.725 16 8.725H13C13.6 8.725 14 9.125 14 9.725C14 10.325 13.6 10.725 13 10.725V15.725C13.6 15.725 14 16.125 14 16.725V17.725H10V16.725C10 16.125 10.4 15.725 11 15.725V10.725C10.4 10.725 10 10.325 10 9.725C10 9.125 10.4 8.725 11 8.725H8C8.6 8.725 9 9.125 9 9.725C9 10.325 8.6 10.725 8 10.725V15.725C8.6 15.725 9 16.125 9 16.725V17.725H5V16.725C5 16.125 5.4 15.725 6 15.725V10.725C5.4 10.725 5 10.325 5 9.725C5 9.125 5.4 8.725 6 8.725H3C2.4 8.725 2 8.325 2 7.725V6.725L11 2.225C11.6 1.925 12.4 1.925 13.1 2.225L22 6.725ZM12 3.725C11.2 3.725 10.5 4.425 10.5 5.225C10.5 6.025 11.2 6.725 12 6.725C12.8 6.725 13.5 6.025 13.5 5.225C13.5 4.425 12.8 3.725 12 3.725Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            <!--end::Svg Icon-->
-            <!--end::Icon-->
-            <!--begin::Wrapper-->
-            <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
-              <!--begin::Content-->
-              <div class="mb-3 mb-md-0 fw-semibold">
-                <div class="fs-6 text-gray-700 pe-7">
-                  Withdraw money to settlement account
-                </div>
-              </div>
-              <!--end::Content-->
-              <!--begin::Action-->
-              <a
-                href="#"
-                class="btn btn-primary px-6 align-self-center text-nowrap"
-                >Withdraw</a
-              >
-              <!--end::Action-->
-            </div>
-            <!--end::Wrapper-->
-          </div>
-          <!--end::Notice-->
         </div>
         <!--end::Body-->
       </div>
-      <!--end::Referral program-->
-
-      <!--begin::Card-->
-      <div class="card card-flush pt-3 mb-5 mb-xl-5">
-        <!--begin::Card header-->
-        <div class="card-header">
-          <!--begin::Card title-->
-          <div class="card-title">
-            <h2 class="fw-bold">Campaign Details</h2>
-          </div>
-          <!--begin::Card title-->
-          <!--begin::Card toolbar-->
-          <div class="card-toolbar">
-            <span
-              data-bs-toggle="tooltip"
-              data-bs-trigger="hover"
-              title="Edit campaign details"
-            >
-              <a
-                href="#"
-                class="btn btn-sm btn-light-primary"
-                @click="showEditCampaignModal()"
-                data-bs-toggle="modal"
-                id="edit-btn"
-                data-bs-target="#kt_modal_update_campaign"
-              >
-                Edit Campaign
-              </a>
-            </span>
-          </div>
-          <!--end::Card toolbar-->
-        </div>
-        <!--end::Card header-->
-        <!--begin::Card body-->
-        <div class="card-body pt-3">
-          <!--begin::Section-->
-          <div class="mb-1">
-            <!--begin::Details-->
-            <div class="d-flex flex-wrap py-5">
-              <!--begin::Row-->
-              <div class="me-5">
-                <!--begin::Details-->
-                <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400 min-w-175px w-175px">Status:</td>
-                    <td class="text-gray-800 min-w-200px">
-                      <span
-                        v-if="campaignDetails.status_id === '1'"
-                        class="badge badge-light-warning"
-                        >In-Review</span
-                      >
-                      <span
-                        v-if="campaignDetails.status_id === '2'"
-                        class="badge badge-light-success"
-                        >Live</span
-                      >
-                      <span
-                        v-if="campaignDetails.status_id === '3'"
-                        class="badge badge-light-danger"
-                        >Closed</span
-                      >
-                    </td>
-                  </tr>
-                  <!--end::Row-->
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400 min-w-175px w-175px">
-                      Visible To:
-                    </td>
-                    <td class="text-gray-800 min-w-200px">
-                      <span
-                        v-if="campaignDetails.is_private === 0"
-                        class="badge badge-light-danger"
-                        >Private</span
-                      >
-                      <span
-                        v-if="campaignDetails.is_private === 1"
-                        class="badge badge-light-success"
-                        >Public</span
-                      >
-                    </td>
-                  </tr>
-                  <!--end::Row-->
-
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400 min-w-175px w-175px">
-                      Reference #:
-                    </td>
-                    <td class="text-gray-800 min-w-200px">
-                      {{ campaignDetails.reference }}
-                    </td>
-                  </tr>
-                  <!--end::Row-->
-
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400">Title</td>
-                    <td class="text-gray-800">{{ campaignDetails.title }}</td>
-                  </tr>
-                  <!--end::Row-->
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400" colspan="2">
-                      Description:
-
-                      <div class="text-gray-800">
-                        {{ campaignDetails.description }}
-                      </div>
-                    </td>
-                    <!--                    <td class="text-gray-800">-->
-                    <!--                      {{ campaignDetails.description }}-->
-                    <!--                    </td>-->
-                  </tr>
-                  <!--end::Row-->
-
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400">Goal:</td>
-                    <td class="text-gray-800">{{ campaignDetails.goal }}</td>
-                  </tr>
-                  <!--end::Row-->
-
-                  <!--begin::Row-->
-                  <tr>
-                    <td class="text-gray-400">Youtube:</td>
-                    <td class="text-gray-800">
-                      {{ campaignDetails.youtube_url }}
-                    </td>
-                  </tr>
-                  <tr v-if="campaignDetails.image_url">
-                    <td class="text-gray-400">Image:</td>
-                    <td class="text-gray-800">
-                      <el-image :src="campaignDetails.image_url"></el-image>
-                    </td>
-                  </tr>
-                  <!--end::Row-->
-                </table>
-                <!--end::Details-->
-              </div>
-              <!--end::Row-->
-            </div>
-            <!--end::Row-->
-          </div>
-          <!--end::Section-->
-
-          <div class="separator separator-dashed mb-1"></div>
-        </div>
-        <!--end::Card body-->
-      </div>
-      <!--end::Card-->
     </div>
     <!--end::Sidebar-->
 
     <!--begin::Content-->
     <div class="flex-lg-row-fluid ms-lg-15">
-      <!--begin::Referral program-->
-      <div class="card mb-5 mb-xl-10">
-        <!--begin::Body-->
-        <div class="card-body py-10">
-          <h2 class="mb-2">Share Campaign</h2>
-          <!--begin::Overview-->
-          <div class="row mb-2">
-            <!--begin::Col-->
-            <div class="col-xl-4 mb-15 mb-xl-0 pe-5">
-              <p class="fs-6 fw-semibold text-gray-600 py-4 m-0">
-                Share on social media
-              </p>
-
-              <button
-                type="button"
-                class="btn btn-light btn-active-primary fw-bold flex-shrink-0"
-                data-bs-toggle="modal"
-                data-bs-target="#kt_modal_new_target"
-              >
-                Send Via Email
-              </button>
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-8">
-              <p class="fs-6 fw-semibold text-gray-600 py-4 m-0">
-                Share link with friends
-              </p>
-              <div class="d-flex">
-                <input
-                  type="text"
-                  class="form-control form-control-solid me-3 flex-grow-1"
-                  name="search"
-                  :value="`${siteUrl}/donations/${campaignDetails.reference}`"
-                  ref="inputRef"
-                  id="kt_share_earn_link_input"
-                />
-                <button
-                  class="btn btn-light btn-active-light-primary fw-bold flex-shrink-0"
-                  ref="copyButtonRef"
-                  id="kt_share_earn_link_copy_button"
-                  data-clipboard-target="#kt_share_earn_link_input"
-                >
-                  Copy Link
-                </button>
-              </div>
-            </div>
-            <!--end::Col-->
-          </div>
-          <!--end::Overview-->
-        </div>
-        <!--end::Body-->
-      </div>
-      <!--end::Referral program-->
-
       <div class="card pt-4">
         <!--begin::Card header-->
         <div class="card-header border-0">
@@ -368,7 +241,7 @@
         <!--end::Card header-->
 
         <!--begin::Card body-->
-        <div class="card-body pt-0 pb-5">
+        <div class="card-body pt-0 pb-5" v-if="campaignPayments">
           <KTDatatable
             :data="campaignPayments"
             :header="tableHeader"
@@ -705,12 +578,28 @@
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                <span class="required">Status</span>
+              </label>
+              <!--end::Label-->
+
+              <el-form-item prop="status_id">
+                <el-select v-model="campaign.status_id" placeholder="Select">
+                  <el-option
+                    v-for="item in sppData.campaignStatuses"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                    :disabled="refData.loadingAction"
+                  >
+                    {{ item.name }}</el-option
+                  >
+                </el-select></el-form-item
+              >
+            </div>
+            <div class="d-flex flex-column mb-4 fv-row">
+              <!--begin::Label-->
+              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Campaign Title</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                  title="Specify a target name for future usage and reference"
-                ></i>
               </label>
               <!--end::Label-->
 
@@ -726,11 +615,6 @@
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Description</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                  title="Specify a target name for future usage and reference"
-                ></i>
               </label>
               <!--end::Label-->
 
@@ -744,15 +628,10 @@
                 ></el-input>
               </el-form-item>
             </div>
-
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Goal/Amount</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                ></i>
               </label>
               <!--end::Label-->
 
@@ -764,44 +643,10 @@
                 ></el-input>
               </el-form-item>
             </div>
-
-            <div class="d-flex flex-column mb-4 fv-row">
-              <!--begin::Label-->
-              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Visible to Public?</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                ></i>
-              </label>
-              <!--end::Label-->
-
-              <!--begin::Input group-->
-              <div class="row g-9 mb-8">
-                <!--begin::Col-->
-                <div class="col-md-6 fv-row">
-                  <el-form-item prop="is_private">
-                    <el-select
-                      v-model="campaign.is_private"
-                      placeholder="Select"
-                    >
-                      <el-option value="1">Yes</el-option>
-                      <el-option value="0">No</el-option>
-                    </el-select></el-form-item
-                  >
-                </div>
-                <!--end::Col-->
-              </div>
-              <!--end::Input group-->
-            </div>
             <div class="d-flex flex-column mb-4 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Image</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                ></i>
               </label>
               <!--end::Label-->
 
@@ -863,133 +708,6 @@
   </div>
   <!-- Update Campaign Modal-->
 
-  <!--begin::Modal - New Target-->
-  <div
-    class="modal fade"
-    id="kt_modal_new_target"
-    ref="newTargetModalRef"
-    tabindex="-1"
-    aria-hidden="true"
-  >
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-      <!--begin::Modal content-->
-      <div class="modal-content rounded">
-        <!--begin::Modal header-->
-        <div class="modal-header pb-0 border-0 justify-content-end">
-          <!--begin::Close-->
-          <div
-            class="btn btn-sm btn-icon btn-active-color-primary"
-            data-bs-dismiss="modal"
-          >
-            <span class="svg-icon svg-icon-1">
-              <inline-svg src="/media/icons/duotune/arrows/arr061.svg" />
-            </span>
-          </div>
-          <!--end::Close-->
-        </div>
-        <!--begin::Modal header-->
-
-        <!--begin::Modal body-->
-        <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
-          <!--begin:Form-->
-          <el-form
-            id="kt_modal_new_target_form"
-            @submit.prevent="submit()"
-            :model="emailCampaign"
-            :rules="emailFormRules"
-            ref="formRef"
-            class="form"
-          >
-            <!--begin::Heading-->
-            <div class="mb-13 text-center">
-              <!--begin::Title-->
-              <h1 class="mb-3">Share Campaign Via Email</h1>
-              <!--end::Title-->
-            </div>
-            <!--end::Heading-->
-
-            <!--begin::Input group-->
-            <div class="d-flex flex-column mb-8 fv-row">
-              <!--begin::Label-->
-              <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
-                <span class="required">Email</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  title="Specify email"
-                ></i>
-              </label>
-              <!--end::Label-->
-
-              <el-form-item prop="targetTitle">
-                <el-input
-                  v-model="emailCampaign.email"
-                  placeholder="Enter Email"
-                  name="targetTitle"
-                ></el-input>
-              </el-form-item>
-            </div>
-            <!--end::Input group-->
-
-            <!--begin::Input group-->
-            <div class="d-flex flex-column mb-8">
-              <label class="fs-6 fw-semobold mb-2">Message</label>
-
-              <el-form-item prop="targetDetails">
-                <el-input
-                  v-model="emailCampaign.description"
-                  type="textarea"
-                  rows="3"
-                  name="targetDetails"
-                  placeholder="Type Message"
-                />
-              </el-form-item>
-            </div>
-            <!--end::Input group-->
-
-            <!--begin::Actions-->
-            <div class="text-center">
-              <button
-                type="reset"
-                id="kt_modal_new_target_cancel"
-                class="btn btn-light me-3"
-              >
-                Cancel
-              </button>
-
-              <!--begin::Button-->
-              <button
-                :data-kt-indicator="loading ? 'on' : null"
-                class="btn btn-lg btn-primary"
-                type="submit"
-              >
-                <span v-if="!loading" class="indicator-label">
-                  Send Email
-                  <span class="svg-icon svg-icon-3 ms-2 me-0">
-                    <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
-                  </span>
-                </span>
-                <span v-if="loading" class="indicator-progress">
-                  Please wait...
-                  <span
-                    class="spinner-border spinner-border-sm align-middle ms-2"
-                  ></span>
-                </span>
-              </button>
-              <!--end::Button-->
-            </div>
-            <!--end::Actions-->
-          </el-form>
-          <!--end:Form-->
-        </div>
-        <!--end::Modal body-->
-      </div>
-      <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
-  </div>
-  <!--end::Modal - New Target-->
-
   <!--end::Layout-->
 </template>
 
@@ -1003,19 +721,16 @@ import Message from "vue-m-message";
 import { hideModal } from "@/core/helpers/dom";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { useCustomerCampaignStore } from "@/stores/customer/campaign";
+
 import { storeToRefs } from "pinia";
 import type { iCampaignDonation } from "@/models/campaign";
 import useOutputFormat from "@/composables/useOutputFormat";
-import ClipboardJS from "clipboard";
-import Swal from "sweetalert2";
 
-interface NewAddressData {
-  email: string;
-  description: string;
-}
+import { useAdminCampaignStore } from "@/stores/admin/campaign";
+import sppData from "@/helpers/data";
+
 export default defineComponent({
-  name: "campaign-payments",
+  name: "admin-view-campaign",
   components: {
     KTDatatable,
     PermissionDenied,
@@ -1023,7 +738,7 @@ export default defineComponent({
   },
   setup() {
     //store
-    const campaignStore = useCustomerCampaignStore();
+    const campaignStore = useAdminCampaignStore();
     const {
       campaignPayments,
       meta,
@@ -1031,16 +746,13 @@ export default defineComponent({
       campaignDetails,
       unauthorized,
     } = storeToRefs(campaignStore);
-    const { getCampaign } = useCustomerCampaignStore();
+    const { getCampaign } = useAdminCampaignStore();
 
     //route
     const route = useRoute();
 
     //data variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,
@@ -1090,6 +802,7 @@ export default defineComponent({
     });
 
     const donation = ref({} as iCampaignDonation);
+
     const donations = ref([]);
 
     const campaign = ref({
@@ -1100,15 +813,18 @@ export default defineComponent({
       image: "",
       goal: "",
       reference: "",
-      is_private: "",
+      status_id: "",
     } as any);
+
     const campaignImageRef = ref(null);
+
     const payload = ref({
       batch_file: null,
       validate: true,
     });
 
     const action = ref("");
+
     const searchRecords = ref({
       isSearching: false,
       debounceTimeout: ref<number>(0),
@@ -1153,7 +869,7 @@ export default defineComponent({
       //campaign.value.image = campaignDetails.value.title;
       campaign.value.goal = campaignDetails.value.goal;
       campaign.value.reference = campaignDetails.value.reference;
-      campaign.value.is_private = campaignDetails.value.is_private;
+      campaign.value.status_id = campaignDetails.value.status_id;
       //Todo
       // await getCampaign();
       campaign.value.action = "Edit";
@@ -1190,7 +906,7 @@ export default defineComponent({
           formPayload.append("title", campaign.value.title);
           formPayload.append("description", campaign.value.description);
           formPayload.append("goal", campaign.value.goal);
-          formPayload.append("is_private", campaign.value.is_private);
+          formPayload.append("status_id", campaign.value.status_id);
 
           if (payload.value.batch_file !== null) {
             formPayload.append("image", payload.value.batch_file);
@@ -1259,9 +975,6 @@ export default defineComponent({
       });
     };
 
-    const copyButtonRef = ref<null | HTMLElement>(null);
-    const inputRef = ref<null | HTMLElement>(null);
-
     onMounted(async () => {
       refData.value.loadingPage = true;
       table_options.value.reference = Array.isArray(route.params.reference)
@@ -1269,35 +982,8 @@ export default defineComponent({
         : route.params.reference;
       await getCampaign(table_options.value);
       refData.value.loadingPage = false;
-
-      // const clipboard = new ClipboardJS(copyButtonRef.value);
-      const clipboard = new ClipboardJS("#kt_share_earn_link_copy_button");
-
-      console.log(clipboard);
-
-      clipboard.on("success", function (e) {
-        const buttonCaption = copyButtonRef.value?.innerHTML;
-        //Add bgcolor
-        inputRef.value?.classList.add("bg-success");
-        inputRef.value?.classList.add("text-inverse-success");
-
-        if (copyButtonRef.value) {
-          copyButtonRef.value.innerHTML = "Copied!";
-        }
-
-        setTimeout(function () {
-          if (copyButtonRef.value && buttonCaption) {
-            copyButtonRef.value.innerHTML = buttonCaption;
-          }
-
-          // Remove bgcolor
-          inputRef.value?.classList.remove("bg-success");
-          inputRef.value?.classList.remove("text-inverse-success");
-        }, 3000); // 3seconds
-
-        e.clearSelection();
-      });
     });
+
     watch(
       () => table_options.value.search_text,
       () => {
@@ -1318,74 +1004,6 @@ export default defineComponent({
       useOutputFormat();
 
     const siteUrl = import.meta.env.VITE_APP_API_URL;
-
-    //new
-    const formRef = ref<null | HTMLFormElement>(null);
-    const newTargetModalRef = ref<null | HTMLElement>(null);
-    const loading = ref<boolean>(false);
-
-    const emailCampaign = ref<NewAddressData>({
-      email: "mike@sppaygh.com",
-      description: "this is a test campaign",
-    });
-
-    const emailFormRules = ref({
-      email: [
-        {
-          required: true,
-          message: "Please input email",
-          trigger: "blur",
-        },
-      ],
-      description: [
-        {
-          required: true,
-          message: "Please enter message",
-          trigger: "change",
-        },
-      ],
-    });
-
-    const submit = () => {
-      if (!formRef.value) {
-        return;
-      }
-
-      formRef.value.validate((valid: boolean) => {
-        if (valid) {
-          loading.value = true;
-
-          setTimeout(() => {
-            loading.value = false;
-
-            Swal.fire({
-              text: "Form has been successfully submitted!",
-              icon: "success",
-              buttonsStyling: false,
-              confirmButtonText: "Ok, got it!",
-              heightAuto: false,
-              customClass: {
-                confirmButton: "btn btn-primary",
-              },
-            }).then(() => {
-              hideModal(newTargetModalRef.value);
-            });
-          }, 2000);
-        } else {
-          Swal.fire({
-            text: "Sorry, looks like there are some errors detected, please try again.",
-            icon: "error",
-            buttonsStyling: false,
-            confirmButtonText: "Ok, got it!",
-            heightAuto: false,
-            customClass: {
-              confirmButton: "btn btn-primary",
-            },
-          });
-          return false;
-        }
-      });
-    };
 
     return {
       //variables
@@ -1426,21 +1044,10 @@ export default defineComponent({
       formatTime,
       formatDate,
 
-      //copy
-      copyButtonRef,
-      inputRef,
-
       //url
       siteUrl,
 
-      //new
-
-      emailCampaign,
-      submit,
-      loading,
-      formRef,
-      emailFormRules,
-      newTargetModalRef,
+      sppData,
     };
   },
 });
