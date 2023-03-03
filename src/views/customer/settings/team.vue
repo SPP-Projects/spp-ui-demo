@@ -239,10 +239,10 @@
                   <el-form-item prop="status_id">
                     <el-select v-model="user.status_id" placeholder="Select">
                       <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
+                        v-for="item in sppData.userStatuses"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
                         :disabled="refData.loadingAction"
                       /> </el-select
                   ></el-form-item>
@@ -349,12 +349,12 @@ import { useCustomerUserStore } from "@/stores/customer/user";
 import type { iUser } from "@/models/user";
 import { hideModal } from "@/core/helpers/dom";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import DataLoader from "@/components/DataLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
-
+import sppData from "@/helpers/data";
+import { AlertService } from "@/services/AlertService";
 export default defineComponent({
   name: "manage-users",
   components: {
@@ -441,15 +441,15 @@ export default defineComponent({
     });
     const options = [
       {
-        value: "1",
+        value: 1,
         label: "Inactive",
       },
       {
-        value: "2",
+        value: 2,
         label: "Active",
       },
       {
-        value: "3",
+        value: 3,
         label: "Deleted",
       },
     ];
@@ -480,14 +480,9 @@ export default defineComponent({
                 .then((response: any) => {
                   // user.value = response;
                   console.log(response);
-                  Message({
-                    message: "User added successfully.",
-                    //TBC
-                    position: "bottom-right",
-                    type: "success",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
+
+                  //display message using shared AlertService
+                  AlertService.displaySuccessAlert("User added successfully!");
 
                   // update user records
                   getUsers(table_options.value);
@@ -495,41 +490,8 @@ export default defineComponent({
                   hideModal(AddUpdateUserModalRef.value);
                 })
                 .catch((error) => {
-                  // get errors from state
-                  const response = error.response.data;
-                  console.log(error.message);
-
-                  if (response.errors) {
-                    const errors = response.errors;
-                    for (const key in errors) {
-                      Message({
-                        message: errors[key][0],
-                        //TBC
-                        position: "bottom-right",
-                        type: "error",
-                        duration: 5000,
-                        zIndex: 99999,
-                      });
-                    }
-                  } else if (response.error) {
-                    Message({
-                      message: response.error,
-                      //TBC
-                      position: "bottom-right",
-                      type: "error",
-                      duration: 5000,
-                      zIndex: 99999,
-                    });
-                  } else if (error.message) {
-                    Message({
-                      message: error.message,
-                      //TBC
-                      position: "bottom-right",
-                      type: "error",
-                      duration: 5000,
-                      zIndex: 99999,
-                    });
-                  }
+                  //display message using shared AlertService
+                  AlertService.displayMultipleErrorsAlert(error);
 
                   // update loading status
                   refData.value.loadingAction = false;
@@ -549,14 +511,10 @@ export default defineComponent({
                   // update loading status
                   refData.value.loadingAction = false;
 
-                  Message({
-                    message: "User updated successfully.",
-                    //TBC
-                    position: "bottom-right",
-                    type: "success",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
+                  //display message using shared AlertService
+                  AlertService.displaySuccessAlert(
+                    "User updated successfully!"
+                  );
 
                   // update user records
                   getUsers(table_options.value);
@@ -564,31 +522,8 @@ export default defineComponent({
                   hideModal(AddUpdateUserModalRef.value);
                 })
                 .catch((error) => {
-                  // get errors from state
-                  const response = error.response.data;
-
-                  if (response.errors) {
-                    const errors = response.errors;
-                    for (const key in errors) {
-                      Message({
-                        message: errors[key][0],
-                        //TBC
-                        position: "bottom-right",
-                        type: "error",
-                        duration: 5000,
-                        zIndex: 99999,
-                      });
-                    }
-                  } else if (response.error) {
-                    Message({
-                      message: response.error,
-                      //TBC
-                      position: "bottom-right",
-                      type: "error",
-                      duration: 5000,
-                      zIndex: 99999,
-                    });
-                  }
+                  //display message using shared AlertService
+                  AlertService.displayMultipleErrorsAlert(error);
 
                   // update loading status
                   refData.value.loadingAction = false;
@@ -721,6 +656,9 @@ export default defineComponent({
       formatDateTime,
       formatTime,
       formatDate,
+
+      //
+      sppData,
     };
   },
 });

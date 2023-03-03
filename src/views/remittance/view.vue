@@ -491,9 +491,6 @@ export default defineComponent({
     const { authenticatedUser } = storeToRefs(authStore);
     //ref data
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,

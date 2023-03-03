@@ -325,6 +325,7 @@ import { useBodyStore } from "@/stores/body";
 import { useThemeStore } from "@/stores/theme";
 import LayoutService from "@/core/services/LayoutService";
 import { getIllustrationsPath } from "@/core/helpers/assets";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "sign-up",
@@ -502,38 +503,14 @@ export default defineComponent({
 
           router.push({ name: "dashboard" });
 
-          Message({
-            message: "Registration successful! Welcome to SP Pay.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert(
+            "Registration successful! Welcome to SP Pay!"
+          );
         })
         .catch((error) => {
-          // get errors from state
-          let response = error.response.data;
-
-          if (response.errors) {
-            let errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => {
           processing.value = false;

@@ -160,9 +160,10 @@ import { useAuthStore, type CoreUser } from "@/stores/auth";
 import { useRouter } from "vue-router";
 
 import * as Yup from "yup";
-import Message from "vue-m-message";
+
+import { AlertService } from "@/services/AlertService";
 export default defineComponent({
-  name: "error-404",
+  name: "sign-in",
   components: {
     Field,
     VForm,
@@ -207,28 +208,17 @@ export default defineComponent({
       const error = Object.values(store.errors);
 
       if (error.length === 0) {
-        Message({
-          message: "You have successfully logged in!",
-          position: "bottom-right",
-          type: "success",
-          duration: 5000,
-          zIndex: 99999,
-        });
+        //display message using shared AlertService
+        AlertService.displaySuccessAlert("You have successfully logged in!");
 
-        //TODO - MOVE TO CENTRAL PLACE
         //verify auth user
         await store.verifyAuth();
 
         // Go to page after successfully login
         router.push({ name: "dashboard" });
       } else {
-        Message({
-          message: error[0] as string,
-          position: "bottom-right",
-          type: "error",
-          duration: 5000,
-          zIndex: 99999,
-        });
+        //display message using shared AlertService
+        AlertService.displayErrorAlert(error[0]);
       }
 
       //Deactivate indicator

@@ -791,14 +791,13 @@ import { useCustomerAccountStore } from "@/stores/customer/account";
 import { storeToRefs } from "pinia";
 import type { iValidatedTransaction } from "@/models/transaction";
 
-import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import { hideModal } from "@/core/helpers/dom";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
-  name: "manage-accounts",
+  name: "customer-initiate-transaction",
   components: { PermissionDenied, PageLoader },
   setup() {
     //store
@@ -893,39 +892,17 @@ export default defineComponent({
               validated.value = response;
               form.value.step = "validated";
 
-              Message({
-                message: "Validation successful, please confirm details.",
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert(
+                "Validation successful, please confirm details."
+              );
             })
             .catch((error) => {
               // get errors from state
               loading.value = false;
-              const response = error.response.data;
 
-              if (response.errors) {
-                const errors = response.errors;
-                for (const key in errors) {
-                  Message({
-                    message: errors[key][0],
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              } else if (response.error) {
-                Message({
-                  message: response.error,
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
             })
             .finally(() => (loading.value = false));
         } else {
@@ -943,38 +920,15 @@ export default defineComponent({
         .then((response: any) => {
           confirmed.value = response.data;
           form.value.step = "confirmed";
-          Message({
-            message: "Transaction submitted successfully.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert(
+            "Transaction submitted successfully!"
+          );
         })
         .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => (loading.value = false));
     };

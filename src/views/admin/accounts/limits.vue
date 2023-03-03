@@ -356,6 +356,7 @@ import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "admin-accounts-limits",
@@ -506,13 +507,10 @@ export default defineComponent({
 
                   hideModal(accountLimitModalRef.value);
 
-                  Message({
-                    message: "Data added successfully.",
-                    position: "bottom-right",
-                    type: "success",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
+                  //display message using shared AlertService
+                  AlertService.displaySuccessAlert(
+                    "Data updated successfully!"
+                  );
                 })
                 .finally(() => (refData.value.loadingAction = false));
               break;
@@ -526,40 +524,14 @@ export default defineComponent({
 
                   hideModal(accountLimitModalRef.value);
 
-                  Message({
-                    message: "Data updated successfully.",
-                    position: "bottom-right",
-                    type: "success",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
+                  //display message using shared AlertService
+                  AlertService.displaySuccessAlert(
+                    "Data updated successfully!"
+                  );
                 })
                 .catch((error) => {
-                  // get errors from state
-                  const response = error.response.data;
-
-                  if (response.errors) {
-                    const errors = response.errors;
-                    for (const key in errors) {
-                      Message({
-                        message: errors[key][0],
-                        //TBC
-                        position: "bottom-right",
-                        type: "error",
-                        duration: 5000,
-                        zIndex: 99999,
-                      });
-                    }
-                  } else if (response.error) {
-                    Message({
-                      message: response.error,
-                      //TBC
-                      position: "bottom-right",
-                      type: "error",
-                      duration: 5000,
-                      zIndex: 99999,
-                    });
-                  }
+                  //display message using shared AlertService
+                  AlertService.displayMultipleErrorsAlert(error);
 
                   // update loading status
                   refData.value.loadingAction = false;

@@ -147,6 +147,7 @@ import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -245,38 +246,12 @@ export default defineComponent({
       customerStore
         .updateCustomerKYC(kycFormData)
         .then(() => {
-          Message({
-            message: "Details updated successfully.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert("Data updated successfully!");
         })
         .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => {
           // update loading status

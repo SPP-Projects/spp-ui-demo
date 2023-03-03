@@ -532,13 +532,14 @@ import { useRoute, useRouter } from "vue-router";
 import { useGuestPaymentStore } from "@/stores/guest/payment";
 
 import PageLoader from "@/components/PageLoader.vue";
-import Message from "vue-m-message";
+
 import { Field, ErrorMessage, Form as VForm } from "vee-validate";
 import { storeToRefs } from "pinia";
 import { useGuestGeneralStore } from "@/stores/guest/general";
 import DataLoader from "@/components/DataLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
 import * as Yup from "yup";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "guest-donations",
@@ -638,46 +639,15 @@ export default defineComponent({
           router.push(
             "/donations/process/" + request.value.collection_reference
           );
-          Message({
-            message: "Payment submitted successfully, please confirm details.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert(
+            "Payment submitted successfully, please confirm details.!"
+          );
         })
         .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          } else {
-            Message({
-              message: "Error occured - please try again",
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
 
           submitButtonRef.value.disabled = false;
 

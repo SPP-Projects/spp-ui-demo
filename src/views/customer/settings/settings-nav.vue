@@ -94,7 +94,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { useCustomerUserStore } from "@/stores/customer/user";
 import { storeToRefs } from "pinia";
 
@@ -107,19 +107,7 @@ export default defineComponent({
     const { loadingUserData, authenticatedUserDetails } =
       storeToRefs(userStore);
 
-    //ref
-    const refData = ref({
-      unauthorized: false,
-      noDataMessage: ["No Data"],
-
-      //loading
-      loadingPage: true,
-      loadingData: false,
-      loadingAction: false,
-    });
-
     return {
-      refData,
       authenticatedUserDetails,
       loadingUserData,
     };

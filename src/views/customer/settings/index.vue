@@ -235,11 +235,7 @@ export default defineComponent({
     //ref
     const refData = ref({
       unauthorized: false,
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
-
       loadingAction: false,
     });
 

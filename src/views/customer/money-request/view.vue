@@ -659,11 +659,10 @@ import { useCustomerAccountStore } from "@/stores/customer/account";
 import { useAuthStore } from "@/stores/auth";
 import { useRoute } from "vue-router";
 import { hideModal } from "@/core/helpers/dom";
-
-import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "money-request-details",
@@ -685,9 +684,6 @@ export default defineComponent({
     const { authenticatedUser } = storeToRefs(authStore);
     //ref data
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,
@@ -751,45 +747,14 @@ export default defineComponent({
         .then(() => {
           refData.value.loadingAction = false;
 
-          Message({
-            message: "Data updated successfully.",
-            //TBC
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert("Data updated successfully!");
 
           getMoneyRequest(moneyRequestForm.value.reference);
         })
         .catch((error) => {
-          console.log(error);
-          // get errors from state
-          //T0D0
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                //TBC
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              //TBC
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
 
           refData.value.loadingAction = false;
         });
@@ -816,45 +781,18 @@ export default defineComponent({
 
               refData.value.loadingAction = false;
 
-              Message({
-                message: "Payment Fulfilled successfully.",
-
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert(
+                "Payment Fulfilled successfully!"
+              );
 
               getMoneyRequest(moneyRequestForm.value.reference);
 
               hideModal(UpdateMoneyRequestModalRef.value);
             })
             .catch((error) => {
-              // get errors from state
-              const response = error.response.data;
-
-              if (response.errors) {
-                const errors = response.errors;
-                for (const key in errors) {
-                  Message({
-                    message: errors[key][0],
-
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              } else if (response.error) {
-                Message({
-                  message: response.error,
-
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
 
               // update loading status
               refData.value.loadingAction = false;

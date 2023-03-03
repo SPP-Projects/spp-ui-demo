@@ -27,6 +27,13 @@ const MainMenuConfig: Array<MenuItem> = [
         fontIcon: "bi bi-wallet-fill",
         menuPermission: ["view accounts and balances"],
       },
+      {
+        heading: "Manage Customers",
+        route: "/payment-customers",
+        svgIcon: "/media/icons/duotune/general/gen014.svg",
+        fontIcon: "bi bi-wallet-fill",
+        menuPermission: ["view accounts and balances"],
+      },
     ],
   },
 

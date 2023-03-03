@@ -70,7 +70,6 @@ export const useCustomerTransactionStore = defineStore(
           this.loadingTransactionData = true;
           TransactionService.getTransactionByReference(id)
             .then((response) => {
-              console.log(response.data);
               this.transaction = response.data;
               resolve(response);
             })

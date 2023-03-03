@@ -216,6 +216,30 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
 
+      //payment-customers
+      {
+        path: "/payment-customers",
+        name: "payment-customers",
+        component: function () {
+          return import("../views/customer/payment-customers/manage.vue");
+        },
+        meta: {
+          pageTitle: "Payment Customers",
+          breadcrumbs: ["Payment Customers"],
+        },
+      },
+      {
+        path: "/payment-customers/:id",
+        name: "view-payment-customer",
+        component: function () {
+          return import("../views/customer/payment-customers/view.vue");
+        },
+        meta: {
+          pageTitle: "Payment Customers",
+          breadcrumbs: ["Payment Customers"],
+        },
+      },
+
       //settings
       {
         path: "/settings",

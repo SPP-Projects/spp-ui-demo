@@ -139,9 +139,6 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingAction: false,
     });

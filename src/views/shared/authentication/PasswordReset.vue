@@ -359,10 +359,9 @@ import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import { useAuthStore } from "@/stores/auth";
 import * as Yup from "yup";
 
-import Message from "vue-m-message";
-import { useRouter } from "vue-router";
 import { useGuestOnboardingStore } from "@/stores/guest/onboarding";
 import { PasswordMeterComponent } from "@/assets/ts/components";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "password-reset",
@@ -423,52 +422,20 @@ export default defineComponent({
 
         .then(({ data }) => {
           if (data.type === "Success") {
-            Message({
-              message: data.message,
-              position: "bottom-right",
-              type: "success",
-              duration: 5000,
-              zIndex: 99999,
-            });
+            //display message using shared AlertService
+            AlertService.displaySuccessAlert(data.message);
+
             stepper.value = "validate";
           } else {
-            Message({
-              message: "An error occurred - please try again",
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
+            //display message using shared AlertService
+            AlertService.displayErrorAlert(
+              "An error occurred - please try again"
+            );
           }
         })
         .catch((error) => {
-          if (error.response.status === 403) {
-            // unauthorized.
-            //  data.value.unauthorized = true;
-          }
-          // get errors from state
-          let response = error.response.data;
-
-          if (response.errors) {
-            let errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => {
           loading.value = false;
@@ -491,52 +458,19 @@ export default defineComponent({
 
         .then(({ data }) => {
           if (data.type === "Success") {
-            Message({
-              message: data.message,
-              position: "bottom-right",
-              type: "success",
-              duration: 5000,
-              zIndex: 99999,
-            });
+            //display message using shared AlertService
+            AlertService.displaySuccessAlert(data.message);
             stepper.value = "reset";
           } else {
-            Message({
-              message: "An error occurred - please try again",
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
+            //display message using shared AlertService
+            AlertService.displayErrorAlert(
+              "An error occurred - please try again"
+            );
           }
         })
         .catch((error) => {
-          if (error.response.status === 403) {
-            // unauthorized.
-            //  data.value.unauthorized = true;
-          }
-          // get errors from state
-          let response = error.response.data;
-
-          if (response.errors) {
-            let errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.message) {
-            Message({
-              message: response.message,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => {
           loading.value = false;
@@ -565,59 +499,18 @@ export default defineComponent({
 
             stepper.value = "success";
 
-            Message({
-              message: data.message,
-              position: "bottom-right",
-              type: "success",
-              duration: 5000,
-              zIndex: 99999,
-            });
+            //display message using shared AlertService
+            AlertService.displaySuccessAlert(data.message);
           } else {
-            Message({
-              message: "An error occurred - please try again",
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
+            //display message using shared AlertService
+            AlertService.displayErrorAlert(
+              "An error occurred - please try again"
+            );
           }
         })
         .catch((error) => {
-          if (error.response.status === 403) {
-            // unauthorized.
-            //  data.value.unauthorized = true;
-          }
-          // get errors from state
-          let response = error.response.data;
-
-          if (response.errors) {
-            let errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.message) {
-            Message({
-              message: response.message,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          } else {
-            Message({
-              message: error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => {
           loading.value = false;

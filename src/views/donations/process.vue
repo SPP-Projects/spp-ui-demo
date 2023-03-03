@@ -464,16 +464,14 @@ import LayoutService from "@/core/services/LayoutService";
 import { getIllustrationsPath } from "@/core/helpers/assets";
 import { useRoute } from "vue-router";
 import { useGuestPaymentStore } from "@/stores/guest/payment";
-
-import Message from "vue-m-message";
-
 import { storeToRefs } from "pinia";
 import { useGuestGeneralStore } from "@/stores/guest/general";
 import DataLoader from "@/components/DataLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
-  name: "guest-donations",
+  name: "process-guest-donations",
   components: { DataLoader },
   setup() {
     const storeBody = useBodyStore();
@@ -543,25 +541,14 @@ export default defineComponent({
 
               stepperForm.value.step = "confirmed";
 
-              Message({
-                message: "Payment submitted successfully.",
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert(
+                "Payment submitted successfully."
+              );
             })
             .catch((error) => {
-              // get errors from state
-              const response = error.response.data.message;
-              console.log(error.response);
-              Message({
-                message: response,
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
             })
             .finally(() => (loading.value = false));
         } else {

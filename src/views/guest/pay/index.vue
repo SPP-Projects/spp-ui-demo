@@ -199,10 +199,9 @@ import LayoutService from "@/core/services/LayoutService";
 import { getIllustrationsPath } from "@/core/helpers/assets";
 import { useRoute, useRouter } from "vue-router";
 import { useGuestPaymentStore } from "@/stores/guest/payment";
-
 import PageLoader from "@/components/PageLoader.vue";
-import Message from "vue-m-message";
 import { Field, ErrorMessage } from "vee-validate";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "blank-page",
@@ -278,14 +277,10 @@ export default defineComponent({
                 .getCampaign(request.value.collection_reference)
                 .then((response: any) => {
                   if (response.status === "Error") {
-                    Message({
-                      message:
-                        "Reference code incorrect, please confirm details.",
-                      position: "bottom-right",
-                      type: "error",
-                      duration: 5000,
-                      zIndex: 99999,
-                    });
+                    //display message using shared AlertService
+                    AlertService.displayErrorAlert(
+                      "Reference code incorrect, please confirm details"
+                    );
                   } else {
                     router.push(
                       "/donations/" + request.value.collection_reference
@@ -293,14 +288,8 @@ export default defineComponent({
                   }
                 })
                 .catch((error) => {
-                  const response = error.response;
-                  Message({
-                    message: response.error,
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
+                  //display message using shared AlertService
+                  AlertService.displayMultipleErrorsAlert(error);
                 })
                 .finally(() => (loading.value = false));
 
@@ -316,25 +305,15 @@ export default defineComponent({
                         request.value.collection_reference
                     );
                   } else {
-                    Message({
-                      message:
-                        "Reference code incorrect, please confirm details.",
-                      position: "bottom-right",
-                      type: "error",
-                      duration: 5000,
-                      zIndex: 99999,
-                    });
+                    //display message using shared AlertService
+                    AlertService.displayErrorAlert(
+                      "Reference code incorrect, please confirm details"
+                    );
                   }
                 })
                 .catch((error) => {
-                  const response = error.response;
-                  Message({
-                    message: response.error,
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
+                  //display message using shared AlertService
+                  AlertService.displayMultipleErrorsAlert(error);
                 })
                 .finally(() => (loading.value = false));
 

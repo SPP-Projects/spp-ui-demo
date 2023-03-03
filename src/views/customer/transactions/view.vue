@@ -1,7 +1,7 @@
 <template>
   <!--begin::Layout-->
-  <PermissionDenied v-if="unauthorized" />
-  <PageLoader v-else-if="refData.loadingPage" />
+
+  <PageLoader v-if="loadingTransactionData" />
 
   <div class="d-flex flex-column flex-lg-row" v-else>
     <!--begin::Content-->
@@ -19,7 +19,7 @@
           </div>
           <!--begin::Card title-->
           <!--begin::Card toolbar-->
-          <div class="card-toolbar" v-if="!refData.loadingData">
+          <div class="card-toolbar" v-if="!loadingTransactionData">
             <h2 class="fw-bold text-success">
               {{ transaction.status_message }}
             </h2>
@@ -468,104 +468,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { useRoute } from "vue-router";
-import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
 import { useCustomerTransactionStore } from "@/stores/customer/transaction";
 
 export default defineComponent({
-  name: "money-request-details",
-  components: { PermissionDenied, PageLoader },
+  name: "customer-view-transaction",
+  components: { PageLoader },
   setup() {
     //store
     const moneyRequestStore = useCustomerTransactionStore();
-    const { transaction, unauthorized } = storeToRefs(moneyRequestStore);
+    const { transaction, loadingTransactionData } =
+      storeToRefs(moneyRequestStore);
     const { getTransactionByReference } = useCustomerTransactionStore();
 
     //auth user
     const authStore = useAuthStore();
     const { authenticatedUser } = storeToRefs(authStore);
-    //ref data
-    const refData = ref({
-      noDataMessage: ["No Data"],
 
-      //loading
-      loadingPage: true,
-      loadingData: false,
-      loadingAction: false,
-      loadingAccounts: false,
-    });
-
-    //moneyRequest
-
-    const moneyRequestForm = ref({
-      id: 0,
-      action: "cancel",
-      paid: 0,
-      reference: "",
-    } as any);
-    const payMoneyRequestForm = ref({
-      debit_account_no: "",
-    });
-    const action = ref("");
-    const my_accounts = ref([]);
     const route = useRoute();
-    onMounted(async () => {
-      refData.value.loadingPage = true;
-      moneyRequestForm.value.reference = route.params.reference;
-      await getTransactionByReference(moneyRequestForm.value.reference);
-      refData.value.loadingPage = false;
-    });
-
-    const showEditMoneyRequestModal = async () => {
-      // refData.value.moneyRequestForm.action = "Edit";
-    };
-
-    const formUpdateMoneyRequestRef = ref<null | HTMLFormElement>(null);
-
-    const UpdateMoneyRequestModalRef = ref<null | HTMLElement>(null);
-
-    const rules = ref({
-      paid: [
-        {
-          required: true,
-          message: "status is required",
-          trigger: "change",
-        },
-      ],
-    });
 
     //output formatting
     let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
       useOutputFormat();
+
+    onMounted(async () => {
+      await getTransactionByReference(route.params.reference);
+    });
     return {
-      //variables
-      refData,
-
-      moneyRequestForm,
-      payMoneyRequestForm,
-      action,
-      my_accounts,
-
-      //functions
+      loadingTransactionData,
       getTransactionByReference,
-      showEditMoneyRequestModal,
-
-      rules,
-      formUpdateMoneyRequestRef,
-      UpdateMoneyRequestModalRef,
-
-      //state
       transaction,
       authenticatedUser,
-
-      unauthorized,
-
-      //composable
       formatCurrencyAmount,
       formatDateTime,
       formatTime,

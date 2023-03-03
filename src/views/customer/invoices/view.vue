@@ -905,14 +905,11 @@ import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { hideModal } from "@/core/helpers/dom";
-
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
-import Message from "vue-m-message";
-
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "invoice-details",
@@ -1033,54 +1030,16 @@ export default defineComponent({
             .then(() => {
               refData.value.loadingAction = false;
 
-              Message({
-                message: "Data updated successfully.",
-                //TBC
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert("Data updated successfully!");
 
               getInvoiceByReference(invoiceForm.value.reference);
 
               hideModal(updateInvoiceModalRef.value);
             })
             .catch((error) => {
-              // get errors from state
-              let response = error.response.data;
-
-              if (response.errors) {
-                let errors = response.errors;
-                for (const key in errors) {
-                  Message({
-                    message: errors[key][0],
-                    //TBC
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              } else if (response.error) {
-                Message({
-                  message: response.error,
-                  //TBC
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              } else {
-                Message({
-                  message: error.message,
-                  //TBC
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
 
               hideModal(updateInvoiceModalRef.value);
 

@@ -32,17 +32,17 @@
     <!--begin::Card body-->
     <div class="card-body pt-0">
       <el-tabs
-          tab-position="left"
-          class="kyc-tabs"
-          @tab-click="handleClick"
-          model-value="Identity & Profile"
+        tab-position="left"
+        class="kyc-tabs"
+        @tab-click="handleClick"
+        model-value="Identity & Profile"
       >
         <el-tab-pane
-            v-for="(group, key) in refData.kyc"
-            :title="key"
-            :key="key"
-            :label="key"
-            :name="key"
+          v-for="(group, key) in refData.kyc"
+          :title="key"
+          :key="key"
+          :label="key"
+          :name="key"
         >
           <h4 class="mb-4">{{ key }}</h4>
 
@@ -50,61 +50,61 @@
 
           <el-form @submit="processKYCUpdate()">
             <div
-                v-for="requirement in group"
-                :key="requirement.id"
-                :id="'requirement-group-' + requirement.id"
-                :label="requirement.name"
-                :label-for="'requirement-' + requirement.id"
-                class="mt-2"
+              v-for="requirement in group"
+              :key="requirement.id"
+              :id="'requirement-group-' + requirement.id"
+              :label="requirement.name"
+              :label-for="'requirement-' + requirement.id"
+              class="mt-2"
             >
               <h6>{{ requirement.name }}</h6>
 
               <el-select
-                  v-if="requirement.form_type === 'select'"
-                  class="m-2"
-                  v-model="refData.request[requirement.form_name]"
+                v-if="requirement.form_type === 'select'"
+                class="m-2"
+                v-model="refData.request[requirement.form_name]"
               >
                 <el-option
-                    v-for="item in requirement.options"
-                    :key="item.value"
-                    :label="item.text"
-                    :value="item.value"
+                  v-for="item in requirement.options"
+                  :key="item.value"
+                  :label="item.text"
+                  :value="item.value"
                 />
               </el-select>
 
               <input
-                  v-else-if="requirement.form_type === 'file'"
-                  type="file"
-                  placeholder="Choose a file or drop it here..."
-                  drop-placeholder="Drop file here..."
-                  class="mb-4 form-control-file"
-                  :ref="requirement.form_name"
-                  :id="requirement.form_name"
-                  @change="handleFileUpload($event)"
+                v-else-if="requirement.form_type === 'file'"
+                type="file"
+                placeholder="Choose a file or drop it here..."
+                drop-placeholder="Drop file here..."
+                class="mb-4 form-control-file"
+                :ref="requirement.form_name"
+                :id="requirement.form_name"
+                @change="handleFileUpload($event)"
               />
               <el-input
-                  v-else
-                  :id="'requirement-' + requirement.id"
-                  v-model="refData.request[requirement.form_name]"
+                v-else
+                :id="'requirement-' + requirement.id"
+                v-model="refData.request[requirement.form_name]"
               />
 
               <a
-                  v-if="
+                v-if="
                   requirement.form_type === 'file' &&
                   requirement.detail !== null &&
                   requirement.detail.file !== null
                 "
-                  target="_blank"
-                  :href="
+                target="_blank"
+                :href="
                   'https://sppay.dev/uploads/files/kyc_detail_files/' +
                   requirement.detail.file.file_name
                 "
               >
                 <small
-                    style="color: black"
-                    :id="requirement.form_name + '_help'"
-                    class="form-text text-muted mt-0"
-                >Current File:
+                  style="color: black"
+                  :id="requirement.form_name + '_help'"
+                  class="form-text text-muted mt-0"
+                  >Current File:
                   {{ requirement.detail.file.original_name }}</small
                 >
               </a>
@@ -112,17 +112,17 @@
             <div class="row">
               <div class="col-md-12 text-right mt-3">
                 <button
-                    v-if="!refData.loadingForm"
-                    class="btn-primary btn"
-                    @click="processKYCUpdate"
-                    :disabled="refData.loadingForm"
+                  v-if="!refData.loadingForm"
+                  class="btn-primary btn"
+                  @click="processKYCUpdate"
+                  :disabled="refData.loadingForm"
                 >
                   Update Details
                 </button>
                 <button
-                    v-else
-                    class="btn btn-primary"
-                    :disabled="refData.loadingForm"
+                  v-else
+                  class="btn btn-primary"
+                  :disabled="refData.loadingForm"
                 >
                   Processing ...
                 </button>
@@ -141,9 +141,9 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { useCustomerKycStore } from "@/stores/customer/kyc";
 import type { TabsPaneContext } from "element-plus";
-import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "manage-kyc",
@@ -155,14 +155,10 @@ export default defineComponent({
     //data variables
     const refData = ref({
       unauthorized: false,
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,
       loadingForm: false,
-
       active_tab: 0,
       kyc: {} as any,
       request: {},
@@ -172,25 +168,25 @@ export default defineComponent({
       refData.value.loadingData = true;
 
       kycStore
-          .getKycDetails()
+        .getKycDetails()
 
-          .then((response) => {
-            refData.value.kyc = response;
+        .then((response) => {
+          refData.value.kyc = response;
 
-            initiateSection(0);
+          initiateSection(0);
 
-            refData.value.loadingPage = false;
-          })
-          .catch((error) => {
-            if (error.response.status === 403) {
-              // unauthorized.
-              refData.value.unauthorized = true;
-            }
-          })
-          .finally(() => {
-            refData.value.loadingPage = false;
-            refData.value.loadingData = false;
-          });
+          refData.value.loadingPage = false;
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            // unauthorized.
+            refData.value.unauthorized = true;
+          }
+        })
+        .finally(() => {
+          refData.value.loadingPage = false;
+          refData.value.loadingData = false;
+        });
     };
 
     onMounted(() => {
@@ -214,15 +210,15 @@ export default defineComponent({
 
       // get values for that index.
       refData.value.kyc[Object.keys(refData.value.kyc)[index]].forEach(
-          (requirement) => {
-            if (requirement.form_type === "file") {
-              refData.value.request[requirement.form_name] = null;
-            } else {
-              refData.value.request[requirement.form_name] = requirement.detail
-                  ? requirement.detail.value
-                  : null;
-            }
+        (requirement) => {
+          if (requirement.form_type === "file") {
+            refData.value.request[requirement.form_name] = null;
+          } else {
+            refData.value.request[requirement.form_name] = requirement.detail
+              ? requirement.detail.value
+              : null;
           }
+        }
       );
     };
 
@@ -242,45 +238,19 @@ export default defineComponent({
       }
 
       kycStore
-          .updateKYC(kycFormData)
-          .then(() => {
-            Message({
-              message: "Details updated successfully.",
-              position: "bottom-right",
-              type: "success",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          })
-          .catch((error) => {
-            // get errors from state
-            let response = error.response.data;
-
-            if (response.errors) {
-              let errors = response.errors;
-              for (const key in errors) {
-                Message({
-                  message: errors[key][0],
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
-            } else if (response.error) {
-              Message({
-                message: response.error,
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          })
-          .finally(() => {
-            // update loading status
-            refData.value.loadingForm = false;
-          });
+        .updateKYC(kycFormData)
+        .then(() => {
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert("KYC updated successfully!");
+        })
+        .catch((error) => {
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
+        })
+        .finally(() => {
+          // update loading status
+          refData.value.loadingForm = false;
+        });
     };
     return {
       refData,

@@ -381,9 +381,6 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,
@@ -440,34 +437,6 @@ export default defineComponent({
     });
 
     const route = useRoute();
-
-    //functions
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const getTransactionBatch = async (options): Promise<void> => {
-    //   refData.value.loadingData = true;
-    //   await transactionBatchStore
-    //     .getTransactionBatch(table_options.value)
-    //
-    //     .then((response) => {
-    //       transactions.value = response.data;
-    //
-    //       // Populate transaction meta
-    //       meta.value.total = response.total;
-    //       meta.value.from = response.from;
-    //       meta.value.to = response.to;
-    //       meta.value.last_page = response.last_page;
-    //     })
-    //     .catch((error) => {
-    //       if (error.response.status === 403) {
-    //         // unauthorized.
-    //         refData.value.unauthorized = true;
-    //       }
-    //     })
-    //     .finally(() => {
-    //       refData.value.loadingPage = false;
-    //       refData.value.loadingData = false;
-    //     });
-    // };
 
     const handlePerPageChange = (size: number) => {
       table_options.value.current_page = 1;

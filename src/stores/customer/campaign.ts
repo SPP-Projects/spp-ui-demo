@@ -102,12 +102,13 @@ export const useCustomerCampaignStore = defineStore("customerCampaignStore", {
             console.log(data);
 
             this.campaignDetails = data.campaign;
-            this.campaignPayments = data.campaign.donations.data;
+            this.campaignPayments = data.campaign.donations;
 
-            this.meta.total = data.campaign.donations.total;
-            this.meta.from = data.campaign.donations.from;
-            this.meta.to = data.campaign.donations.to;
-            this.meta.last_page = data.campaign.donations.last_page;
+            //TODO - DO WE NEED TO PAGINATE
+            // this.meta.total = data.campaign.donations.total;
+            // this.meta.from = data.campaign.donations.from;
+            // this.meta.to = data.campaign.donations.to;
+            // this.meta.last_page = data.campaign.donations.last_page;
 
             resolve(data);
           })

@@ -115,7 +115,7 @@
               <!--begin::Content-->
               <div class="mb-3 mb-md-0 fw-semibold">
                 <div class="fs-6 text-gray-700 pe-7">
-                  Withdraw money to settlement account
+                  TODO -Withdraw money to settlement account
                 </div>
               </div>
               <!--end::Content-->
@@ -123,7 +123,7 @@
               <a
                 href="#"
                 class="btn btn-primary px-6 align-self-center text-nowrap"
-                >Withdraw</a
+                >TODO - Withdraw</a
               >
               <!--end::Action-->
             </div>
@@ -205,13 +205,11 @@
                     </td>
                     <td class="text-gray-800 min-w-200px">
                       <span
-                        v-if="campaignDetails.is_private === 0"
+                        v-if="campaignDetails.is_private"
                         class="badge badge-light-danger"
                         >Private</span
                       >
-                      <span
-                        v-if="campaignDetails.is_private === 1"
-                        class="badge badge-light-success"
+                      <span v-else class="badge badge-light-success"
                         >Public</span
                       >
                     </td>
@@ -244,9 +242,6 @@
                         {{ campaignDetails.description }}
                       </div>
                     </td>
-                    <!--                    <td class="text-gray-800">-->
-                    <!--                      {{ campaignDetails.description }}-->
-                    <!--                    </td>-->
                   </tr>
                   <!--end::Row-->
 
@@ -267,7 +262,13 @@
                   <tr v-if="campaignDetails.image_url">
                     <td class="text-gray-400">Image:</td>
                     <td class="text-gray-800">
-                      <el-image :src="campaignDetails.image_url"></el-image>
+                      <el-image
+                        :src="
+                          useCampaignHelper().replaceImageUrl(
+                            campaignDetails.image_url
+                          )
+                        "
+                      ></el-image>
                     </td>
                   </tr>
                   <!--end::Row-->
@@ -358,8 +359,8 @@
           <div class="card-toolbar">
             <div class="fw-bold me-5">
               <span class="me-2" v-if="meta.total >= 1">
-                Showing {{ meta.from }} to {{ meta.to }} of
-                {{ meta.total }}
+                <!--                Showing {{ meta.from }} to {{ meta.to }} of-->
+                <!--                {{ meta.total }}-->
               </span>
             </div>
           </div>
@@ -368,6 +369,7 @@
         <!--end::Card header-->
 
         <!--begin::Card body-->
+        <!--        :total="meta.total"-->
         <div class="card-body pt-0 pb-5">
           <KTDatatable
             :data="campaignPayments"
@@ -376,7 +378,6 @@
             :checkbox-enabled="false"
             checkbox-label="id"
             :itemsPerPage="table_options.page_size"
-            :total="meta.total"
             :loading="loadingData"
             @page-change="handlePageChange"
             @on-items-per-page-change="handlePerPageChange"
@@ -706,11 +707,6 @@
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Campaign Title</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                  title="Specify a target name for future usage and reference"
-                ></i>
               </label>
               <!--end::Label-->
 
@@ -726,11 +722,6 @@
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Description</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                  title="Specify a target name for future usage and reference"
-                ></i>
               </label>
               <!--end::Label-->
 
@@ -740,7 +731,7 @@
                   placeholder="Enter description"
                   name="description"
                   type="textarea"
-                  rows="3"
+                  rows="8"
                 ></el-input>
               </el-form-item>
             </div>
@@ -749,10 +740,6 @@
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Goal/Amount</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                ></i>
               </label>
               <!--end::Label-->
 
@@ -769,10 +756,6 @@
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Visible to Public?</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                ></i>
               </label>
               <!--end::Label-->
 
@@ -780,32 +763,23 @@
               <div class="row g-9 mb-8">
                 <!--begin::Col-->
                 <div class="col-md-6 fv-row">
-                  <el-form-item prop="is_private">
-                    <el-select
-                      v-model="campaign.is_private"
-                      placeholder="Select"
-                    >
-                      <el-option value="1">Yes</el-option>
-                      <el-option value="0">No</el-option>
-                    </el-select></el-form-item
-                  >
+                  <el-radio-group v-model="campaign.is_private" size="large">
+                    <el-radio-button label="0">Private</el-radio-button>
+                    <el-radio-button label="1">Public</el-radio-button>
+                  </el-radio-group>
                 </div>
                 <!--end::Col-->
               </div>
               <!--end::Input group-->
             </div>
-            <div class="d-flex flex-column mb-4 fv-row">
+            <div class="d-flex flex-column mb-0 fv-row">
               <!--begin::Label-->
               <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
                 <span class="required">Image</span>
-                <i
-                  class="fas fa-exclamation-circle ms-2 fs-7"
-                  data-bs-toggle="tooltip"
-                ></i>
               </label>
               <!--end::Label-->
 
-              <el-form-item prop="phone">
+              <el-form-item prop="campaign_image">
                 <input
                   type="file"
                   class="mb-4"
@@ -818,43 +792,44 @@
             </div>
             <!--end::Input group-->
           </el-form>
-        </div>
-        <div class="modal-footer flex-center" v-if="campaign">
-          <!--begin::Button-->
-          <button
-            type="reset"
-            id="kt_modal_update_campaign_cancel"
-            class="btn btn-light me-3"
-            data-bs-dismiss="modal"
-            :disabled="refData.loadingAction"
-          >
-            Cancel
-          </button>
-          <!--end::Button-->
+          <div class="modal-footer flex-center" v-if="campaign">
+            <!--begin::Button-->
+            <button
+              type="reset"
+              id="kt_modal_update_campaign_cancel"
+              class="btn btn-light me-3"
+              data-bs-dismiss="modal"
+              :disabled="refData.loadingAction"
+            >
+              Cancel
+            </button>
+            <!--end::Button-->
 
-          <!--begin::Button-->
-          <button
-            :data-kt-indicator="refData.loadingAction ? 'on' : null"
-            class="btn btn-lg btn-primary"
-            type="submit"
-            @click="processCampaignAction()"
-            :disabled="refData.loadingAction"
-          >
-            <span v-if="!refData.loadingAction" class="indicator-label">
-              {{ campaign.action === "Add" ? "Add" : "Update" }}
-              <span class="svg-icon svg-icon-3 ms-2 me-0">
-                <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+            <!--begin::Button-->
+            <button
+              :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              class="btn btn-lg btn-primary"
+              type="submit"
+              @click="processCampaignAction()"
+              :disabled="refData.loadingAction"
+            >
+              <span v-if="!refData.loadingAction" class="indicator-label">
+                {{ campaign.action === "Add" ? "Add" : "Update" }}
+                <span class="svg-icon svg-icon-3 ms-2 me-0">
+                  <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
+                </span>
               </span>
-            </span>
-            <span v-if="refData.loadingAction" class="indicator-progress">
-              Please wait...
-              <span
-                class="spinner-border spinner-border-sm align-middle ms-2"
-              ></span>
-            </span>
-          </button>
-          <!--end::Button-->
+              <span v-if="refData.loadingAction" class="indicator-progress">
+                Please wait...
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+            </button>
+            <!--end::Button-->
+          </div>
         </div>
+
         <!--end::Modal body-->
       </div>
       <!--end::Modal content-->
@@ -999,7 +974,7 @@ import { defineComponent, onMounted, ref, watch } from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
 import { useRoute } from "vue-router";
-import Message from "vue-m-message";
+
 import { hideModal } from "@/core/helpers/dom";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
@@ -1009,7 +984,8 @@ import type { iCampaignDonation } from "@/models/campaign";
 import useOutputFormat from "@/composables/useOutputFormat";
 import ClipboardJS from "clipboard";
 import Swal from "sweetalert2";
-
+import useCampaignHelper from "@/composables/useCampaignHelper";
+import { AlertService } from "@/services/AlertService";
 interface NewAddressData {
   email: string;
   description: string;
@@ -1038,9 +1014,6 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,
@@ -1100,7 +1073,7 @@ export default defineComponent({
       image: "",
       goal: "",
       reference: "",
-      is_private: "",
+      is_private: 0,
     } as any);
     const campaignImageRef = ref(null);
     const payload = ref({
@@ -1209,14 +1182,8 @@ export default defineComponent({
               // update loading status
               refData.value.loadingAction = false;
 
-              Message({
-                message: "Data updated successfully.",
-                //TBC
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert("Data updated successfully!");
 
               // update campaign records
               getCampaign(table_options.value);
@@ -1224,31 +1191,8 @@ export default defineComponent({
               hideModal(updateCampaignModalRef.value);
             })
             .catch((error) => {
-              // get errors from state
-              let response = error.response.data;
-
-              if (response.errors) {
-                let errors = response.errors;
-                for (const key in errors) {
-                  Message({
-                    message: errors[key][0],
-                    //TBC
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              } else if (response.error) {
-                Message({
-                  message: response.error,
-                  //TBC
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
 
               // update loading status
               refData.value.loadingAction = false;
@@ -1272,8 +1216,6 @@ export default defineComponent({
 
       // const clipboard = new ClipboardJS(copyButtonRef.value);
       const clipboard = new ClipboardJS("#kt_share_earn_link_copy_button");
-
-      console.log(clipboard);
 
       clipboard.on("success", function (e) {
         const buttonCaption = copyButtonRef.value?.innerHTML;
@@ -1441,6 +1383,9 @@ export default defineComponent({
       formRef,
       emailFormRules,
       newTargetModalRef,
+
+      //
+      useCampaignHelper,
     };
   },
 });

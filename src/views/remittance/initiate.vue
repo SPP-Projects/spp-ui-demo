@@ -962,17 +962,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
-
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import { loadStripe } from "@stripe/stripe-js";
-import Message from "vue-m-message";
 import { useCustomerRemittanceStore } from "@/stores/remittance/remittance";
-
 import PaymentSuccess from "@/views/remittance/success.vue";
 import sppData from "@/helpers/data";
-
 import * as Yup from "yup";
 import { storeToRefs } from "pinia";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "create-account-modal",
@@ -1061,17 +1058,9 @@ export default defineComponent({
       transferStatus.value.loading = true;
 
       setTimeout(() => {
-        //TODO - validation
-        // if (submitButtonRef.value) {
-        //   submitButtonRef.value.disabled = false;
-        //
-        //   submitButtonRef.value?.removeAttribute("data-kt-indicator");
-        // }
-
         remittanceStore
           .validateRemittance(remittanceForm.value.validationDetails)
           .then(async (response: any) => {
-            console.log(response);
             validatedTransferDetails.value = response;
             remittanceForm.value.validationDetails.payment_intent_id =
               response.payment_intent.id;
@@ -1079,36 +1068,8 @@ export default defineComponent({
           .catch((error) => {
             stepper.value = "input";
             loading.value = false;
-            const response = error.response.data;
-
-            if (response.errors) {
-              const errors = response.errors;
-              for (const key in errors) {
-                Message({
-                  message: errors[key][0],
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
-            } else if (response.error) {
-              Message({
-                message: response.error,
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            } else {
-              Message({
-                message: error,
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
+            //display message using shared AlertService
+            AlertService.displayMultipleErrorsAlert(error);
           })
           .finally(function () {
             loading.value = false;
@@ -1173,13 +1134,9 @@ export default defineComponent({
           transferStatus.value.statusMessage = error;
           transferStatus.value.loading = false;
           transferStatus.value.error = true;
-          Message({
-            message: error,
-            position: "bottom-right",
-            type: "error",
-            duration: 5000,
-            zIndex: 99999,
-          });
+
+          //display message using shared AlertService
+          AlertService.displayErrorAlert(error);
         })
         .finally(() => {
           loading.value = false;
@@ -1194,17 +1151,13 @@ export default defineComponent({
 
       if (error) {
         paymentProcessing.value = false;
-        console.error(error.message);
+
         transferStatus.value.error = true;
         transferStatus.value.loading = false;
         transferStatus.value.statusMessage = error.message;
-        Message({
-          message: error.message,
-          position: "bottom-right",
-          type: "error",
-          duration: 5000,
-          zIndex: 99999,
-        });
+
+        //display message using shared AlertService
+        AlertService.displayErrorAlert(error.message);
         return;
       }
 
@@ -1230,13 +1183,9 @@ export default defineComponent({
             transferStatus.value.statusMessage = paymentResult.error.message;
             transferStatus.value.loading = false;
             transferStatus.value.error = true;
-            Message({
-              message: paymentResult.error.message,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
+
+            //display message using shared AlertService
+            AlertService.displayErrorAlert(paymentResult.error.message);
             return;
           } else {
             transferStatus.value.loading = true;
@@ -1269,28 +1218,17 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          // get errors from state
           transferStatus.value.loading = false;
           transferStatus.value.statusMessage = error;
-          Message({
-            message: error,
-            position: "bottom-right",
-            type: "error",
-            duration: 5000,
-            zIndex: 99999,
-          });
-          console.log(error);
+
+          //display message using shared AlertService
+          AlertService.displayErrorAlert(error);
         })
         .finally(() => {
           loading.value = false;
           transferStatus.value.loading = false;
           transferStatus.value.error = false;
         });
-
-      // //Deactivate indicator
-      // confirmPaymentButtonRef.value?.removeAttribute("data-kt-indicator");
-      // // eslint-disable-next-line
-      // confirmPaymentButtonRef.value!.disabled = false;
     };
 
     const recipientInstitutions = computed(() => {

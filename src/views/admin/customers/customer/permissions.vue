@@ -99,6 +99,7 @@ import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import DataLoader from "@/components/DataLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -152,23 +153,12 @@ export default defineComponent({
       customerStore
         .updateCustomerPermissions(payload)
         .then(() => {
-          Message({
-            message: "Permissions updated successfully",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert("Data updated successfully!");
         })
         .catch((error) => {
-          const response = error.response.data;
-          Message({
-            message: response,
-            position: "bottom-right",
-            type: "error",
-            duration: 5000,
-            zIndex: 99999,
-          });
+          //display message using shared AlertService
+          AlertService.displayErrorAlert(error.response.data);
         })
         .finally(() => (refData.value.loadingAction = false));
     };

@@ -568,13 +568,12 @@ import { defineComponent, getCurrentInstance, onMounted, ref } from "vue";
 import { useCustomerInvoiceStore } from "@/stores/customer/invoice";
 import { storeToRefs } from "pinia";
 
-import Message from "vue-m-message";
-
 import moment from "moment";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import { useRouter } from "vue-router";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 interface invoiceItems {
   quantity: number;
   description: string;
@@ -590,10 +589,7 @@ export default defineComponent({
     const { loadingInvoiceData, unauthorized } = storeToRefs(invoiceStore);
     const router = useRouter();
     const refData = ref({
-      noDataMessage: ["No Data"],
-
       formType: "add",
-      //loading
       loadingPage: false,
       loadingAction: false,
       products: [],
@@ -692,49 +688,22 @@ export default defineComponent({
           invoiceStore
             .addInvoice(formData.value)
             .then(() => {
-              Message({
-                message: "Invoice added successfully, please confirm details.",
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert(
+                "Invoice added successfully, please confirm details!"
+              );
 
               router.push(`/invoices`);
 
               refData.value.loadingAction = false;
             })
             .catch((error) => {
-              // get errors from state
-              const response = error.response.data;
-
-              if (response.errors) {
-                const errors = response.errors;
-                for (const key in errors) {
-                  Message({
-                    message: errors[key][0],
-                    //TODO
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              } else if (response.error) {
-                Message({
-                  message: response.error,
-                  //TODO
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
             })
             .finally(() => (refData.value.loadingAction = false));
           //do nothing.
         } else {
-          console.log("error");
           return false;
         }
       });

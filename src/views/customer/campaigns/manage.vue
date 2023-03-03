@@ -77,12 +77,8 @@
           >
         </template>
         <template v-slot:is_private="{ row: data }">
-          <span v-if="data.is_private === 0" class="badge badge-danger"
-            >Private</span
-          >
-          <span v-if="data.is_private === 1" class="badge badge-light-success"
-            >Public</span
-          >
+          <span v-if="data.is_private" class="badge badge-danger">Private</span>
+          <span v-else class="badge badge-light-success">Public</span>
         </template>
 
         <template v-slot:created_at="{ row: data }">
@@ -333,10 +329,10 @@ import { useCustomerCampaignStore } from "@/stores/customer/campaign";
 import { hideModal } from "@/core/helpers/dom";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 
-import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "manage-campaigns",
@@ -354,9 +350,6 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,
@@ -482,48 +475,20 @@ export default defineComponent({
             .then((response) => {
               // update campaign action to edit
               campaign.value = response;
-              campaign.value.action = "Edit";
 
               // update loading status
               refData.value.loadingAction = false;
 
-              Message({
-                message: "Campaign updated successfully.",
-                //TBC
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert("Campaign added successfully!");
 
               getCampaigns(table_options.value);
 
               hideModal(AddUpdateCampaignModalRef.value);
             })
             .catch((error) => {
-              // get errors from state
-              let response = error.response.data;
-
-              if (response.errors) {
-                let errors = response.errors;
-                for (const key in errors) {
-                  Message({
-                    message: errors[key][0],
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              } else if (response.error) {
-                Message({
-                  message: response.error,
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
             })
             .finally(() => (refData.value.loadingAction = false));
         } else {

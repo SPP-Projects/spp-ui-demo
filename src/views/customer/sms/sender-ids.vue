@@ -223,11 +223,10 @@ import { useCustomerSmsStore } from "@/stores/customer/sms";
 import { storeToRefs } from "pinia";
 import { hideModal } from "@/core/helpers/dom";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-
-import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "sender-ids-list",
@@ -245,9 +244,6 @@ export default defineComponent({
 
     //ref variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,
@@ -328,45 +324,18 @@ export default defineComponent({
             .then(() => {
               senderID.value.name = "";
 
-              Message({
-                message: "Sender ID submitted successfully.",
-                //TODO
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert(
+                "Sender ID submitted successfully!"
+              );
 
               getSenderIDs(table_options.value);
               //TODO
               hideModal(AddSenderIdModalRef.value);
             })
             .catch((error) => {
-              // get errors from state
-              const response = error.response.data;
-
-              if (response.errors) {
-                const errors = response.errors;
-                for (const key in errors) {
-                  Message({
-                    message: errors[key][0],
-                    //TODO
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              } else if (response.error) {
-                Message({
-                  message: response.error,
-                  //TODO
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
             })
             .finally(() => {
               loadingAddSenderIdForm.value = false;

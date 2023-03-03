@@ -7,18 +7,6 @@
       <div class="card card-flush w-lg-650px py-5">
         <div class="card-body py-10 py-lg-10">
           <div>
-            <!--begin::Logo-->
-            <!--            <div class="mb-10 text-center">-->
-            <!--              <router-link to="/" class="">-->
-            <!--                <img-->
-            <!--                  alt="Logo"-->
-            <!--                  src="/media/logos/custom-2.svg"-->
-            <!--                  class="h-40px"-->
-            <!--                  ref="picture"-->
-            <!--                />-->
-            <!--              </router-link>-->
-            <!--            </div>-->
-            <!--end::Logo-->
             <!--begin::Title-->
             <h1 class="fw-bolder text-gray-900 mb-5 text-center">
               Invoice Payment
@@ -357,9 +345,6 @@ export default defineComponent({
     //data variables
     const refData = ref({
       unauthorized: false,
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingData: false,
       loadingAction: false,

@@ -225,6 +225,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import sppData from "@/helpers/data";
 
 import { useAdminCustomerStore } from "@/stores/admin/customer";
+import {AlertService} from "@/services/AlertService";
 export default defineComponent({
   name: "admin-manage-customer-groups",
   components: {
@@ -326,40 +327,12 @@ export default defineComponent({
 
                   hideModal(customerGroupModalRef.value);
 
-                  Message({
-                    message: "Data updated successfully.",
-                    position: "bottom-right",
-                    type: "success",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
+                  //display message using shared AlertService
+                  AlertService.displaySuccessAlert("Data updated successfully!");
                 })
                 .catch((error) => {
-                  // get errors from state
-                  const response = error.response.data;
-
-                  if (response.errors) {
-                    const errors = response.errors;
-                    for (const key in errors) {
-                      Message({
-                        message: errors[key][0],
-                        //TBC
-                        position: "bottom-right",
-                        type: "error",
-                        duration: 5000,
-                        zIndex: 99999,
-                      });
-                    }
-                  } else if (response.error) {
-                    Message({
-                      message: response.error,
-                      //TBC
-                      position: "bottom-right",
-                      type: "error",
-                      duration: 5000,
-                      zIndex: 99999,
-                    });
-                  }
+                  //display message using shared AlertService
+                  AlertService.displayMultipleErrorsAlert(error);
 
                   // update loading status
                   refData.value.loadingAction = false;

@@ -88,16 +88,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { useCustomerUserStore } from "@/stores/customer/user";
 import { storeToRefs } from "pinia";
 import type { iUser } from "@/models/user";
 import accessPermissions from "@/helpers/permissions";
-import { useAuthStore } from "@/stores/auth";
-import DataLoader from "@/components/DataLoader.vue";
+
 export default defineComponent({
   name: "user-permissions",
-  components: { DataLoader },
+  components: {},
   setup() {
     //store
     const userStore = useCustomerUserStore();
@@ -110,13 +109,8 @@ export default defineComponent({
     //data variables
     const data = ref({
       unauthorized: false,
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
-
       loadingAction: false,
-
       user: {} as iUser,
       permissions: [],
     });

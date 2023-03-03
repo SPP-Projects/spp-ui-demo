@@ -396,9 +396,8 @@ import { defineComponent, ref } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
-import Message from "vue-m-message";
-
 import { useCustomerKycStore } from "@/stores/customer/kyc";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "account-settings",
@@ -483,16 +482,12 @@ export default defineComponent({
 
     const updatePassword = () => {
       if (updatePasswordButton.value) {
-        // Activate indicator
         updatePasswordButton.value.setAttribute("data-kt-indicator", "on");
-
-        console.log(updatePasswordFormData.value);
 
         loadingAction.value = true;
 
         kycStore
           .updatePassword(updatePasswordFormData.value)
-
           .then((response) => {
             console.log(response);
             updatePasswordButton.value?.removeAttribute("data-kt-indicator");
@@ -500,73 +495,18 @@ export default defineComponent({
             loadingAction.value = false;
             passwordFormDisplay.value = false;
 
-            Message({
-              message: "Password updated successfully.",
-              position: "bottom-right",
-              type: "success",
-              duration: 5000,
-              zIndex: 99999,
-            });
+            //display message using shared AlertService
+            AlertService.displaySuccessAlert("Password updated successfully!");
           })
           .catch((error) => {
-            // get errors from state
-            let response = error.response.data;
-
-            if (response.errors) {
-              let errors = response.errors;
-              for (const key in errors) {
-                Message({
-                  message: errors[key][0],
-                  //TBC
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
-            } else if (response.error) {
-              Message({
-                message: response.error,
-                //TBC
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            } else {
-              Message({
-                message: error,
-                //TBC
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-
+            //display message using shared AlertService
+            AlertService.displayMultipleErrorsAlert(error);
             // update loading status
             loadingAction.value = false;
           })
           .finally(() => {
             updatePasswordButton.value?.removeAttribute("data-kt-indicator");
           });
-
-        // setTimeout(() => {
-        //   updatePasswordButton.value?.removeAttribute("data-kt-indicator");
-        //
-        //   Swal.fire({
-        //     text: "Password is successfully changed!",
-        //     icon: "success",
-        //     confirmButtonText: "Ok",
-        //     buttonsStyling: false,
-        //     heightAuto: false,
-        //     customClass: {
-        //       confirmButton: "btn btn-light-primary",
-        //     },
-        //   }).then(() => {
-        //     passwordFormDisplay.value = false;
-        //   });
-        // }, 2000);
       }
     };
 

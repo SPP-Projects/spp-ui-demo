@@ -18,6 +18,7 @@ export interface iCampaign {
   amount_to_goal: number;
   donations: iDonations;
   image_url: string;
+  is_private: boolean;
 }
 
 export interface iDonations {

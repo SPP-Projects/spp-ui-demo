@@ -296,13 +296,12 @@
 import { defineComponent, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useCustomerTransactionBatchStore } from "@/stores/customer/transactionbatch";
-
 import { hideModal } from "@/core/helpers/dom";
-import Message from "vue-m-message";
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import useOutputFormat from "@/composables/useOutputFormat";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "manage-transaction-batches",
@@ -322,11 +321,7 @@ export default defineComponent({
 
     //data variables
     const refData = ref({
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
-
       loadingAction: false,
     });
 
@@ -435,46 +430,18 @@ export default defineComponent({
       transactionBatchStore
         .processTransactionBatch(transaction_batch.value.batch_reference)
         .then(() => {
-          Message({
-            message: "Batch submitted for processing successfully.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert(
+            "Batch submitted for processing successfully!"
+          );
+
           loading_batch.value.process = false;
           getAllTransactionBatches(table_options.value);
           hideModal(confirmTransactionBatchModalRef.value);
         })
         .catch((error) => {
-          if (error.response.status === 403) {
-            // unauthorized.
-            //TODO
-            //    refData.value.unauthorized = true;
-          }
-
-          let response = error.response.data;
-
-          if (response.errors) {
-            let errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => {
           loading_batch.value.process = false;
@@ -508,46 +475,15 @@ export default defineComponent({
           transactionBatchStore
             .submitTransactionBatch(batchUploadPayload)
             .then(() => {
-              Message({
-                message: "Batch uploaded successfully.",
-                position: "bottom-right",
-                type: "success",
-                duration: 5000,
-                zIndex: 99999,
-              });
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert("Batch uploaded successfully!");
 
               getAllTransactionBatches(table_options.value);
               hideModal(uploadTransactionBatchModalRef.value);
             })
             .catch((error) => {
-              if (error.response.status === 403) {
-                // unauthorized.
-                //TODO
-                //    refData.value.unauthorized = true;
-              }
-
-              let response = error.response.data;
-
-              if (response.errors) {
-                let errors = response.errors;
-                for (const key in errors) {
-                  Message({
-                    message: errors[key][0],
-                    position: "bottom-right",
-                    type: "error",
-                    duration: 5000,
-                    zIndex: 99999,
-                  });
-                }
-              } else if (response.error) {
-                Message({
-                  message: response.error,
-                  position: "bottom-right",
-                  type: "error",
-                  duration: 5000,
-                  zIndex: 99999,
-                });
-              }
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
             })
             .finally(() => {
               loading_batch.value.submit = !loading_batch.value.submit;

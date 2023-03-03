@@ -21,14 +21,14 @@ export default defineConfig({
   },
   server: {
     port: 8080,
-    proxy: {
-      "/v1": {
-        target: "https://engine.sppay.dev",
-        changeOrigin: true,
-        secure: false,
-        // rewrite: (path) => path.replace(/^\/v1/, ""),
-      },
-    },
+    // proxy: {
+    //   "/v1": {
+    //     target: "https://engine.sppay.dev",
+    //     changeOrigin: true,
+    //     secure: false,
+    //     // rewrite: (path) => path.replace(/^\/v1/, ""),
+    //   },
+    // },
   },
   //TODO - SPP
 });

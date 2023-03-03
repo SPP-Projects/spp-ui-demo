@@ -394,7 +394,7 @@ import useOutputFormat from "@/composables/useOutputFormat";
 import type { iTransaction } from "@/models/transaction";
 import sppData from "@/helpers/data";
 export default {
-  name: "customer-manage-transaction",
+  name: "customer-manage-transactions",
   components: { KTDatatable },
   setup() {
     //transaction store

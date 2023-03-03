@@ -848,15 +848,13 @@ import { useBodyStore } from "@/stores/body";
 import { useThemeStore } from "@/stores/theme";
 import LayoutService from "@/core/services/LayoutService";
 import { getIllustrationsPath } from "@/core/helpers/assets";
-
 import PageLoader from "@/components/PageLoader.vue";
 import { useGuestPaymentStore } from "@/stores/guest/payment";
 import { storeToRefs } from "pinia";
 import { useGuestGeneralStore } from "@/stores/guest/general";
 import { useRoute } from "vue-router";
-
-import Message from "vue-m-message";
 import DataLoader from "@/components/DataLoader.vue";
+import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
   name: "blank-page",
@@ -877,8 +875,6 @@ export default defineComponent({
       loadingPaymentData,
       invoiceData,
       getPaymentInvoiceData,
-      getPaymentValidationResponse,
-      getPaymentInvoiceItems,
       paymentInvoiceData,
     } = storeToRefs(paymentStore);
 
@@ -940,7 +936,7 @@ export default defineComponent({
         //     institution: any
         //   ) {
         //     return institution.type_id === "3"; // Get only mobile money institutions
-        //   });d
+        //   });
       });
     };
 
@@ -955,39 +951,15 @@ export default defineComponent({
           validated.value = response.data;
 
           form.value.step = "validated";
-          console.log(response);
-          Message({
-            message: "Validation successful, please confirm details.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert(
+            "Validation successful, please confirm details!"
+          );
         })
         .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => (loading.value = false));
     };
@@ -1002,38 +974,12 @@ export default defineComponent({
 
           form.value.step = "confirmed";
 
-          Message({
-            message: "Payment submitted successfully.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert("Payment submitted successfully!");
         })
         .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
         .finally(() => (loading.value = false));
     };
@@ -1100,8 +1046,6 @@ export default defineComponent({
             formStepper.value.step = "validated";
             formStepper.value.message = "Payment submitted";
           } else {
-            // form.value.step = "paystackIssue";
-            // formStepper.value.step = "paystackIssue";
             formStepper.value.step = "validated";
             formStepper.value.message = response.data.message;
           }
@@ -1110,52 +1054,21 @@ export default defineComponent({
             validatedData.value = response.data.transaction.original;
           }
 
-          Message({
-            message: "Validation successful, please confirm details.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert(
+            "Validation successful, please confirm details.!"
+          );
         })
         .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-          console.log(error);
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          } else if (error.message) {
-            Message({
-              message: error.message,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
 
           formStepper.value.step = "input";
         })
-        .finally(
-          () => ((loading.value = false), (initiatingPayment.value = false))
-        );
+        .finally(() => {
+          loading.value = false;
+          initiatingPayment.value = false;
+        });
     };
     const submitOTPButtonRef = ref<null | HTMLButtonElement>(null);
     const initiatePaymentButtonRef = ref<null | HTMLButtonElement>(null);
@@ -1207,56 +1120,18 @@ export default defineComponent({
           if (response.data.transaction.original) {
             validatedData.value = response.data.transaction.original;
           }
-          Message({
-            message: "Payment submitted successfully.",
-            position: "bottom-right",
-            type: "success",
-            duration: 5000,
-            zIndex: 99999,
-          });
+
+          //display message using shared AlertService
+          AlertService.displaySuccessAlert("Payment submitted successfully!");
         })
         .catch((error) => {
-          // get errors from state
-          const response = error.response.data;
-          console.log(error);
-          if (response.errors) {
-            const errors = response.errors;
-            for (const key in errors) {
-              Message({
-                message: errors[key][0],
-                position: "bottom-right",
-                type: "error",
-                duration: 5000,
-                zIndex: 99999,
-              });
-            }
-          } else if (response.error) {
-            Message({
-              message: response.error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          } else if (error.message) {
-            Message({
-              message: error.message,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          } else {
-            Message({
-              message: error,
-              position: "bottom-right",
-              type: "error",
-              duration: 5000,
-              zIndex: 99999,
-            });
-          }
+          //display message using shared AlertService
+          AlertService.displayMultipleErrorsAlert(error);
         })
-        .finally(() => ((loading.value = false), (verifyingOTP.value = false)));
+        .finally(() => {
+          loading.value = false;
+          verifyingOTP.value = false;
+        });
     };
     return {
       //page

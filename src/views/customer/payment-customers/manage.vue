@@ -29,23 +29,11 @@
         <!--begin::Group actions-->
         <div class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
-            <span class="me-2">
+            <span class="me-2" v-if="meta.total >= 1">
               Showing {{ meta.from }} to {{ meta.to }} of
               {{ meta.total }}
             </span>
           </div>
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            data-bs-toggle="modal"
-            data-bs-target="#kt_modal_add_account_type"
-            @click="showAccountTypeModal('Add', {})"
-          >
-            <span class="svg-icon svg-icon-2">
-              <inline-svg src="/media/icons/duotune/arrows/arr075.svg" />
-            </span>
-            Add Account Type
-          </button>
         </div>
         <!--end::Group actions-->
       </div>
@@ -56,46 +44,60 @@
     <!--begin::Card body-->
     <div class="card-body pt-0">
       <KTDatatable
-        :data="accountTypes"
+        :data="paymentCustomers"
         :header="tableHeader"
         :enable-items-per-page-dropdown="true"
         :checkbox-enabled="false"
         checkbox-label="id"
         :itemsPerPage="table_options.page_size"
         :total="meta.total"
-        :loading="loadingAccountData"
+        :loading="loadingPaymentCustomerData"
         @page-change="handlePageChange"
         @on-items-per-page-change="handlePerPageChange"
         @on-sort="sortingChanged"
       >
-        <template v-slot:id="{ row: data }">
-          {{ data.id }}
+        <template v-slot:customer_id="{ row: data }">
+          {{ data.customer_id }}
         </template>
         <template v-slot:name="{ row: data }">
-          <p class="text-gray-800 fw-bold">{{ data.name }}</p>
+          {{ data.name }}
         </template>
-        <template v-slot:description="{ row: data }">
-          {{ data.description }}
+        <template v-slot:email="{ row: data }">
+          <router-link :to="'/payment-customers/' + data.id">
+            {{ data.email }}</router-link
+          >
         </template>
-        <template v-slot:is_hidden="{ row: data }">
-          <span v-if="data.is_hidden === 0" class="badge badge-success"
-            >Available</span
+        <template v-slot:phone="{ row: data }">
+          {{ data.phone }}
+        </template>
+
+        <template v-slot:is_blacklisted="{ row: data }">
+          <span v-if="!data.is_blacklisted" class="badge badge-light-success"
+            >Active</span
           >
 
-          <span v-if="data.is_hidden === 1" class="badge badge-danger"
-            >Hidden</span
-          >
+          <span v-else class="badge badge-danger">Black Listed</span>
+        </template>
+
+        <template v-slot:created_at="{ row: data }">
+          {{ formatDateTime(data.created_at) }}
         </template>
 
         <template v-slot:actions="{ row: data }">
+          <router-link
+            :to="'/payment-customers/' + data.id"
+            class="btn btn-sm btn-primary me-2 mb-2"
+          >
+            View Transactions
+          </router-link>
           <button
-            class="btn btn-sm btn-light-info btn-active-light-info"
-            @click="showAccountTypeModal('Edit', data)"
+            class="btn btn-sm btn-light-info btn-active-light-info mb-2"
+            @click="showEditCustomerModal(data)"
             data-bs-toggle="modal"
             id="edit-btn"
-            data-bs-target="#kt_modal_add_account_type"
+            data-bs-target="#kt_modal_update_customer"
           >
-            View/Edit
+            Edit
           </button>
         </template>
       </KTDatatable>
@@ -105,30 +107,31 @@
   </div>
   <!--end::Card-->
 
-  <!--Add accountType Modal-->
+  <!--Update Customer Details Modal-->
   <div
     class="modal fade"
-    id="kt_modal_add_account_type"
-    ref="accountTypeModalRef"
+    id="kt_modal_update_customer"
+    ref="updateCustomerModalRef"
     tabindex="-1"
     aria-hidden="true"
   >
     <!--begin::Modal dialog-->
     <div class="modal-dialog modal-dialog-centered mw-650px">
       <!--begin::Modal content-->
-      <div class="modal-content">
+
+      <div class="modal-content" v-if="customer">
         <!--begin::Form-->
         <el-form
           class="form"
-          @submit.prevent="processAccountTypeAction()"
-          :model="accountType"
-          :rules="modalFormRules"
-          ref="formAccountTypeRef"
+          @submit.prevent="processCustomerAction()"
+          :model="customer"
+          :rules="rules"
+          ref="formUpdateCustomerRef"
         >
           <!--begin::Modal header-->
-          <div class="modal-header" id="kt_modal_new_account_type_header">
+          <div class="modal-header" id="kt_modal_new_customer_header">
             <!--begin::Modal title-->
-            <h2>{{ accountType.action }} Account Type</h2>
+            <h2>Update Payment Customer Details</h2>
             <!--end::Modal title-->
 
             <!--begin::Close-->
@@ -149,67 +152,68 @@
             <!--begin::Scroll-->
             <div
               class="scroll-y me-n7 pe-7"
-              id="kt_modal_account_type_scroll"
+              id="kt_modal_new_new_payment_scroll"
               data-kt-scroll="true"
               data-kt-scroll-activate="{default: false, lg: true}"
               data-kt-scroll-max-height="auto"
-              data-kt-scroll-dependencies="#kt_modal_new_account_type_header"
-              data-kt-scroll-wrappers="#kt_modal_account_type_scroll"
+              data-kt-scroll-dependencies="#kt_modal_new_customer_header"
+              data-kt-scroll-wrappers="#kt_modal_new_new_payment_scroll"
               data-kt-scroll-offset="300px"
             >
               <!--begin::Input group-->
-              <div class="d-flex flex-column mb-5 fv-row">
+              <div class="d-flex flex-column mb-4 fv-row">
                 <!--begin::Label-->
-                <label class="d-flex align-items-center fs-5 fw-semobold mb-2">
-                  <span class="required">Name</span>
+                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                  <span class="">Name</span>
                 </label>
                 <!--end::Label-->
 
                 <el-form-item prop="name">
                   <el-input
-                    v-model="accountType.name"
-                    placeholder="Name"
+                    v-model="customer.name"
+                    placeholder="Enter Name"
                     name="name"
                   ></el-input>
                 </el-form-item>
               </div>
-              <!--end::Input group-->
-
-              <!--begin::Input group-->
-              <div class="d-flex flex-column mb-5 fv-row">
+              <div class="d-flex flex-column mb-4 fv-row">
                 <!--begin::Label-->
-                <label class="d-flex align-items-center fs-5 fw-semobold mb-2">
-                  <span class="required">Description</span>
+                <label class="d-flex align-items-center fs-6 fw-semobold mb-2">
+                  <span class="">Phone</span>
                 </label>
                 <!--end::Label-->
 
-                <el-form-item prop="Description">
+                <el-form-item prop="phone">
                   <el-input
-                    v-model="accountType.description"
-                    placeholder="Description"
-                    name="description"
+                    v-model="customer.phone"
+                    placeholder="Enter Phone"
+                    name="phone"
+                    type="text"
                   ></el-input>
                 </el-form-item>
               </div>
+
               <!--end::Input group-->
 
               <!--begin::Input group-->
-              <div class="d-flex flex-column mb-5 fv-row">
-                <el-form-item
-                  label="Unavailable to customers for selection"
-                  prop="is_hidden"
-                >
-                  <input
-                    v-model="accountType.is_hidden"
-                    placeholder="is_hidden"
-                    name="is_hidden"
-                    type="checkbox"
-                    true-value="1"
-                    false-value="0"
-                  />
-                </el-form-item>
-              </div>
+              <div class="row g-9 mb-8">
+                <!--begin::Col-->
+                <div class="col-md-6 fv-row">
+                  <label class="required fs-6 fw-semobold mb-2"
+                    >Status / Blacklisted?</label
+                  >
+                  <hr />
 
+                  <el-radio-group
+                    v-model="customer.is_blacklisted"
+                    size="large"
+                  >
+                    <el-radio-button label="0">Active</el-radio-button>
+                    <el-radio-button label="1">BlackListed</el-radio-button>
+                  </el-radio-group>
+                </div>
+                <!--end::Col-->
+              </div>
               <!--end::Input group-->
             </div>
             <!--end::Scroll-->
@@ -221,31 +225,30 @@
             <!--begin::Button-->
             <button
               type="reset"
-              id="kt_modal_add_account_type_cancel"
-              class="btn btn-light me-3 btn-sm"
+              id="kt_modal_update_customer_cancel"
+              class="btn btn-light me-3"
               data-bs-dismiss="modal"
               :disabled="refData.loadingAction"
             >
-              Discard
+              Cancel
             </button>
             <!--end::Button-->
 
             <!--begin::Button-->
             <button
-              ref="submitButtonRef"
-              type="submit"
-              id="kt_modal_account_type_submit"
-              class="btn btn-primary btn-sm"
               :data-kt-indicator="refData.loadingAction ? 'on' : null"
+              class="btn btn-lg btn-primary"
+              type="submit"
+              @click="processCustomerAction()"
               :disabled="refData.loadingAction"
             >
               <span v-if="!refData.loadingAction" class="indicator-label">
-                {{ accountType.action === "Add" ? "Add" : "Update" }}
+                Update
                 <span class="svg-icon svg-icon-3 ms-2 me-0">
                   <inline-svg src="/media/icons/duotune/arrows/arr064.svg" />
                 </span>
               </span>
-              <span class="indicator-progress">
+              <span v-if="refData.loadingAction" class="indicator-progress">
                 Please wait...
                 <span
                   class="spinner-border spinner-border-sm align-middle ms-2"
@@ -260,78 +263,64 @@
       </div>
     </div>
   </div>
-  <!--Add accountType Modal-->
+  <!--Update Customer Details Modal-->
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import { useAdminAccountStore } from "@/stores/admin/account";
 import { storeToRefs } from "pinia";
-import { hideModal } from "@/core/helpers/dom";
 
-import Message from "vue-m-message";
+import { hideModal } from "@/core/helpers/dom";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+
 import PermissionDenied from "@/components/PermissionDenied.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-import sppData from "@/helpers/data";
+import useOutputFormat from "@/composables/useOutputFormat";
+import { useCustomerPaymentCustomerStore } from "@/stores/customer/paymentcustomer";
 import { AlertService } from "@/services/AlertService";
 
 export default defineComponent({
-  name: "admin-manage-account-types",
+  name: "manage-payment-customers",
   components: {
     KTDatatable,
     PermissionDenied,
     PageLoader,
   },
   setup() {
-    //admin account store
-    const accountStore = useAdminAccountStore();
-    const { accountTypes, meta, loadingAccountData, unauthorized } =
-      storeToRefs(accountStore);
-    const { getAccountTypes } = useAdminAccountStore();
+    //store
+    const paymentCustomerStore = useCustomerPaymentCustomerStore();
+    const { paymentCustomers, meta, loadingPaymentCustomerData, unauthorized } =
+      storeToRefs(paymentCustomerStore);
+    const { getPaymentCustomers } = useCustomerPaymentCustomerStore();
 
     //data variables
     const refData = ref({
-      unauthorized: false,
-      noDataMessage: ["No Data"],
-
-      //loading
       loadingPage: true,
       loadingAction: false,
     });
 
     const tableHeader = ref([
       {
-        columnName: "ID",
-        columnLabel: "id",
-
+        columnLabel: "customer_id",
+        columnName: "customer id",
         sortEnabled: true,
-        columnWidth: 100,
+      },
+      { columnLabel: "name", columnName: "Name", sortEnabled: true },
+      { columnLabel: "phone", columnName: "phone", sortEnabled: true },
+      { columnLabel: "email", columnName: "email", sortEnabled: true },
+      {
+        columnLabel: "is_blacklisted",
+        columnName: "is blacklisted?",
+        sortEnabled: true,
       },
       {
-        columnName: "Account Type",
-        columnLabel: "name",
-        sortEnabled: true,
-        columnWidth: 175,
+        columnLabel: "created_at",
+        columnName: "created at",
+        sortEnabled: false,
       },
       {
-        columnName: "is_hidden",
-        columnLabel: "is_hidden",
-        sortEnabled: true,
-        columnWidth: 175,
-      },
-      {
-        columnName: "description",
-        columnLabel: "description",
-        sortEnabled: true,
-        columnWidth: 175,
-      },
-
-      {
-        columnName: "Actions",
         columnLabel: "actions",
-
-        columnWidth: 100,
+        columnName: "Actions",
       },
     ]);
 
@@ -341,25 +330,40 @@ export default defineComponent({
       search_text: "",
       sort: { column: "", direction: "" },
     });
-
-    const accountType = ref({
+    const action = ref("");
+    const customer = ref<any>({
       id: 0,
-      action: "Add",
+      action: "Edit",
       name: "",
-      description: "",
-      is_hidden: 0,
-    } as any);
+      phone: "",
+      is_blacklisted: "",
+    });
 
-    const formAccountTypeRef = ref<null | HTMLFormElement>(null);
-    const accountTypeModalRef = ref<null | HTMLElement>(null);
-    const modalFormRules = ref({
-      name: [
-        {
-          required: true,
-          message: "Name is required",
-          trigger: "change",
-        },
-      ],
+    const formUpdateCustomerRef = ref<null | HTMLFormElement>(null);
+    const updateCustomerModalRef = ref<null | HTMLElement>(null);
+    const rules = ref({
+      // name: [
+      //   {
+      //     required: true,
+      //     message: "Name is required",
+      //     trigger: "change",
+      //   },
+      // ],
+      // phone: [
+      //   {
+      //     required: true,
+      //     message: "Phone is required",
+      //     trigger: "change",
+      //     type: "phone",
+      //   },
+      // ],
+      // is_blacklisted: [
+      //   {
+      //     required: true,
+      //     message: "Status is required",
+      //     trigger: "change",
+      //   },
+      // ],
     });
 
     const searchRecords = ref({
@@ -369,58 +373,37 @@ export default defineComponent({
       kDebounceTimeoutMs: 1000,
     });
 
-    const processAccountTypeAction = () => {
-      if (!formAccountTypeRef.value) {
+    const processCustomerAction = () => {
+      if (!formUpdateCustomerRef.value) {
         return;
       }
 
-      formAccountTypeRef.value.validate((valid) => {
+      formUpdateCustomerRef.value.validate((valid) => {
         if (valid) {
           refData.value.loadingAction = true;
 
-          switch (accountType.value.action) {
-            case "Add":
-              accountStore
-                .addAccountType(accountType.value)
+          paymentCustomerStore
+            .updatePaymentCustomer(customer.value)
+            .then(() => {
+              refData.value.loadingAction = false;
 
-                .then(() => {
-                  getAccountTypes(table_options.value);
+              //display message using shared AlertService
+              AlertService.displaySuccessAlert(
+                "Customer updated successfully!"
+              );
 
-                  hideModal(accountTypeModalRef.value);
+              getPaymentCustomers(table_options.value);
 
-                  //display message using shared AlertService
-                  AlertService.displaySuccessAlert(
-                    "Data updated successfully!"
-                  );
-                })
-                .finally(() => (refData.value.loadingAction = false));
-              break;
-            case "Edit":
-              accountStore
-                .updateAccountType(accountType.value)
-                .then(() => {
-                  refData.value.loadingAction = false;
+              hideModal(updateCustomerModalRef.value);
+            })
+            .catch((error) => {
+              //display message using shared AlertService
+              AlertService.displayMultipleErrorsAlert(error);
 
-                  getAccountTypes(table_options.value);
-
-                  hideModal(accountTypeModalRef.value);
-
-                  //display message using shared AlertService
-                  AlertService.displaySuccessAlert(
-                    "Data updated successfully!"
-                  );
-                })
-                .catch((error) => {
-                  //display message using shared AlertService
-                  AlertService.displayMultipleErrorsAlert(error);
-
-                  // update loading status
-                  refData.value.loadingAction = false;
-                });
-              break;
-            default:
-            //do nothing.
-          }
+              // update loading status
+              refData.value.loadingAction = false;
+            })
+            .finally(() => (refData.value.loadingAction = false));
         } else {
           return false;
         }
@@ -430,12 +413,12 @@ export default defineComponent({
     const handlePerPageChange = (size: number) => {
       table_options.value.current_page = 1;
       table_options.value.page_size = size;
-      getAccountTypes(table_options.value);
+      getPaymentCustomers(table_options.value);
     };
 
     const handlePageChange = (val) => {
       table_options.value.current_page = val;
-      getAccountTypes(table_options.value);
+      getPaymentCustomers(table_options.value);
     };
 
     const sortingChanged = (ctx) => {
@@ -446,25 +429,19 @@ export default defineComponent({
       // reset page to 1
       table_options.value.current_page = 1;
 
-      getAccountTypes(table_options.value);
+      // get customers
+      getPaymentCustomers(table_options.value);
     };
 
-    //modal
-    const showAccountTypeModal = (action, data) => {
-      if (action === "Add") {
-        accountType.value.name = "";
-      } else {
-        accountType.value = data;
-      }
-
-      accountType.value.action = action;
+    //modals
+    const showEditCustomerModal = async (data) => {
+      customer.value = data;
+      customer.value.action = "Edit";
     };
 
-    onMounted(() => {
-      refData.value.loadingPage = true;
-      getAccountTypes(table_options.value);
-      refData.value.loadingPage = false;
-    });
+    //output formatting
+    let { formatCurrencyAmount, formatDateTime, formatTime, formatDate } =
+      useOutputFormat();
 
     watch(
       () => table_options.value.search_text,
@@ -476,41 +453,47 @@ export default defineComponent({
         searchRecords.value.isSearching = true;
 
         searchRecords.value.debounceTimeout = setTimeout(() => {
-          getAccountTypes(table_options.value);
+          getPaymentCustomers(table_options.value);
           searchRecords.value.isSearching = false;
         }, searchRecords.value.kDebounceTimeoutMs);
       }
     );
 
-    return {
-      //variables
-      refData,
-      accountTypeModalRef,
-      formAccountTypeRef,
-      modalFormRules,
-      tableHeader,
+    onMounted(() => {
+      refData.value.loadingPage = true;
 
+      getPaymentCustomers(table_options.value);
+
+      refData.value.loadingPage = false;
+    });
+    return {
+      refData,
+      updateCustomerModalRef,
+      formUpdateCustomerRef,
+      rules,
+      tableHeader,
+      meta,
       table_options,
-      accountType,
+      action,
+      customer,
 
       //functions
       handlePageChange,
       handlePerPageChange,
       sortingChanged,
-      processAccountTypeAction,
+      processCustomerAction,
       searchRecords,
 
-      //modal
-      showAccountTypeModal,
-
-      //imported data
-      sppData,
-
-      //state
-      accountTypes,
-      loadingAccountData,
-      meta,
+      showEditCustomerModal,
+      paymentCustomers,
+      loadingPaymentCustomerData,
       unauthorized,
+
+      //composable
+      formatCurrencyAmount,
+      formatDateTime,
+      formatTime,
+      formatDate,
     };
   },
 });
